@@ -35,6 +35,12 @@
       <version>5.8.0</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.thoughtworks.gauge</groupId>
+      <artifactId>gauge-java</artifactId>
+      <version>[0.10,)</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
 
   <modules>
