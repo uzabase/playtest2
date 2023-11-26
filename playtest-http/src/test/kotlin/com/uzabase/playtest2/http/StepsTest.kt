@@ -9,13 +9,13 @@ class StepsTest : FunSpec({
     val sut = Steps()
     val server = WireMockServer(8080).also { it.start() }
 
-    beforeTest {
+    beforeEach {
         // Simulate Gauge's ScenarioDataStore being cleared between scenarios
         ScenarioDataStore.items().forEach { k ->
             ScenarioDataStore.remove(k)
         }
 
-        server.start()
+        server.resetAll()
     }
 
     afterTest {
