@@ -9,7 +9,7 @@ class StepsTest : FunSpec({
     val sut = Steps()
     val server = WireMockServer(8080)
 
-    beforeContainer {
+    beforeSpec {
         server.start()
     }
 
@@ -22,7 +22,7 @@ class StepsTest : FunSpec({
         server.resetAll()
     }
 
-    afterContainer {
+    afterSpec() {
         server.stop()
     }
 

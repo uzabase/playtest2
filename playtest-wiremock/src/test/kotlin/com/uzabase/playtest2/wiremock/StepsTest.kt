@@ -11,13 +11,13 @@ class StepsTest : FunSpec({
 
     val client = OkHttpClient().newBuilder().build()
 
-    beforeContainer { server.start() }
+    beforeSpec { server.start() }
 
     beforeEach {
         server.resetAll()
     }
 
-    afterContainer { server.stop() }
+    afterSpec { server.stop() }
 
     context("Simple Request") {
         beforeEach {
