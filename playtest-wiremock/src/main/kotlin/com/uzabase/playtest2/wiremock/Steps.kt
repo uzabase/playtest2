@@ -15,14 +15,14 @@ class Steps {
     @Step("(<apiName>に)GETリクエストされた")
     fun assertRequestedAsGetRequest(apiName: String) {
         val path = ScenarioDataStore.get(Pair(apiName, KEY.REQUEST_PATH)) as String
-        val mock = WireMock("localhost", 8080)
+        val mock = WireMock("localhost", 3000)
         mock.verifyThat(getRequestedFor(urlPathEqualTo(path)))
     }
 
     @Step("(<apiName>に)GETリクエストされていない")
     fun assertNotRequestedAsGetRequest(apiName: String) {
         val path = ScenarioDataStore.get(Pair(apiName, KEY.REQUEST_PATH)) as String
-        val mock = WireMock("localhost", 8080)
+        val mock = WireMock("localhost", 3000)
         mock.verifyThat(0, getRequestedFor(urlPathEqualTo(path)))
     }
 
