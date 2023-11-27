@@ -19,8 +19,15 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- Language versions -->
     <java.version>17</java.version>
     <kotlin.version>1.9.21</kotlin.version>
+
+    <!-- Library versions -->
+    <gauge.version>[0.10.0,)</gauge.version>
+    <kotest.version>[5.8.0,)</kotest.version>
+    <okhttp.version>[4.11,)</okhttp.version>
+    <wiremock.version>[3.3,)</wiremock.version>
   </properties>
 
   <dependencies>
@@ -32,19 +39,20 @@
     <dependency>
       <groupId>io.kotest</groupId>
       <artifactId>kotest-runner-junit5-jvm</artifactId>
-      <version>5.8.0</version>
+      <version>${kotest.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.thoughtworks.gauge</groupId>
       <artifactId>gauge-java</artifactId>
-      <version>[0.10,)</version>
+      <version>${gauge.version}</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
 
   <modules>
     <module>playtest-http</module>
+    <module>playtest-wiremock</module>
   </modules>
 
   <build>

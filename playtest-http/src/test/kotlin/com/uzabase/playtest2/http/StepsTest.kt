@@ -7,7 +7,11 @@ import io.kotest.matchers.shouldBe
 
 class StepsTest : FunSpec({
     val sut = Steps()
-    val server = WireMockServer(8080).also { it.start() }
+    val server = WireMockServer(8080)
+
+    beforeContainer {
+        server.start()
+    }
 
     beforeEach {
         // Simulate Gauge's ScenarioDataStore being cleared between scenarios
@@ -18,7 +22,7 @@ class StepsTest : FunSpec({
         server.resetAll()
     }
 
-    afterTest {
+    afterContainer {
         server.stop()
     }
 
