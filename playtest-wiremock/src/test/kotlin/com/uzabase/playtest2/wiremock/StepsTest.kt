@@ -7,7 +7,7 @@ import okhttp3.Request
 
 class StepsTest : FunSpec({
     val sut = Steps()
-    val server = WireMockServer(8080).also { it.start() }
+    val server = WireMockServer(3000).also { it.start() }
 
     val client = OkHttpClient().newBuilder().build()
 
@@ -22,7 +22,7 @@ class StepsTest : FunSpec({
     context("Simple Request") {
         beforeEach {
             Request.Builder()
-                .url("http://localhost:8080/hello")
+                .url("http://localhost:3000/hello")
                 .build().let { client.newCall(it).execute() }
         }
 
