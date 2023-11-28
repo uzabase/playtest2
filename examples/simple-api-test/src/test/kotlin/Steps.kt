@@ -1,5 +1,6 @@
 import com.example.demoapp.App
 import com.github.tomakehurst.wiremock.WireMockServer
+import com.thoughtworks.gauge.AfterSuite
 import com.thoughtworks.gauge.BeforeSuite
 import com.thoughtworks.gauge.Step
 
@@ -8,6 +9,13 @@ class Steps {
 
     @BeforeSuite
     fun beforeSuite() {
+        App.startServer()
         innerApi.start()
+    }
+
+    @AfterSuite
+    fun afterSuite() {
+        innerApi.stop()
+        App.stopServer()
     }
 }

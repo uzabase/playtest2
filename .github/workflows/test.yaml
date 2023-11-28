@@ -19,3 +19,22 @@ jobs:
           cache: maven
       - name: Run tests
         run: mvn test
+
+  example-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+      - name: Gauge install
+        run: |
+          curl -SsL https://downloads.gauge.org/stable | sh
+      - name: Run tests
+        run: | 
+          mvn install
+          cd examples/simple-api-test
+          mvn test
