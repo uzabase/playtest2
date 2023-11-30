@@ -31,7 +31,9 @@ class StepsTest : FunSpec({
         beforeEach {
             Request.Builder()
                 .url("http://localhost:3000/hello")
-                .build().let { client.newCall(it).execute() }
+                .build()
+                .let { client.newCall(it).execute() }
+                .let { it.close() }
         }
 
         test("Assert GET /hello request should pass") {
