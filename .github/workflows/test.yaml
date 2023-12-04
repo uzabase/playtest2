@@ -15,7 +15,8 @@ jobs:
         id: sdkman
       - name: Run tests
         run: |
-          JAVA_HOME=$(sdk home java 21.0.1-tem) mvn test
+          export JAVA_HOME=$(sdk home java 21.0.1-tem) 
+          mvn clean test
 
   example-test:
     runs-on: ubuntu-latest
@@ -28,6 +29,7 @@ jobs:
           curl -SsL https://downloads.gauge.org/stable | sh
       - name: Run tests
         run: |
-          JAVA_HOME=$(sdk home java 21.0.1-tem) mvn install
+          export JAVA_HOME=$(sdk home java 21.0.1-tem)
+          mvn clean install
           cd examples/simple-api-test
-          JAVA_HOME=$(sdk home java 21.0.1-tem) mvn test
+          mvn test
