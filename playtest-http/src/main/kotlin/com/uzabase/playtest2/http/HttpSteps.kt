@@ -19,6 +19,7 @@ class HttpSteps {
 
     enum class K() {
         REQUEST_PATH,
+        QUERY,
         JSON_BODY,
         MEDIA_TYPE,
         METHOD,
@@ -50,11 +51,9 @@ class HttpSteps {
     fun methodIntoRequest(method: Method) =
         ScenarioDataStore.put(K.METHOD, method)
 
+    @Suppress("UNCHECKED_CAST")
     private fun ensureHeaders(): List<Pair<String, String>> =
-        ScenarioDataStore.get(K.HEADER)?.let {
-            @Suppress("UNCHECKED_CAST")
-            it as List<Pair<String, String>>
-        } ?: emptyList()
+        (ScenarioDataStore.get(K.HEADER) as? List<Pair<String, String>>) ?: emptyList()
 
     @Step("ヘッダー<header>で")
     fun headerIntoRequest(header: String) {
@@ -72,9 +71,7 @@ class HttpSteps {
     private fun buildRequest(): Request {
         @Suppress("UNCHECKED_CAST")
         fun <T> ensureGet(key: K): T =
-            ScenarioDataStore.get(key)?.let {
-                it as T
-            } ?: throw IllegalStateException(
+            (ScenarioDataStore.get(key) as? T) ?: throw IllegalStateException(
                 """
                 You should specify the `${
                     when (key) {
@@ -102,8 +99,7 @@ class HttpSteps {
                     Method.GET -> rb.get()
                     else -> rb.method(
                         method.name,
-                        ScenarioDataStore.get(K.JSON_BODY)
-                            ?.let { it as String }
+                        (ScenarioDataStore.get(K.JSON_BODY) as? String)
                             ?.toRequestBody(ensureGet<String>(K.MEDIA_TYPE).toMediaType()) ?: EMPTY_REQUEST
                     )
                 }
