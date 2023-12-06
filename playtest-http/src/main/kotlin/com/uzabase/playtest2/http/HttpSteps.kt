@@ -50,7 +50,7 @@ class HttpSteps {
         ScenarioDataStore.put(K.METHOD, method)
 
     @Step("リクエストを送る")
-    fun sendRequest(): Unit =
+    fun sendRequest() =
         buildRequest()
             .let { client.newCall(it).execute() }
             .run { ScenarioDataStore.put(K.RESPONSE, this) }
