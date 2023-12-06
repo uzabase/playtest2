@@ -1,0 +1,12 @@
+{
+  "request": {
+    "method": "PUT",
+    "urlPath": "/articles"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

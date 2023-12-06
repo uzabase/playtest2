@@ -1,0 +1,24 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/articles"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": [
+      {
+        "id": 1,
+        "title": "My first article",
+        "body": "This is my first article"
+      },
+      {
+        "id": 2,
+        "title": "My second article",
+        "body": "This is my second article"
+      }
+    ]
+  }
+}
