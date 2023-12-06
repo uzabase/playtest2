@@ -22,6 +22,7 @@ class HttpSteps {
         JSON_BODY,
         MEDIA_TYPE,
         METHOD,
+        HEADER,
         RESPONSE
     }
 
@@ -48,6 +49,19 @@ class HttpSteps {
     @Step("メソッド<method>で")
     fun methodIntoRequest(method: Method) =
         ScenarioDataStore.put(K.METHOD, method)
+
+    private fun ensureHeaders(): List<Pair<String, String>> =
+        ScenarioDataStore.get(K.HEADER)?.let {
+            @Suppress("UNCHECKED_CAST")
+            it as List<Pair<String, String>>
+        } ?: emptyList()
+
+    @Step("ヘッダー<header>で")
+    fun headerIntoRequest(header: String) {
+        val headers = ensureHeaders()
+        val (key, value) = header.split(":").map(String::trim)
+        ScenarioDataStore.put(K.HEADER, headers + (key to value))
+    }
 
     @Step("リクエストを送る")
     fun sendRequest() =
@@ -78,6 +92,11 @@ class HttpSteps {
                 ensureGet<String>(K.REQUEST_PATH)
                     .let(httpConfig.endpoint.toURI()::resolve).toURL()
             )
+            .let { rb ->
+                ensureHeaders().fold(rb) { b, (k, v) ->
+                    b.addHeader(k, v)
+                }
+            }
             .let { rb ->
                 when (val method = ensureGet<Method>(K.METHOD)) {
                     Method.GET -> rb.get()

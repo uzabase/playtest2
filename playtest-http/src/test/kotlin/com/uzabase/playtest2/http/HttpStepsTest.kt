@@ -2,6 +2,7 @@ package com.uzabase.playtest2.http
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.*
+import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.uzabase.playtest2.Configuration.Companion.playtest2
 import com.uzabase.playtest2.config.http
@@ -60,6 +61,51 @@ class HttpStepsTest : FunSpec({
                 server.verify(requestedFor(method.name, urlPathEqualTo("/articles")))
             }
         }
+    }
+
+    context("Request with headers") {
+        forAll(
+            row(emptyList()) { rpb: RequestPatternBuilder ->
+                rpb
+            },
+            row(listOf("Accept: application/json")) { rpb: RequestPatternBuilder ->
+                rpb.withHeader("Accept", equalTo("application/json"))
+            },
+            row(
+                listOf(
+                    "Content-Type: application/json; charset=us-ascii",
+                    "Accept: application/json"
+                )
+            ) { rpb: RequestPatternBuilder ->
+                rpb.withHeader("Content-Type", equalTo("application/json; charset=us-ascii"))
+                    .withHeader("Accept", equalTo("application/json"))
+            }
+        ) { headers, f ->
+            test("should be sent request with ${headers.size} headers correctly") {
+                sut.pathIntoRequest("/articles")
+                headers.forEach {
+                    sut.headerIntoRequest(it)
+                }
+                sut.methodIntoRequest(HttpSteps.Method.GET)
+                sut.sendRequest()
+
+                server.verify(getRequestedFor(urlPathEqualTo("/articles")).let(f))
+            }
+        }
+    }
+
+    test("GET request with headers") {
+        sut.pathIntoRequest("/articles")
+        sut.methodIntoRequest(HttpSteps.Method.GET)
+        sut.headerIntoRequest("Accept: application/json")
+        sut.headerIntoRequest("Authorization: Bearer 1234567890")
+        sut.sendRequest()
+
+        server.verify(
+            getRequestedFor(urlPathEqualTo("/articles"))
+                .withHeader("Accept", equalTo("application/json"))
+                .withHeader("Authorization", equalTo("Bearer 1234567890"))
+        )
     }
 
     test("POST request with JSON body") {
