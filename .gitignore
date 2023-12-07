@@ -25,3 +25,8 @@ replay_pid*
 
 .idea/
 target/
+
+# docs
+docs/_site/
+docs/.jekyll-metadata
+docs/.jekyll-cache/
