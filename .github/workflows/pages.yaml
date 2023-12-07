@@ -28,3 +28,14 @@ jobs:
         uses: actions/upload-pages-artifact@v2
         with:
           path: ./docs/_site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: on-success
+    steps: 
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v3
+        id: deployment
