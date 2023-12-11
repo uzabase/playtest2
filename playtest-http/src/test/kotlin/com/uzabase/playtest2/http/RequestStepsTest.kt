@@ -13,9 +13,10 @@ import io.kotest.data.forAll
 import io.kotest.data.row
 import io.kotest.matchers.shouldBe
 import java.net.URI
+import com.uzabase.playtest2.http.RequestSteps as Sut
 
-class HttpStepsTest : FunSpec({
-    val sut = HttpSteps()
+class RequestStepsTest : FunSpec({
+    val sut = Sut()
     val server = WireMockServer(8080)
 
     beforeSpec {
@@ -40,7 +41,7 @@ class HttpStepsTest : FunSpec({
 
     test("Hello, world!") {
         sut.pathIntoRequest("/hello")
-        sut.methodIntoRequest(HttpSteps.Method.GET)
+        sut.methodIntoRequest(Sut.Method.GET)
         sut.sendRequest()
         val response = ScenarioDataStore.get(K.RESPONSE) as okhttp3.Response
         response.body.string().shouldBe("Hello, world!")
@@ -48,11 +49,11 @@ class HttpStepsTest : FunSpec({
 
     context("Simple requests") {
         forAll(
-            row(HttpSteps.Method.GET),
-            row(HttpSteps.Method.DELETE),
-            row(HttpSteps.Method.PUT),
-            row(HttpSteps.Method.POST),
-            row(HttpSteps.Method.PATCH)
+            row(Sut.Method.GET),
+            row(Sut.Method.DELETE),
+            row(Sut.Method.PUT),
+            row(Sut.Method.POST),
+            row(Sut.Method.PATCH)
         ) { method ->
             test("should be sent `$method` request correctly") {
                 sut.pathIntoRequest("/articles")
@@ -87,7 +88,7 @@ class HttpStepsTest : FunSpec({
                 headers.forEach {
                     sut.headerIntoRequest(it)
                 }
-                sut.methodIntoRequest(HttpSteps.Method.GET)
+                sut.methodIntoRequest(Sut.Method.GET)
                 sut.sendRequest()
 
                 server.verify(getRequestedFor(urlPathEqualTo("/articles")).let(f))
@@ -97,7 +98,7 @@ class HttpStepsTest : FunSpec({
 
     test("GET request with headers") {
         sut.pathIntoRequest("/articles")
-        sut.methodIntoRequest(HttpSteps.Method.GET)
+        sut.methodIntoRequest(Sut.Method.GET)
         sut.headerIntoRequest("Accept: application/json")
         sut.headerIntoRequest("Authorization: Bearer 1234567890")
         sut.sendRequest()
@@ -113,7 +114,7 @@ class HttpStepsTest : FunSpec({
         sut.pathIntoRequest("/articles")
         sut.jsonBodyIntoRequest("""{"title": "Hello, world!", "body": "This is a test."}""")
         sut.mediaTypeIntoRequest("application/json; charset=us-ascii")
-        sut.methodIntoRequest(HttpSteps.Method.POST)
+        sut.methodIntoRequest(Sut.Method.POST)
         sut.sendRequest()
 
         server.verify(
@@ -126,14 +127,14 @@ class HttpStepsTest : FunSpec({
     context("Should throw an exception ") {
         forAll(
             row("Request Path") {
-                sut.methodIntoRequest(HttpSteps.Method.POST)
+                sut.methodIntoRequest(Sut.Method.POST)
             },
             row("Method") {
                 sut.pathIntoRequest("/articles")
             },
             row("Media Type") {
                 sut.pathIntoRequest("/articles")
-                sut.methodIntoRequest(HttpSteps.Method.POST)
+                sut.methodIntoRequest(Sut.Method.POST)
                 sut.jsonBodyIntoRequest("""{}""")
             }
         ) { expected, prep ->

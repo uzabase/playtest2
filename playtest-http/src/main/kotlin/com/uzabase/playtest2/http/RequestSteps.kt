@@ -11,7 +11,7 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.internal.EMPTY_REQUEST
 
-class HttpSteps {
+class RequestSteps {
 
     private val client = okhttp3.OkHttpClient().newBuilder().build()
 
