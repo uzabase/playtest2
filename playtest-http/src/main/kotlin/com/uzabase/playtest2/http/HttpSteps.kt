@@ -5,6 +5,7 @@ import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.uzabase.playtest2.Configuration
 import com.uzabase.playtest2.config.HttpModuleConfiguration
 import com.uzabase.playtest2.config.HttpModuleKey
+import com.uzabase.playtest2.http.internal.K
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -17,15 +18,6 @@ class HttpSteps {
     private val httpConfig: HttpModuleConfiguration
         get() = Configuration[HttpModuleKey] as HttpModuleConfiguration
 
-    enum class K() {
-        REQUEST_PATH,
-        QUERY,
-        JSON_BODY,
-        MEDIA_TYPE,
-        METHOD,
-        HEADER,
-        RESPONSE
-    }
 
     @Step("パス<path>に")
     fun pathIntoRequest(path: String) =

@@ -6,6 +6,7 @@ import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.uzabase.playtest2.Configuration.Companion.playtest2
 import com.uzabase.playtest2.config.http
+import com.uzabase.playtest2.http.internal.K
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
@@ -41,7 +42,7 @@ class HttpStepsTest : FunSpec({
         sut.pathIntoRequest("/hello")
         sut.methodIntoRequest(HttpSteps.Method.GET)
         sut.sendRequest()
-        val response = ScenarioDataStore.get(HttpSteps.K.RESPONSE) as okhttp3.Response
+        val response = ScenarioDataStore.get(K.RESPONSE) as okhttp3.Response
         response.body.string().shouldBe("Hello, world!")
     }
 
