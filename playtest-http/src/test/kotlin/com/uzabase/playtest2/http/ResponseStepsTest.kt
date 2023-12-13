@@ -28,20 +28,41 @@ class ResponseStepsTest : FunSpec({
         server.stop()
     }
 
-    test("Hello, world") {
-        client.newCall(Request.Builder().url(URI("http://localhost:8080/articles").toURL()).build())
-                .execute().let { ScenarioDataStore.put(K.RESPONSE, it) }
+    context("status code") {
+        test("Hello, world") {
+            client.newCall(Request.Builder().url(URI("http://localhost:8080/articles").toURL()).build())
+                    .execute().let { ScenarioDataStore.put(K.RESPONSE, it) }
 
-        sut.assertStatusCode(200)
+            sut.assertStatusCode(200)
+        }
+
+        test("Failed test") {
+            client.newCall(Request.Builder().url(URI("http://localhost:8080/articles").toURL()).build())
+                    .execute().let { ScenarioDataStore.put(K.RESPONSE, it) }
+
+            val exception = shouldThrow<PlaytestException> {
+                sut.assertStatusCode(400)
+            }
+            exception.message.shouldBe("Status code should be equal to 400")
+        }
     }
 
-    test("Failed test") {
-        client.newCall(Request.Builder().url(URI("http://localhost:8080/articles").toURL()).build())
-                .execute().let { ScenarioDataStore.put(K.RESPONSE, it) }
+    context("response header") {
+        test("Hello, world") {
+            client.newCall(Request.Builder().url(URI("http://localhost:8080/articles").toURL()).build())
+                    .execute().let { ScenarioDataStore.put(K.RESPONSE, it) }
 
-        val exception = shouldThrow<PlaytestException> {
-            sut.assertStatusCode(400)
+            sut.assertExistsHeaderKey("Content-Type")
         }
-        exception.message.shouldBe("Status code should be equal to 400")
+
+        test("Failed test") {
+            client.newCall(Request.Builder().url(URI("http://localhost:8080/articles").toURL()).build())
+                    .execute().let { ScenarioDataStore.put(K.RESPONSE, it) }
+
+            val exception = shouldThrow<PlaytestException> {
+                sut.assertExistsHeaderKey("Content-Length")
+            }
+            exception.message.shouldBe("Header key Content-Length should exist")
+        }
     }
 })
