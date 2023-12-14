@@ -6,8 +6,11 @@ import com.uzabase.playtest2.http.internal.K
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
+import okhttp3.Headers
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.ResponseBody
 import java.net.URI
 import com.uzabase.playtest2.http.ResponseSteps as Sut
 
@@ -21,6 +24,7 @@ class ResponseStepsTest : FunSpec({
     }
 
     beforeEach {
+        ScenarioDataStore.items().forEach { ScenarioDataStore.remove(it) }
         server.resetAll()
     }
 
@@ -28,41 +32,63 @@ class ResponseStepsTest : FunSpec({
         server.stop()
     }
 
-    context("status code") {
-        test("Hello, world") {
-            client.newCall(Request.Builder().url(URI("http://localhost:8080/articles").toURL()).build())
-                    .execute().let { ScenarioDataStore.put(K.RESPONSE, it) }
+    context("About status code") {
+        test("should be store as assertion target") {
+            client.newCall(Request.Builder().url(URI("http://localhost:8080/articles").toURL()).build()).execute()
+                .let { ScenarioDataStore.put(K.RESPONSE, it) }
+            sut.statusCode()
 
-            sut.assertStatusCode(200)
-        }
-
-        test("Failed test") {
-            client.newCall(Request.Builder().url(URI("http://localhost:8080/articles").toURL()).build())
-                    .execute().let { ScenarioDataStore.put(K.RESPONSE, it) }
-
-            val exception = shouldThrow<PlaytestException> {
-                sut.assertStatusCode(400)
-            }
-            exception.message.shouldBe("Status code should be equal to 400")
+            ScenarioDataStore.get(AssertionTarget).shouldBe(200L)
         }
     }
 
-    context("response header") {
-        test("Hello, world") {
-            client.newCall(Request.Builder().url(URI("http://localhost:8080/articles").toURL()).build())
-                    .execute().let { ScenarioDataStore.put(K.RESPONSE, it) }
+    context("About response body") {
+        test("should be store as assertion target") {
+            client.newCall(Request.Builder().url(URI("http://localhost:8080/articles").toURL()).build()).execute()
+                .let { ScenarioDataStore.put(K.RESPONSE, it) }
+            sut.body()
 
-            sut.assertExistsHeaderKey("Content-Type")
+            ScenarioDataStore.get(AssertionTarget).shouldBeInstanceOf<ResponseBody>()
+        }
+    }
+
+    context("About response headers") {
+        test("should be store as assertion target") {
+            client.newCall(Request.Builder().url(URI("http://localhost:8080/articles").toURL()).build()).execute()
+                .let { ScenarioDataStore.put(K.RESPONSE, it) }
+            sut.headers()
+
+            ScenarioDataStore.get(AssertionTarget).shouldBeInstanceOf<Headers>()
+        }
+    }
+
+    context("Assertions") {
+        context("happy path") {
+            test("long value") {
+                ScenarioDataStore.put(AssertionTarget, 200L)
+                sut.shouldBeLongValue(200L)
+            }
+
+            test("string value") {
+                ScenarioDataStore.put(AssertionTarget, "Hello, world")
+                sut.shouldBeStringValue("Hello, world")
+            }
         }
 
-        test("Failed test") {
-            client.newCall(Request.Builder().url(URI("http://localhost:8080/articles").toURL()).build())
-                    .execute().let { ScenarioDataStore.put(K.RESPONSE, it) }
+        context("failed scenarios") {
+            context("assertion target not found") {
+                test("long value") {
+                    shouldThrow<PlaytestException> {
+                        sut.shouldBeLongValue(200L)
+                    }.message.shouldBe("Assertion target is not found")
+                }
 
-            val exception = shouldThrow<PlaytestException> {
-                sut.assertExistsHeaderKey("Content-Length")
+                test("string value") {
+                    shouldThrow<PlaytestException> {
+                        sut.shouldBeStringValue("Hello, world")
+                    }.message.shouldBe("Assertion target is not found")
+                }
             }
-            exception.message.shouldBe("Header key Content-Length should exist")
         }
     }
 })
