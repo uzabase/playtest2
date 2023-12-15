@@ -20,6 +20,10 @@
             <version>${kotlin.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.thoughtworks.gauge</groupId>
+            <artifactId>gauge-java</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

@@ -3,7 +3,6 @@ package com.uzabase.playtest2.http
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.uzabase.playtest2.http.internal.K
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -38,7 +37,7 @@ class ResponseStepsTest : FunSpec({
                 .let { ScenarioDataStore.put(K.RESPONSE, it) }
             sut.statusCode()
 
-            ScenarioDataStore.get(AssertionTarget).shouldBe(200L)
+            ScenarioDataStore.get("AssertionTarget").shouldBe(200L)
         }
     }
 
@@ -48,7 +47,7 @@ class ResponseStepsTest : FunSpec({
                 .let { ScenarioDataStore.put(K.RESPONSE, it) }
             sut.body()
 
-            ScenarioDataStore.get(AssertionTarget).shouldBeInstanceOf<ResponseBody>()
+            ScenarioDataStore.get("AssertionTarget").shouldBeInstanceOf<ResponseBody>()
         }
     }
 
@@ -58,37 +57,7 @@ class ResponseStepsTest : FunSpec({
                 .let { ScenarioDataStore.put(K.RESPONSE, it) }
             sut.headers()
 
-            ScenarioDataStore.get(AssertionTarget).shouldBeInstanceOf<Headers>()
-        }
-    }
-
-    context("Assertions") {
-        context("happy path") {
-            test("long value") {
-                ScenarioDataStore.put(AssertionTarget, 200L)
-                sut.shouldBeLongValue(200L)
-            }
-
-            test("string value") {
-                ScenarioDataStore.put(AssertionTarget, "Hello, world")
-                sut.shouldBeStringValue("Hello, world")
-            }
-        }
-
-        context("failed scenarios") {
-            context("assertion target not found") {
-                test("long value") {
-                    shouldThrow<PlaytestException> {
-                        sut.shouldBeLongValue(200L)
-                    }.message.shouldBe("Assertion target is not found")
-                }
-
-                test("string value") {
-                    shouldThrow<PlaytestException> {
-                        sut.shouldBeStringValue("Hello, world")
-                    }.message.shouldBe("Assertion target is not found")
-                }
-            }
+            ScenarioDataStore.get("AssertionTarget").shouldBeInstanceOf<Headers>()
         }
     }
 })
