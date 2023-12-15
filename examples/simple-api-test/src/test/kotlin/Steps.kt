@@ -2,10 +2,10 @@ import com.example.demoapp.App
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.thoughtworks.gauge.AfterSuite
 import com.thoughtworks.gauge.BeforeSuite
-import com.uzabase.playtest2.Configuration
-import com.uzabase.playtest2.config.http
-import com.uzabase.playtest2.config.wireMock
-import com.uzabase.playtest2.plus
+import com.uzabase.playtest2.core.config.Configuration
+import com.uzabase.playtest2.http.config.http
+import com.uzabase.playtest2.wiremock.config.wireMock
+import com.uzabase.playtest2.core.config.plus
 import java.net.URI
 
 class Steps {

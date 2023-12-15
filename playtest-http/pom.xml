@@ -31,7 +31,7 @@
         </dependency>
         <dependency>
             <groupId>com.uzabase.playtest2</groupId>
-            <artifactId>playtest-config</artifactId>
+            <artifactId>playtest-core</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

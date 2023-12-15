@@ -1,8 +1,8 @@
-package com.uzabase.playtest2.config
+package com.uzabase.playtest2.wiremock.config
 
-import com.uzabase.playtest2.ConfigurationEntry
-import com.uzabase.playtest2.ModuleConfiguration
-import com.uzabase.playtest2.ModuleKey
+import com.uzabase.playtest2.core.config.ConfigurationEntry
+import com.uzabase.playtest2.core.config.ModuleConfiguration
+import com.uzabase.playtest2.core.config.ModuleKey
 import java.net.URL
 
 data class WireMockModuleKey(val name: String) : ModuleKey

@@ -71,7 +71,7 @@
         </dependency>
         <dependency>
             <groupId>com.uzabase.playtest2</groupId>
-            <artifactId>playtest-config</artifactId>
+            <artifactId>playtest-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

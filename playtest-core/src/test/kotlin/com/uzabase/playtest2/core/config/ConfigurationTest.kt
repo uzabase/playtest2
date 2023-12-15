@@ -1,4 +1,4 @@
-package com.uzabase.playtest2
+package com.uzabase.playtest2.core.config
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
@@ -41,7 +41,7 @@ class ConfigurationTest : FunSpec({
             .find { it.name == "configs" }!!
 
         configsProp.isAccessible = true
-        configsProp.get(Configuration.Companion) shouldBe mapOf(
+        configsProp.get(Configuration) shouldBe mapOf(
             MyMod1ModuleKey to MyMod1Configuration(URI("http://localhost:8080").toURL()),
             MyMod2ModuleKey("awesomeApi1") to MyMod2Configuration(URI("http://localhost:3000").toURL()),
             MyMod2ModuleKey("awesomeApi2") to MyMod2Configuration(URI("http://localhost:3001").toURL())

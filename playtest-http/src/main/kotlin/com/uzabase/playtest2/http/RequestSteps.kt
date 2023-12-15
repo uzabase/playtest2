@@ -2,9 +2,9 @@ package com.uzabase.playtest2.http
 
 import com.thoughtworks.gauge.Step
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
-import com.uzabase.playtest2.Configuration
-import com.uzabase.playtest2.config.HttpModuleConfiguration
-import com.uzabase.playtest2.config.HttpModuleKey
+import com.uzabase.playtest2.core.config.Configuration
+import com.uzabase.playtest2.http.config.HttpModuleConfiguration
+import com.uzabase.playtest2.http.config.HttpModuleKey
 import com.uzabase.playtest2.http.internal.K
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Request

@@ -21,7 +21,7 @@
     <modules>
         <module>playtest-http</module>
         <module>playtest-wiremock</module>
-        <module>playtest-config</module>
+        <module>playtest-core</module>
     </modules>
 
     <properties>
@@ -167,6 +167,9 @@
                 <version>${kotlin.version}</version>
                 <configuration>
                     <jvmTarget>${java.version}</jvmTarget>
+                    <args>
+                        <arg>-Xcontext-receivers</arg>
+                    </args>
                 </configuration>
                 <executions>
                     <execution>

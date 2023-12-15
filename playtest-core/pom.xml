@@ -8,10 +8,10 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>playtest-config</artifactId>
+    <artifactId>playtest-core</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>Playtest Config</name>
+    <name>Playtest Core</name>
 
     <dependencies>
         <dependency>

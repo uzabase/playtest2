@@ -1,4 +1,4 @@
-package com.uzabase.playtest2
+package com.uzabase.playtest2.core.config
 
 import java.util.concurrent.ConcurrentHashMap
 

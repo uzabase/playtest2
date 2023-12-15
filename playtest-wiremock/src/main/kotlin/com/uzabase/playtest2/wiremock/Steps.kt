@@ -5,9 +5,9 @@ import com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor
 import com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo
 import com.thoughtworks.gauge.Step
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
-import com.uzabase.playtest2.Configuration
-import com.uzabase.playtest2.config.WireMockModuleConfiguration
-import com.uzabase.playtest2.config.WireMockModuleKey
+import com.uzabase.playtest2.core.config.Configuration
+import com.uzabase.playtest2.wiremock.config.WireMockModuleConfiguration
+import com.uzabase.playtest2.wiremock.config.WireMockModuleKey
 
 class Steps {
 

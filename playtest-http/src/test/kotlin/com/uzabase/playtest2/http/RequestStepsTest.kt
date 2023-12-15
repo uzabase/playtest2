@@ -4,8 +4,8 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
-import com.uzabase.playtest2.Configuration.Companion.playtest2
-import com.uzabase.playtest2.config.http
+import com.uzabase.playtest2.core.config.Configuration.Companion.playtest2
+import com.uzabase.playtest2.http.config.http
 import com.uzabase.playtest2.http.internal.K
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
