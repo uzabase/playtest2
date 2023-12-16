@@ -19,15 +19,11 @@ class AssertionSteps {
 
     @Step("文字列の<value>である")
     fun shouldBeStringValue(value: String) =
-        ScenarioDataStore.items().find { it == "AssertionTarget" }?.let {
-            val context = ScenarioDataStore.get("Context") as? AssertableAsString
-            test("should be $value") {
-                if (context != null) {
-                    context.asString() == value
-                } else {
-                    (ScenarioDataStore.get("AssertionTarget") as String) == value
+        ScenarioDataStore.items().find { it == "AssertionTarget" }?.let { key ->
+            ScenarioDataStore.get(key).let { t ->
+                test("should be $value") {
+                    AssertableAsString.of(t).asString() == value
                 }
             }
         } ?: playtestException("Assertion target is not found")
-
 }

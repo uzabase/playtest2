@@ -3,6 +3,8 @@ package com.uzabase.playtest2.core.assertion
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.data.forAll
+import io.kotest.data.row
 import io.kotest.matchers.shouldBe
 
 class AssertionStepsTest : FunSpec({
@@ -42,23 +44,23 @@ class AssertionStepsTest : FunSpec({
     }
 
 
-    data class FullName(val firstName: String, val lastName: String)
-
-    fun makeProxy(fullName: FullName): AssertableAsString {
-        return object : AssertableProxy {
-            override fun asString(): String {
-                return "${fullName.firstName} ${fullName.lastName}"
+    data class FullName(val firstName: String, val lastName: String) {
+        fun proxied(): AssertableAsString =
+            object : AssertableAsString {
+                override fun asString(): String {
+                    return "$firstName $lastName :)"
+                }
             }
-
-            override val self: Any
-                get() = fullName
-        }
     }
 
-    test("Any value should assert as string value") {
-        ScenarioDataStore.put("AssertionTarget", FullName("John", "Doe"))
-        ScenarioDataStore.put("Context", makeProxy(FullName("John", "Doe")))
+    context("Any value should assert as string value") {
+        forAll(
+            row(FullName("John", "Doe").proxied(), "John Doe :)"),
+            row("Hello, world", "Hello, world")
+        ) { origin, expected ->
+            ScenarioDataStore.put("AssertionTarget", origin)
 
-        sut.shouldBeStringValue("John Doe")
+            sut.shouldBeStringValue(expected)
+        }
     }
 })
