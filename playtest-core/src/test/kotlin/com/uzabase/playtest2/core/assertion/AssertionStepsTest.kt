@@ -45,7 +45,7 @@ class AssertionStepsTest : FunSpec({
     data class FullName(val firstName: String, val lastName: String)
 
     fun makeProxy(fullName: FullName): AssertableAsString {
-        return object : AssertableAsString {
+        return object : AssertableProxy {
             override fun asString(): String {
                 return "${fullName.firstName} ${fullName.lastName}"
             }

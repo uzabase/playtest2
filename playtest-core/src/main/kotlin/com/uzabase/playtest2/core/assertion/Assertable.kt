@@ -1,10 +1,9 @@
 package com.uzabase.playtest2.core.assertion
 
-interface AssertableProxy {
+interface AssertableProxy: AssertableAsString {
     val self: Any
 }
 
-interface AssertableAsString: AssertableProxy {
+interface AssertableAsString {
     fun asString(): String
 }
-
