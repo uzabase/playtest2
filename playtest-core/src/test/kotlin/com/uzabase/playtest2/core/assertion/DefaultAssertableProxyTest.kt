@@ -35,24 +35,24 @@ class DefaultAssertableProxyTest : FunSpec({
 
     context("testing fromLong") {
         test("should return AssertableProxy when given Long") {
-            val actual = DefaultAssertableProxy.fromLong(200L)
+            val actual = fromLong(200L)
             actual!!.asLong() shouldBe 200L
         }
 
         test("should return null when given String") {
-            val actual = DefaultAssertableProxy.fromLong("Hello, world")
+            val actual = fromLong("Hello, world")
             actual shouldBe null
         }
     }
 
     context("testing fromString") {
         test("should return AssertableProxy when given String") {
-            val actual = DefaultAssertableProxy.fromString("Hello, world")
+            val actual = fromString("Hello, world")
             actual!!.asString() shouldBe "Hello, world"
         }
 
         test("should return null when given Long") {
-            val actual = DefaultAssertableProxy.fromString(200L)
+            val actual = fromString(200L)
             actual shouldBe null
         }
     }
