@@ -9,7 +9,6 @@ import com.uzabase.playtest2.http.internal.K
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.internal.EMPTY_REQUEST
 
 class RequestSteps {
 
@@ -92,7 +91,7 @@ class RequestSteps {
                     else -> rb.method(
                         method.name,
                         (ScenarioDataStore.get(K.JSON_BODY) as? String)
-                            ?.toRequestBody(ensureGet<String>(K.MEDIA_TYPE).toMediaType()) ?: EMPTY_REQUEST
+                            ?.toRequestBody(ensureGet<String>(K.MEDIA_TYPE).toMediaType()) ?: "".toRequestBody()
                     )
                 }
             }

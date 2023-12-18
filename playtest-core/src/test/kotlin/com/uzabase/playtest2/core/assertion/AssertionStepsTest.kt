@@ -1,11 +1,22 @@
 package com.uzabase.playtest2.core.assertion
 
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
+import com.uzabase.playtest2.core.assertion.DefaultAssertableProxy.Companion.defaults
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
 import io.kotest.matchers.shouldBe
+
+data class FullName(val firstName: String, val lastName: String)
+
+fun fromFullName(x: Any): AssertableProxy? =
+    (x as? FullName)?.let {
+        object : AssertableProxy {
+            override val self: Any = x
+            override fun asString(): String = "${x.firstName} ${x.lastName} :)"
+        }
+    }
 
 class AssertionStepsTest : FunSpec({
     val sut = AssertionSteps()
@@ -43,21 +54,12 @@ class AssertionStepsTest : FunSpec({
         }
     }
 
-
-    data class FullName(val firstName: String, val lastName: String) {
-        fun proxied(): AssertableAsString =
-            object : AssertableAsString {
-                override fun asString(): String {
-                    return "$firstName $lastName :)"
-                }
-            }
-    }
-
     context("Any value should assert as string value") {
         forAll(
-            row(FullName("John", "Doe").proxied(), "John Doe :)"),
-            row("Hello, world", "Hello, world")
-        ) { origin, expected ->
+            row(FullName("John", "Doe"), listOf(::fromFullName, *defaults.toTypedArray()), "John Doe :)"),
+            row("Hello, world", defaults, "Hello, world")
+        ) { origin, factories, expected ->
+            ScenarioDataStore.put("AssertableProxyFactories", factories)
             ScenarioDataStore.put("AssertionTarget", origin)
 
             sut.shouldBeStringValue(expected)
