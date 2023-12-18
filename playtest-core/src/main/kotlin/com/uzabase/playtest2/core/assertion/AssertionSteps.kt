@@ -19,7 +19,7 @@ class AssertionSteps {
         } ?: playtestException("Assertion target is not found")
 
     @Step("文字列の<value>である")
-    @SuppressWarnings("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST")
     fun shouldBeStringValue(value: String) =
         (ScenarioDataStore.get("AssertableProxyFactories") as? List<AssertableProxyFactory> ?: defaults)
             .let { factories: List<AssertableProxyFactory> ->
