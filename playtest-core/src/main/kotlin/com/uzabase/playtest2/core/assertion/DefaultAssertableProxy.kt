@@ -1,4 +1,5 @@
 package com.uzabase.playtest2.core.assertion
+
 fun fromLong(x: Any): AssertableProxy? =
     (x as? Long)?.let {
         object : AssertableProxy {
@@ -23,12 +24,10 @@ class DefaultAssertableProxy {
             ::fromString
         )
 
-        fun from(x: Any): AssertableProxy =
-            from(x, *defaults.toTypedArray())
-
-        fun from(x: Any, vararg factories: AssertableProxyFactory): AssertableProxy =
-            listOf(*factories).firstNotNullOfOrNull { it(x) }
+        fun proxy(x: Any, factories: List<AssertableProxyFactory> = defaults, body: (AssertableProxy) -> Unit) {
+            val assertable = factories.firstNotNullOfOrNull { it(x) }
                 ?: throw IllegalArgumentException("Cannot create AssertableProxy from $x")
-
+            body(assertable)
+        }
     }
 }

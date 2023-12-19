@@ -1,5 +1,6 @@
 package com.uzabase.playtest2.core.assertion
 
+import com.uzabase.playtest2.core.assertion.DefaultAssertableProxy.Companion.proxy
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
@@ -15,9 +16,10 @@ class DefaultAssertableProxyTest : FunSpec({
             row("Hello, world") { x: AssertableProxy -> x.asString() shouldBe "Hello, world"; null }
         ) { origin, testing ->
             test("should return AssertableProxy when given $origin") {
-                val actual = DefaultAssertableProxy.from(origin)
-                actual.shouldBeInstanceOf<AssertableProxy>()
-                testing(actual)
+                proxy(origin) { assertable ->
+                    assertable.shouldBeInstanceOf<AssertableProxy>()
+                    testing(assertable)
+                }
             }
         }
 
@@ -27,7 +29,7 @@ class DefaultAssertableProxyTest : FunSpec({
         ) { origin ->
             test("should return null when given $origin") {
                 shouldThrow<IllegalArgumentException> {
-                    DefaultAssertableProxy.from(origin)
+                    proxy(origin) { _ -> }
                 }.message.shouldBe("Cannot create AssertableProxy from $origin")
             }
         }

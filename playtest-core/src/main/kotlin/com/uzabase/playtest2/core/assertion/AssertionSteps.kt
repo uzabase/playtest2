@@ -3,6 +3,7 @@ package com.uzabase.playtest2.core.assertion
 import com.thoughtworks.gauge.Step
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.uzabase.playtest2.core.assertion.DefaultAssertableProxy.Companion.defaults
+import com.uzabase.playtest2.core.assertion.DefaultAssertableProxy.Companion.proxy
 
 
 internal fun test(message: String, assertExp: () -> Boolean) {
@@ -25,8 +26,10 @@ class AssertionSteps {
             .let { factories: List<AssertableProxyFactory> ->
                 ScenarioDataStore.items().find { it == "AssertionTarget" }?.let { key ->
                     ScenarioDataStore.get(key).let { t ->
-                        test("should be $value") {
-                            DefaultAssertableProxy.from(t, *factories.toTypedArray()).asString() == value
+                        proxy(t, factories) { assertable ->
+                            test("should be $value") {
+                                assertable.asString() == value
+                            }
                         }
                     }
                 } ?: playtestException("Assertion target is not found")
