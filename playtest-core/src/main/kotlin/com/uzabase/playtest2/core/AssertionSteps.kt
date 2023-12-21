@@ -1,9 +1,12 @@
-package com.uzabase.playtest2.core.assertion
+package com.uzabase.playtest2.core
 
 import com.thoughtworks.gauge.Step
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
-import com.uzabase.playtest2.core.assertion.DefaultAssertableProxy.Companion.defaults
-import com.uzabase.playtest2.core.assertion.DefaultAssertableProxy.Companion.proxy
+import com.uzabase.playtest2.core.DefaultAssertableProxy.Companion.defaults
+import com.uzabase.playtest2.core.DefaultAssertableProxy.Companion.proxy
+import com.uzabase.playtest2.core.assertion.AssertableProxyFactory
+import com.uzabase.playtest2.core.assertion.PlaytestException
+import com.uzabase.playtest2.core.assertion.playtestException
 
 
 internal fun test(message: String, assertExp: () -> Boolean) {
@@ -25,11 +28,9 @@ class AssertionSteps {
         (ScenarioDataStore.get("AssertableProxyFactories") as? List<AssertableProxyFactory> ?: defaults)
             .let { factories: List<AssertableProxyFactory> ->
                 ScenarioDataStore.items().find { it == "AssertionTarget" }?.let { key ->
-                    ScenarioDataStore.get(key).let { t ->
-                        proxy(t, factories) { assertable ->
-                            test("should be $value") {
-                                assertable.asString() == value
-                            }
+                    proxy(ScenarioDataStore.get(key), factories) { assertable ->
+                        test("should be $value") {
+                            assertable.asString() == value
                         }
                     }
                 } ?: playtestException("Assertion target is not found")

@@ -1,4 +1,7 @@
-package com.uzabase.playtest2.core.assertion
+package com.uzabase.playtest2.core
+
+import com.uzabase.playtest2.core.assertion.AssertableProxy
+import com.uzabase.playtest2.core.assertion.AssertableProxyFactory
 
 fun fromLong(x: Any): AssertableProxy? =
     (x as? Long)?.let {

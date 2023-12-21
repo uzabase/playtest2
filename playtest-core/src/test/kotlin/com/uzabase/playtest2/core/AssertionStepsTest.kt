@@ -1,7 +1,9 @@
-package com.uzabase.playtest2.core.assertion
+package com.uzabase.playtest2.core
 
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
-import com.uzabase.playtest2.core.assertion.DefaultAssertableProxy.Companion.defaults
+import com.uzabase.playtest2.core.DefaultAssertableProxy.Companion.defaults
+import com.uzabase.playtest2.core.assertion.AssertableProxy
+import com.uzabase.playtest2.core.assertion.PlaytestException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll

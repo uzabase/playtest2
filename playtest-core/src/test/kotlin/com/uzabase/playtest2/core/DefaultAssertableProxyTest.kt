@@ -1,6 +1,7 @@
-package com.uzabase.playtest2.core.assertion
+package com.uzabase.playtest2.core
 
-import com.uzabase.playtest2.core.assertion.DefaultAssertableProxy.Companion.proxy
+import com.uzabase.playtest2.core.DefaultAssertableProxy.Companion.proxy
+import com.uzabase.playtest2.core.assertion.AssertableProxy
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
