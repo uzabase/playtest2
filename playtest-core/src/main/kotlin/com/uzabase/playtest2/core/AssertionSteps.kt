@@ -13,25 +13,27 @@ internal fun test(message: String, assertExp: () -> Boolean) {
     if (!assertExp()) throw PlaytestException(message)
 }
 
+internal fun factories() =
+    (AnyStore.getAs<AssertableProxyFactories>(K.AssertableProxyFactories) ?: defaults)
+
 class AssertionSteps {
     @Step("整数値の<value>である")
     fun shouldBeLongValue(value: Long) =
-        ScenarioDataStore.items().find { it == "AssertionTarget" }?.let {
-            test("should be $value") {
-                (ScenarioDataStore.get("AssertionTarget") as Long) == value
+        ScenarioDataStore.get("AssertionTarget")?.let {
+            proxy(it, factories()) {
+                test("should be $value") {
+                    it.asLong() == value
+                }
             }
         } ?: playtestException("Assertion target is not found")
 
     @Step("文字列の<value>である")
     fun shouldBeStringValue(value: String) =
-        (AnyStore.getAs<AssertableProxyFactories>(K.AssertableProxyFactories) ?: defaults)
-            .let { factories ->
-                ScenarioDataStore.items().find { it == "AssertionTarget" }?.let { key ->
-                    proxy(ScenarioDataStore.get(key), factories) { assertable ->
-                        test("should be $value") {
-                            assertable.asString() == value
-                        }
-                    }
-                } ?: playtestException("Assertion target is not found")
+        ScenarioDataStore.get("AssertionTarget")?.let {
+            proxy(it, factories()) {
+                test("should be $value") {
+                    it.asString() == value
+                }
             }
+        } ?: playtestException("Assertion target is not found")
 }
