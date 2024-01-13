@@ -5,6 +5,11 @@ import com.thoughtworks.gauge.datastore.SpecDataStore
 import com.thoughtworks.gauge.datastore.SuiteDataStore
 import com.uzabase.playtest2.core.assertion.playtestException
 
+object AnyStore {
+    inline fun <reified T> getAs(key: Any): T? =
+        ScenarioDataStoreExt.getAs(key) ?: SpecDataStoreExt.getAs(key) ?: SuiteDataStoreExt.getAs(key)
+}
+
 object ScenarioDataStoreExt {
     inline fun <reified T> getAs(key: Any): T? =
         ScenarioDataStore.get(key)?.let { v ->

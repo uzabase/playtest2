@@ -24,7 +24,7 @@ class AssertionSteps {
 
     @Step("文字列の<value>である")
     fun shouldBeStringValue(value: String) =
-        (ScenarioDataStoreExt.getAs<AssertableProxyFactories>(K.AssertableProxyFactories) ?: defaults)
+        (AnyStore.getAs<AssertableProxyFactories>(K.AssertableProxyFactories) ?: defaults)
             .let { factories ->
                 ScenarioDataStore.items().find { it == "AssertionTarget" }?.let { key ->
                     proxy(ScenarioDataStore.get(key), factories) { assertable ->
