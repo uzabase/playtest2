@@ -4,7 +4,7 @@ import com.thoughtworks.gauge.Step
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.uzabase.playtest2.core.DefaultAssertableProxy.Companion.defaults
 import com.uzabase.playtest2.core.DefaultAssertableProxy.Companion.proxy
-import com.uzabase.playtest2.core.assertion.AssertableProxyFactory
+import com.uzabase.playtest2.core.assertion.AssertableProxyFactories
 import com.uzabase.playtest2.core.assertion.PlaytestException
 import com.uzabase.playtest2.core.assertion.playtestException
 
@@ -23,10 +23,9 @@ class AssertionSteps {
         } ?: playtestException("Assertion target is not found")
 
     @Step("文字列の<value>である")
-    @Suppress("UNCHECKED_CAST")
     fun shouldBeStringValue(value: String) =
-        (ScenarioDataStore.get("AssertableProxyFactories") as? List<AssertableProxyFactory> ?: defaults)
-            .let { factories: List<AssertableProxyFactory> ->
+        (ScenarioDataStoreExt.getAs<AssertableProxyFactories>(K.AssertableProxyFactories) ?: defaults)
+            .let { factories ->
                 ScenarioDataStore.items().find { it == "AssertionTarget" }?.let { key ->
                     proxy(ScenarioDataStore.get(key), factories) { assertable ->
                         test("should be $value") {

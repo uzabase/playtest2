@@ -61,7 +61,7 @@ class AssertionStepsTest : FunSpec({
             row(FullName("John", "Doe"), listOf(::fromFullName, *defaults.toTypedArray()), "John Doe :)"),
             row("Hello, world", defaults, "Hello, world")
         ) { origin, factories, expected ->
-            ScenarioDataStore.put("AssertableProxyFactories", factories)
+            ScenarioDataStore.put(K.AssertableProxyFactories, factories)
             ScenarioDataStore.put("AssertionTarget", origin)
 
             sut.shouldBeStringValue(expected)

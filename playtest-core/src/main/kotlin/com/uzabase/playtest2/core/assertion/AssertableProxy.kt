@@ -7,3 +7,4 @@ interface AssertableProxy :
 }
 
 typealias AssertableProxyFactory = (Any) -> AssertableProxy?
+typealias AssertableProxyFactories = List<AssertableProxyFactory>
