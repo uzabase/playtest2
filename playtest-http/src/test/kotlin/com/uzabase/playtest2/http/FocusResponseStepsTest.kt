@@ -11,9 +11,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.ResponseBody
 import java.net.URI
-import com.uzabase.playtest2.http.ResponseSteps as Sut
+import com.uzabase.playtest2.http.FocusResponseSteps as Sut
 
-class ResponseStepsTest : FunSpec({
+class FocusResponseStepsTest : FunSpec({
     val sut = Sut()
     val server = WireMockServer(8080)
     val client = OkHttpClient.Builder().build()
