@@ -1,12 +1,15 @@
 # Hello, world
 
-## Simple Request and Response
-* パス"/ping"に
-* メソッド"GET"で
-* リクエストを送る
+* GETメソッドでパス"/ping"にリクエストを送る
 
+## Assert response status code
+* レスポンスのステータスコードが
+* 整数値の"200"である
+
+## Assert response headers
+* レスポンスのヘッダーが
+
+## Assert wiremock
 * API"InnerAPI"のパス"/ping"に
 * ("InnerAPI"に)GETリクエストされた
 
-* レスポンスのステータスコードが
-* 整数値の"200"である
