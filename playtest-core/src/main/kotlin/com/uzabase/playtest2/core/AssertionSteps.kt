@@ -8,19 +8,18 @@ import com.uzabase.playtest2.core.assertion.AssertableProxyFactories
 import com.uzabase.playtest2.core.assertion.PlaytestException
 import com.uzabase.playtest2.core.assertion.playtestException
 
-
 internal fun test(message: String, assertExp: () -> Boolean) {
     if (!assertExp()) throw PlaytestException(message)
 }
 
-internal fun factories() =
-    (AnyStore.getAs<AssertableProxyFactories>(K.AssertableProxyFactories) ?: defaults)
-
 class AssertionSteps {
+    private val factories
+        get() = (AnyStore.getAs<AssertableProxyFactories>(K.AssertableProxyFactories) ?: defaults)
+
     @Step("整数値の<value>である")
     fun shouldBeLongValue(value: Long) =
         ScenarioDataStore.get(K.AssertionTarget)?.let {
-            proxy(it, factories()) {
+            proxy(it, factories) {
                 test("should be $value") {
                     it.asLong() == value
                 }
@@ -30,7 +29,7 @@ class AssertionSteps {
     @Step("文字列の<value>である")
     fun shouldBeStringValue(value: String) =
         ScenarioDataStore.get(K.AssertionTarget)?.let {
-            proxy(it, factories()) {
+            proxy(it, factories) {
                 test("should be $value") {
                     it.asString() == value
                 }

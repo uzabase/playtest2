@@ -1,9 +1,9 @@
 package com.uzabase.playtest2.core.assertion
 
-interface AssertableAsString {
-    fun asString(): String = this.toString()
+interface AsLong {
+    fun asLong(): Long
 }
 
-interface AssertableAsLong {
-    fun asLong(): Long = this.toString().toLong()
+interface AsString {
+    fun asString(): String
 }

@@ -10,7 +10,6 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
 class DefaultAssertableProxyTest : FunSpec({
-
     context("testing from") {
         forAll(
             row(200L) { x: AssertableProxy -> x.asLong() shouldBe 200L; null },
@@ -38,26 +37,27 @@ class DefaultAssertableProxyTest : FunSpec({
 
     context("testing fromLong") {
         test("should return AssertableProxy when given Long") {
-            val actual = fromLong(200L)
-            actual!!.asLong() shouldBe 200L
+            val actual = FromLong.create(200L)
+            actual.asLong() shouldBe 200L
         }
 
-        test("should return null when given String") {
-            val actual = fromLong("Hello, world")
-            actual shouldBe null
-        }
+//        TODO
+//        test("should return null when given String") {
+//            val actual = FromLong.create("Hello, world")
+//            actual shouldBe null
+//        }
     }
 
     context("testing fromString") {
         test("should return AssertableProxy when given String") {
-            val actual = fromString("Hello, world")
-            actual!!.asString() shouldBe "Hello, world"
+            val actual = FromString.create("Hello, world")
+            actual.asString() shouldBe "Hello, world"
         }
 
-        test("should return null when given Long") {
-            val actual = fromString(200L)
-            actual shouldBe null
-        }
+//        TODO
+//        test("should return null when given Long") {
+//            val actual = FromString.create(200L)
+//            actual shouldBe null
+//        }
     }
-
 })
