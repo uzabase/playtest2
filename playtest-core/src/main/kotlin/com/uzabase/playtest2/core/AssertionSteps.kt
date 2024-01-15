@@ -2,8 +2,8 @@ package com.uzabase.playtest2.core
 
 import com.thoughtworks.gauge.Step
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
-import com.uzabase.playtest2.core.DefaultAssertableProxy.Companion.defaults
-import com.uzabase.playtest2.core.DefaultAssertableProxy.Companion.proxy
+import com.uzabase.playtest2.core.assertion.DefaultAssertableProxy.Companion.defaults
+import com.uzabase.playtest2.core.assertion.DefaultAssertableProxy.Companion.proxy
 import com.uzabase.playtest2.core.assertion.AssertableProxyFactories
 import com.uzabase.playtest2.core.assertion.PlaytestException
 import com.uzabase.playtest2.core.assertion.playtestException
