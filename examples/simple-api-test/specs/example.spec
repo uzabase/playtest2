@@ -7,9 +7,10 @@
 * 整数値の"200"である
 
 ## Assert response headers
-* レスポンスのヘッダーが
+* レスポンスのヘッダーの
+* キー"Content-Length"に対応する値が
+* 文字列の"4"である
 
 ## Assert wiremock
 * API"InnerAPI"のパス"/ping"に
 * ("InnerAPI"に)GETリクエストされた
-
