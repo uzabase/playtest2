@@ -11,6 +11,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.ResponseBody
 import java.net.URI
+import com.uzabase.playtest2.core.K as coreK
 import com.uzabase.playtest2.http.FocusResponseSteps as Sut
 
 class FocusResponseStepsTest : FunSpec({
@@ -37,7 +38,7 @@ class FocusResponseStepsTest : FunSpec({
                 .let { ScenarioDataStore.put(K.RESPONSE, it) }
             sut.statusCode()
 
-            ScenarioDataStore.get("AssertionTarget").shouldBe(200L)
+            ScenarioDataStore.get(coreK.AssertionTarget).shouldBe(200L)
         }
     }
 
@@ -47,7 +48,7 @@ class FocusResponseStepsTest : FunSpec({
                 .let { ScenarioDataStore.put(K.RESPONSE, it) }
             sut.body()
 
-            ScenarioDataStore.get("AssertionTarget").shouldBeInstanceOf<ResponseBody>()
+            ScenarioDataStore.get(coreK.AssertionTarget).shouldBeInstanceOf<ResponseBody>()
         }
     }
 
@@ -57,7 +58,7 @@ class FocusResponseStepsTest : FunSpec({
                 .let { ScenarioDataStore.put(K.RESPONSE, it) }
             sut.headers()
 
-            ScenarioDataStore.get("AssertionTarget").shouldBeInstanceOf<Headers>()
+            ScenarioDataStore.get(coreK.AssertionTarget).shouldBeInstanceOf<Headers>()
         }
     }
 })

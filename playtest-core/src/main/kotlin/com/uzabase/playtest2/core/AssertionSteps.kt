@@ -19,7 +19,7 @@ internal fun factories() =
 class AssertionSteps {
     @Step("整数値の<value>である")
     fun shouldBeLongValue(value: Long) =
-        ScenarioDataStore.get("AssertionTarget")?.let {
+        ScenarioDataStore.get(K.AssertionTarget)?.let {
             proxy(it, factories()) {
                 test("should be $value") {
                     it.asLong() == value
@@ -29,7 +29,7 @@ class AssertionSteps {
 
     @Step("文字列の<value>である")
     fun shouldBeStringValue(value: String) =
-        ScenarioDataStore.get("AssertionTarget")?.let {
+        ScenarioDataStore.get(K.AssertionTarget)?.let {
             proxy(it, factories()) {
                 test("should be $value") {
                     it.asString() == value

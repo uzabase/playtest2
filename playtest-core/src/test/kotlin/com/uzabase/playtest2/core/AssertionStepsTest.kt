@@ -29,12 +29,12 @@ class AssertionStepsTest : FunSpec({
     context("Assertions") {
         context("happy path") {
             test("long value") {
-                ScenarioDataStore.put("AssertionTarget", 200L)
+                ScenarioDataStore.put(K.AssertionTarget, 200L)
                 sut.shouldBeLongValue(200L)
             }
 
             test("string value") {
-                ScenarioDataStore.put("AssertionTarget", "Hello, world")
+                ScenarioDataStore.put(K.AssertionTarget, "Hello, world")
                 sut.shouldBeStringValue("Hello, world")
             }
         }
@@ -62,7 +62,7 @@ class AssertionStepsTest : FunSpec({
             row("Hello, world", defaults, "Hello, world")
         ) { origin, factories, expected ->
             ScenarioDataStore.put(K.AssertableProxyFactories, factories)
-            ScenarioDataStore.put("AssertionTarget", origin)
+            ScenarioDataStore.put(K.AssertionTarget, origin)
 
             sut.shouldBeStringValue(expected)
         }
