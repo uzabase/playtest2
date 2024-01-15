@@ -2,6 +2,7 @@ package com.uzabase.playtest2.core
 
 import com.uzabase.playtest2.core.DefaultAssertableProxy.Companion.proxy
 import com.uzabase.playtest2.core.assertion.AssertableProxy
+import com.uzabase.playtest2.core.assertion.PlaytestException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
@@ -41,11 +42,11 @@ class DefaultAssertableProxyTest : FunSpec({
             actual.asLong() shouldBe 200L
         }
 
-//        TODO
-//        test("should return null when given String") {
-//            val actual = FromLong.create("Hello, world")
-//            actual shouldBe null
-//        }
+        test("should throw PlaytestException when given String") {
+            shouldThrow<PlaytestException> {
+                FromLong.create("Hello, world")
+            }.message shouldBe "Cannot create AssertableProxy from `Hello, world`"
+        }
     }
 
     context("testing fromString") {
@@ -54,10 +55,10 @@ class DefaultAssertableProxyTest : FunSpec({
             actual.asString() shouldBe "Hello, world"
         }
 
-//        TODO
-//        test("should return null when given Long") {
-//            val actual = FromString.create(200L)
-//            actual shouldBe null
-//        }
+        test("should throw PlaytestException when given Long") {
+            shouldThrow<PlaytestException> {
+                FromString.create(200L)
+            }.message shouldBe "Cannot create AssertableProxy from `200`"
+        }
     }
 })
