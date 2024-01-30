@@ -35,4 +35,14 @@ class AssertionSteps {
                 }
             }
         } ?: playtestException("Assertion target is not found")
+
+    @Step("文字列の<value>を含んでいる")
+    fun shouldBeContainsStringValue(value: String) =
+        ScenarioDataStore.get(K.AssertionTarget)?.let {
+            proxy(it, factories) {
+                test("should contains $value") {
+                    it.asString().contains(value)
+                }
+            }
+        } ?: playtestException("Assertion target is not found")
 }

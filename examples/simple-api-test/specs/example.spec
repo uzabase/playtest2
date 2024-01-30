@@ -11,6 +11,10 @@
 * キー"Content-Length"に対応する値が
 * 文字列の"4"である
 
+## Assert response headers contains some value
+* レスポンスのヘッダーの
+* 文字列の"Content-Length: 4"を含んでいる
+
 ## Assert wiremock
 * API"InnerAPI"のパス"/ping"に
 * ("InnerAPI"に)GETリクエストされた

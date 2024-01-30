@@ -64,4 +64,18 @@ class AssertionStepsTest : FunSpec({
             sut.shouldBeStringValue(expected)
         }
     }
+
+    context("contains") {
+        test("should contains") {
+            ScenarioDataStore.put(K.AssertionTarget, "Hello, world")
+            sut.shouldBeContainsStringValue("world")
+        }
+
+        test("should not contains") {
+            ScenarioDataStore.put(K.AssertionTarget, "Hello, world")
+            shouldThrow<PlaytestException> {
+                sut.shouldBeContainsStringValue("John")
+            }.message.shouldBe("should contains John")
+        }
+    }
 })
