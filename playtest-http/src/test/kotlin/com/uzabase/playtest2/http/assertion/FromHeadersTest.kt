@@ -23,8 +23,8 @@ class FromHeadersTest : FunSpec({
                     "Content-Length", "100"
                 ),
                 """
-                    Content-Type: application/json
                     Content-Length: 100
+                    Content-Type: application/json
                     """.trimIndent()
             )
         ) { headers, expected ->

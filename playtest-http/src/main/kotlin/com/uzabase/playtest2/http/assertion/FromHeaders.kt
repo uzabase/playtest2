@@ -6,6 +6,6 @@ import okhttp3.Headers
 
 val FromHeaders = makeAssertableProxyFactory<Headers>(Proxies(
     asString = {
-        it.joinToString("\n") { (k, v) -> "$k: $v" }
+        it.sortedBy { (k, _) -> k }.joinToString("\n") { (k, v) -> "$k: $v" }
     }
 ))
