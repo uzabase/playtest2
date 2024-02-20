@@ -2,6 +2,7 @@ package com.example.demoapp
 
 import io.undertow.Handlers
 import io.undertow.Undertow
+import io.undertow.util.HttpString
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
@@ -11,7 +12,12 @@ class App {
             .addHttpListener(8080, "localhost")
             .setHandler(Handlers.path().addExactPath("/ping") { exchange ->
                 client.newCall(Request.Builder().url("http://localhost:3000/ping").build()).execute()
-                exchange.responseSender.send("pong")
+                exchange.responseHeaders.put(HttpString.tryFromString("Content-Type"), "application/json")
+                exchange.responseSender.send("""
+                    {
+                        "message": "pong"
+                    }
+                """.trimIndent())
             })
             .build()
         private val client = OkHttpClient().newBuilder().build()

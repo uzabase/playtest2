@@ -11,6 +11,7 @@ class ZoomResponseSteps {
             .let { it as okhttp3.Headers } // TODO: not only for Headers
             .let { it[key] }
             ?.let { ScenarioDataStore.put(K.AssertionTarget, it) }
+            // when the key is not found, should remove the previous value
             ?: ScenarioDataStore.remove(K.AssertionTarget)
 
 }

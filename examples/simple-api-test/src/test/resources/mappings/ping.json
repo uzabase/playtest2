@@ -8,6 +8,7 @@
     "headers": {
       "Content-Type": "text/plain"
     },
-    "body": "pong"
-  }
+    "jsonBody": {
+        "message": "pong"
+    }}
 }
