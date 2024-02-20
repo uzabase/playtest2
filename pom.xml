@@ -33,8 +33,8 @@
         <!-- Library versions -->
         <gauge.version>[0.10.0,)</gauge.version>
         <kotest.version>[5.8.0,)</kotest.version>
-        <okhttp.version>[4.11,)</okhttp.version>
-        <wiremock.version>[3.3,)</wiremock.version>
+        <okhttp.version>[4.12,)</okhttp.version>
+        <wiremock.version>[3.4,)</wiremock.version>
     </properties>
 
     <dependencyManagement>
