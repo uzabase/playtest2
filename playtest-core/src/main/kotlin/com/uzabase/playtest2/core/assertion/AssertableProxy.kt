@@ -2,7 +2,7 @@ package com.uzabase.playtest2.core.assertion
 
 import java.lang.reflect.Proxy
 
-interface AssertableProxy: AsLong, AsString
+interface AssertableProxy : AsLong, AsString
 
 interface AssertableProxyFactory {
     fun canProxy(x: Any): Boolean
