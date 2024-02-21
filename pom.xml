@@ -38,6 +38,7 @@
         <module>playtest-http</module>
         <module>playtest-wiremock</module>
         <module>playtest-core</module>
+        <module>playtest-json</module>
     </modules>
 
     <properties>
@@ -102,7 +103,6 @@
         <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
         <pluginManagement>
             <plugins>
-
                 <!-- Versioning -->
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>

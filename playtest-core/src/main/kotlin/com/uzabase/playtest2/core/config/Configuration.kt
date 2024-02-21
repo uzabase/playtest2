@@ -25,7 +25,6 @@ operator fun List<ConfigurationEntry>.plus(other: ConfigurationEntry): List<Conf
 class Configuration private constructor() {
     companion object {
         private val configs: ConcurrentHashMap<ModuleKey, ModuleConfiguration> = ConcurrentHashMap()
-
         @JvmStatic
         fun playtest2(init: () -> List<ConfigurationEntry>) {
             configs.clear()

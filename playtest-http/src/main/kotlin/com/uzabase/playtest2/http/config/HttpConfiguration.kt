@@ -5,7 +5,6 @@ import com.uzabase.playtest2.core.config.ConfigurationEntry
 import com.uzabase.playtest2.core.config.ModuleConfiguration
 import com.uzabase.playtest2.core.config.ModuleKey
 import com.uzabase.playtest2.http.assertion.FromHeaders
-import com.uzabase.playtest2.http.assertion.FromJson
 import java.net.URL
 
 internal object HttpModuleKey : ModuleKey
@@ -13,7 +12,7 @@ internal data class HttpModuleConfiguration(val endpoint: URL) : ModuleConfigura
 
 fun http(
     endpoint: URL,
-    assertableProxies: List<AssertableProxyFactory> = listOf(FromHeaders, FromJson)
+    assertableProxies: List<AssertableProxyFactory> = listOf(FromHeaders)
 ): ConfigurationEntry =
     ConfigurationEntry(
         HttpModuleKey,
