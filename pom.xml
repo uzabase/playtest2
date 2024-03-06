@@ -4,17 +4,33 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.uzabase.playtest2</groupId>
     <artifactId>playtest2</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
 
     <name>Playtest2</name>
     <description>Next generation of Playtest</description>
     <url>https://github.com/uzabase/playtest2</url>
+
     <licenses>
         <license>
             <name>MIT License</name>
             <url>https://opensource.org/licenses/mit-license.php</url>
         </license>
     </licenses>
+
+    <developers>
+        <developer>
+            <name>Product Team</name>
+            <email>sa-product-team@uzabase.com</email>
+            <organization>Uzabase, Inc.</organization>
+            <organizationUrl>https://www.uzabase.com/jp/</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/uzabase/playtest2.git</connection>
+        <developerConnection>scm:git:ssh://github.com:uzabase/playtest2.git</developerConnection>
+        <url>https://github.com/uzabase/playtest2/tree/main</url>
+    </scm>
 
     <packaging>pom</packaging>
 
@@ -197,7 +213,7 @@
                 <plugin>
                     <groupId>org.sonatype.central</groupId>
                     <artifactId>central-publishing-maven-plugin</artifactId>
-                    <version>0.3.1</version>
+                    <version>0.4.0</version>
                     <extensions>true</extensions>
                     <configuration>
                         <publishingServerId>central</publishingServerId>
@@ -246,7 +262,6 @@
                             <goal>compile</goal>
                         </goals>
                     </execution>
-
                     <execution>
                         <id>test-compile</id>
                         <goals>

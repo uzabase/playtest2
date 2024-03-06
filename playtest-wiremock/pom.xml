@@ -5,11 +5,11 @@
     <parent>
         <artifactId>playtest2</artifactId>
         <groupId>com.uzabase.playtest2</groupId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.1</version>
     </parent>
 
     <artifactId>playtest-wiremock</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
 
     <name>Playtest WireMock</name>
 
