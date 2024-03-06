@@ -19,7 +19,7 @@
 
     <developers>
         <developer>
-            <name>Product Team</name>
+            <name>Playtest Team</name>
             <email>sa-product-team@uzabase.com</email>
             <organization>Uzabase, Inc.</organization>
             <organizationUrl>https://www.uzabase.com/jp/</organizationUrl>
@@ -269,6 +269,16 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- Maven Central publishing -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
