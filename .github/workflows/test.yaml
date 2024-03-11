@@ -30,6 +30,6 @@ jobs:
       - name: Run tests
         run: |
           export JAVA_HOME=$(sdk home java 21.0.1-tem)
-          mvn clean install
+          mvn clean install -Dgpg.skip
           cd examples/simple-api-test
           mvn test
