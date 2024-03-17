@@ -152,7 +152,7 @@
                     <version>3.1.1</version>
                 </plugin>
 
-                <!-- Plugins for Publish -->
+                <!-- Plugins for Publish to Maven Central -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
