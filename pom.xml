@@ -4,17 +4,33 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.uzabase.playtest2</groupId>
     <artifactId>playtest2</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
 
     <name>Playtest2</name>
     <description>Next generation of Playtest</description>
     <url>https://github.com/uzabase/playtest2</url>
+
     <licenses>
         <license>
             <name>MIT License</name>
             <url>https://opensource.org/licenses/mit-license.php</url>
         </license>
     </licenses>
+
+    <developers>
+        <developer>
+            <name>Playtest Team</name>
+            <email>sa-product-team@uzabase.com</email>
+            <organization>Uzabase, Inc.</organization>
+            <organizationUrl>https://www.uzabase.com/jp/</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/uzabase/playtest2.git</connection>
+        <developerConnection>scm:git:ssh://github.com:uzabase/playtest2.git</developerConnection>
+        <url>https://github.com/uzabase/playtest2/tree/main</url>
+    </scm>
 
     <packaging>pom</packaging>
 
@@ -135,6 +151,77 @@
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>3.1.1</version>
                 </plugin>
+
+                <!-- Plugins for Publish to Maven Central -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.3.0</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <phase>prepare-package</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.jetbrains.dokka</groupId>
+                    <artifactId>dokka-maven-plugin</artifactId>
+                    <version>1.9.10</version>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <phase>prepare-package</phase>
+                            <goals>
+                                <goal>dokka</goal>
+                                <goal>javadoc</goal>
+                                <goal>javadocJar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <dokkaPlugins>
+                            <plugin>
+                                <groupId>org.jetbrains.dokka</groupId>
+                                <artifactId>kotlin-as-java-plugin</artifactId>
+                                <version>1.9.10</version>
+                            </plugin>
+                        </dokkaPlugins>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>3.1.0</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <gpgArguments>
+                            <arg>--pinentry-mode</arg>
+                            <arg>loopback</arg>
+                        </gpgArguments>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>0.4.0</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <publishingServerId>central</publishingServerId>
+                        <tokenAuth>true</tokenAuth>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -159,7 +246,6 @@
                 </executions>
             </plugin>
 
-
             <!-- Compile Kotlin sources -->
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
@@ -178,7 +264,6 @@
                             <goal>compile</goal>
                         </goals>
                     </execution>
-
                     <execution>
                         <id>test-compile</id>
                         <goals>
@@ -186,6 +271,16 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- Maven Central publishing -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

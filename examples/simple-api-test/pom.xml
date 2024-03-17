@@ -62,17 +62,17 @@
         <dependency>
             <groupId>com.uzabase.playtest2</groupId>
             <artifactId>playtest-wiremock</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.uzabase.playtest2</groupId>
             <artifactId>playtest-http</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.uzabase.playtest2</groupId>
             <artifactId>playtest-core</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
     </dependencies>
 
