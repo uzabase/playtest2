@@ -8,6 +8,9 @@ import okhttp3.Request
 
 class App {
     companion object {
+
+        private val client = OkHttpClient().newBuilder().build()
+
         private val server: Undertow = Undertow.builder()
             .addHttpListener(8080, "localhost")
             .setHandler(Handlers.path().addExactPath("/ping") { exchange ->
@@ -18,9 +21,19 @@ class App {
                         "message": "pong"
                     }
                 """.trimIndent())
+            }.addExactPath("/values") { exchange ->
+                exchange.responseHeaders.put(HttpString.tryFromString("Content-Type"), "application/json")
+                exchange.responseSender.send("""
+                    {
+                        "boolValue": {
+                            "trueValue": true,
+                            "falseValue": false
+                        }
+                    }
+                """.trimIndent())
             })
             .build()
-        private val client = OkHttpClient().newBuilder().build()
+
         fun startServer() {
             server.start()
         }
@@ -34,4 +47,8 @@ class App {
             startServer()
         }
     }
+}
+
+fun main() {
+    App.startServer()
 }

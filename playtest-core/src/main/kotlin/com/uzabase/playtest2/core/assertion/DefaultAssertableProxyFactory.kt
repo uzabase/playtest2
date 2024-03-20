@@ -9,3 +9,5 @@ val FromLong = makeAssertableProxyFactory<Long>(Proxies(
     asString = { it.toString() },
     asLong = { it }
 ))
+
+val NonProxy = makeAssertableProxyFactory<Any>(Proxies(), ProxyPriority.LOW)

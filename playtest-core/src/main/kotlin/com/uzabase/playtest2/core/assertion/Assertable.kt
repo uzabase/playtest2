@@ -7,3 +7,7 @@ interface AsLong {
 interface AsString {
     fun asString(): String
 }
+
+interface AsRaw {
+    fun asRaw(): Any
+}
