@@ -11,5 +11,8 @@ val FromJson = makeAssertableProxyFactory<JsonContainer>(Proxies(
     },
     asLong = {
         JsonPath.read(it.json, it.path)
+    },
+    asRaw = {
+        JsonPath.read(it.json, it.path)
     }
 ))

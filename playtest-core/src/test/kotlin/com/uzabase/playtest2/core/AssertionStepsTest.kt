@@ -113,7 +113,7 @@ class AssertionStepsTest : FunSpec({
         test( "should be boolean") {
             ScenarioDataStore.put(K.AssertionTarget, "true")
             shouldThrow<PlaytestException> { sut.shouldBeBoolean() }
-                .message.shouldBe("should be Boolean")
+                .message.shouldBe("should be Boolean. but was java.lang.String")
         }
 
         test("should be true") {
