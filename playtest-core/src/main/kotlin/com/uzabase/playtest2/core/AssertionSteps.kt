@@ -45,4 +45,28 @@ class AssertionSteps {
                 }
             }
         } ?: playtestException("Assertion target is not found")
+
+    @Step("真偽値である")
+    fun shouldBeBoolean() {
+        ScenarioDataStore.get(K.AssertionTarget)
+            ?.let { target -> proxy(target, factories)
+                { test("should be Boolean. but was ${it.asRaw().javaClass.name}") { it.asRaw() is Boolean } } }
+            ?: playtestException("Assertion target is not found")
+    }
+
+    @Step("真である")
+    fun shouldBeTrue() {
+        ScenarioDataStore.get(K.AssertionTarget)
+            ?.let { target -> proxy(target, factories)
+                { test("should be strict true") { it.asRaw() == true } } }
+            ?: playtestException("Assertion target is not found")
+    }
+
+    @Step("偽である")
+    fun shouldBeFalse() {
+        ScenarioDataStore.get(K.AssertionTarget)
+            ?.let { target -> proxy(target, factories)
+                { test("should be strict false") { it.asRaw() == false } } }
+            ?: playtestException("Assertion target is not found")
+    }
 }
