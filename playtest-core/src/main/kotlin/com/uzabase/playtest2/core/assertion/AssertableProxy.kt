@@ -19,28 +19,43 @@ data class Proxies<T>(
     val asRaw: (T) -> Any = { it as Any }
 )
 
-enum class ProxyPriority(val value: Int) {
-    HIGH(1), MEDIUM(0), LOW(-1)
-}
+sealed interface ProxyPriority : Comparable<ProxyPriority> {
+    data object HIGH : ProxyPriority
+    data object MEDIUM : ProxyPriority
+    data object LOW : ProxyPriority
 
-inline fun <reified T> makeAssertableProxyFactory(ps: Proxies<T>, priority: ProxyPriority = ProxyPriority.MEDIUM) = object : AssertableProxyFactory {
-    override fun canProxy(x: Any): Boolean = x is T
-    override fun create(x: Any): AssertableProxy =
-        if (x !is T) {
-            throw PlaytestException("Cannot create AssertableProxy from `$x`")
-        } else {
-            Proxy.newProxyInstance(
-                AssertableProxy::class.java.classLoader,
-                arrayOf(AssertableProxy::class.java)
-            ) { _, method, _ ->
-                when (method.name) {
-                    "asString" -> ps.asString(x as T)
-                    "asLong" -> ps.asLong(x as T)
-                    "asRaw" -> ps.asRaw(x)
-                    else -> throw IllegalArgumentException("Cannot proxy $method")
-                }
-            } as AssertableProxy
+    override fun compareTo(other: ProxyPriority): Int =
+        when (this) {
+            HIGH -> 1
+            MEDIUM -> when (other) {
+                HIGH -> -1
+                MEDIUM -> 0
+                LOW -> 1
+            }
+
+            LOW -> -1
         }
-
-    override fun priority() = priority
 }
+
+inline fun <reified T> makeAssertableProxyFactory(ps: Proxies<T>, priority: ProxyPriority = ProxyPriority.MEDIUM) =
+    object : AssertableProxyFactory {
+        override fun canProxy(x: Any): Boolean = x is T
+        override fun create(x: Any): AssertableProxy =
+            if (x !is T) {
+                throw PlaytestException("Cannot create AssertableProxy from `$x`")
+            } else {
+                Proxy.newProxyInstance(
+                    AssertableProxy::class.java.classLoader,
+                    arrayOf(AssertableProxy::class.java)
+                ) { _, method, _ ->
+                    when (method.name) {
+                        "asString" -> ps.asString(x as T)
+                        "asLong" -> ps.asLong(x as T)
+                        "asRaw" -> ps.asRaw(x)
+                        else -> throw IllegalArgumentException("Cannot proxy $method")
+                    }
+                } as AssertableProxy
+            }
+
+        override fun priority() = priority
+    }
