@@ -28,7 +28,7 @@ class FromHeadersTest : FunSpec({
                     """.trimIndent()
             )
         ) { headers, expected ->
-            test("FromHeaders should convert Headers to String") {
+            test("FromHeaders should convert Headers to String -- for $headers") {
                 FromHeaders.create(headers).asString() shouldBe expected
             }
         }
