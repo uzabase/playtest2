@@ -2,11 +2,9 @@ package com.uzabase.playtest2.core.assertion
 
 import java.lang.reflect.Proxy
 
-interface AssertableProxy : AsLong, AsString, AsRaw
-
 interface AssertableProxyFactory {
     fun canProxy(x: Any): Boolean
-    fun create(x: Any): AssertableProxy
+    fun create(x: Any): Assertable
 
     fun priority(): ProxyPriority
 }
@@ -40,13 +38,13 @@ sealed interface ProxyPriority : Comparable<ProxyPriority> {
 inline fun <reified T> makeAssertableProxyFactory(ps: Proxies<T>, priority: ProxyPriority = ProxyPriority.MEDIUM) =
     object : AssertableProxyFactory {
         override fun canProxy(x: Any): Boolean = x is T
-        override fun create(x: Any): AssertableProxy =
+        override fun create(x: Any): Assertable =
             if (x !is T) {
                 throw PlaytestException("Cannot create AssertableProxy from `$x`")
             } else {
                 Proxy.newProxyInstance(
-                    AssertableProxy::class.java.classLoader,
-                    arrayOf(AssertableProxy::class.java)
+                    Assertable::class.java.classLoader,
+                    arrayOf(Assertable::class.java)
                 ) { _, method, _ ->
                     when (method.name) {
                         "asString" -> ps.asString(x as T)
@@ -54,7 +52,7 @@ inline fun <reified T> makeAssertableProxyFactory(ps: Proxies<T>, priority: Prox
                         "asRaw" -> ps.asRaw(x)
                         else -> throw IllegalArgumentException("Cannot proxy $method")
                     }
-                } as AssertableProxy
+                } as Assertable
             }
 
         override fun priority() = priority

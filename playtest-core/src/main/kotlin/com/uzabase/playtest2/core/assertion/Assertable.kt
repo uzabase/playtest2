@@ -8,6 +8,12 @@ interface AsString {
     fun asString(): String
 }
 
+interface AsBoolean {
+    fun asBoolean(): Boolean
+}
+
 interface AsRaw {
     fun asRaw(): Any
 }
+
+interface Assertable : AsLong, AsString, AsRaw

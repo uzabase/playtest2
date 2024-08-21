@@ -2,8 +2,6 @@ package com.uzabase.playtest2.core.assertion
 
 import com.uzabase.playtest2.core.assertion.DefaultAssertableProxy.Companion.proxy
 import io.kotest.assertions.throwables.shouldThrow
-import io.kotest.core.annotation.Ignored
-import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
@@ -13,13 +11,13 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 class DefaultAssertableProxyTest : FunSpec({
     context("testing from") {
         forAll(
-            row(200L) { x: AssertableProxy -> x.asLong() shouldBe 200L; null },
-            row("Hello, world") { x: AssertableProxy -> x.asString() shouldBe "Hello, world"; null },
-            row(true) { x: AssertableProxy -> x.asRaw() shouldBe true; null }
+            row(200L) { x: Assertable -> x.asLong() shouldBe 200L; null },
+            row("Hello, world") { x: Assertable -> x.asString() shouldBe "Hello, world"; null },
+            row(true) { x: Assertable -> x.asRaw() shouldBe true; null }
         ) { origin, testing ->
             test("should return AssertableProxy when given $origin") {
                 proxy(origin) { assertable ->
-                    assertable.shouldBeInstanceOf<AssertableProxy>()
+                    assertable.shouldBeInstanceOf<Assertable>()
                     testing(assertable)
                 }
             }

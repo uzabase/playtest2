@@ -8,7 +8,7 @@ class DefaultAssertableProxy {
             NonProxy
         )
 
-        fun proxy(x: Any, factories: List<AssertableProxyFactory> = defaults, body: (AssertableProxy) -> Unit) {
+        fun proxy(x: Any, factories: List<AssertableProxyFactory> = defaults, body: (Assertable) -> Unit) {
             val assertable =
                 factories.sortedByDescending(AssertableProxyFactory::priority).firstOrNull { it.canProxy(x) }?.create(x)
                     ?: throw IllegalArgumentException("Cannot create AssertableProxy from $x")
