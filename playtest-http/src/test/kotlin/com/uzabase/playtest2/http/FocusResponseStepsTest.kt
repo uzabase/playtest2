@@ -2,6 +2,7 @@ package com.uzabase.playtest2.http
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
+import com.uzabase.playtest2.core.assertion.Assertable
 import com.uzabase.playtest2.http.internal.K
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -38,7 +39,9 @@ class FocusResponseStepsTest : FunSpec({
                 .let { ScenarioDataStore.put(K.RESPONSE, it) }
             sut.statusCode()
 
-            ScenarioDataStore.get(coreK.AssertionTarget).shouldBe(200L)
+            ScenarioDataStore.get(coreK.AssertionTarget)
+                .let { it as Assertable }
+                .asLong().shouldBe(200L)
         }
     }
 

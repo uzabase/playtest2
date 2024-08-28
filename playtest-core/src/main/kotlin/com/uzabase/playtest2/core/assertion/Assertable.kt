@@ -16,4 +16,4 @@ interface AsRaw {
     fun asRaw(): Any
 }
 
-interface Assertable : AsLong, AsString, AsRaw
+interface Assertable : AsLong, AsString, AsBoolean, AsRaw
