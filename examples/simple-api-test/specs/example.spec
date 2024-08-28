@@ -12,14 +12,14 @@
 * 文字列の"25"である
 
 ## Assert response headers contains some value
-* レスポンスのヘッダーの
+* レスポンスのヘッダーが
 * 文字列の"Content-Length: 25"を含んでいる
 * 文字列の"Content-Type: application/json"を含んでいる
 
 ## Assert response body
 * レスポンスのボディが
-//* JSONのパス"$.message"に対応する値が
-//* 文字列の"pong"である
+* JSONのパス"$.message"に対応する値が
+* 文字列の"pong"である
 
 ## Assert wiremock
 * API"InnerAPI"のパス"/ping"に

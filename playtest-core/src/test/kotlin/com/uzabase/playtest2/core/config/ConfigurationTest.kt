@@ -1,13 +1,10 @@
 package com.uzabase.playtest2.core.config
 
-import com.thoughtworks.gauge.datastore.SuiteDataStore
-import com.uzabase.playtest2.core.K
+import com.uzabase.playtest2.core.assertion.AssertableProxy
 import com.uzabase.playtest2.core.assertion.Proxies
-import com.uzabase.playtest2.core.assertion.makeAssertableProxyFactory
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
-import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
 import java.net.URI
 import java.net.URL
@@ -28,17 +25,20 @@ data class MyMod2Configuration(
 
 data class Dog(val name: String, val age: Int)
 
-val FromDog = makeAssertableProxyFactory<Dog>(
-    Proxies(
-        asString = { "My dog name is ${it.name}, age is ${it.age}!!" },
+val FromDog = { it: Dog ->
+    AssertableProxy.make<Dog>(
+        it,
+        Proxies(
+            asString = { "My dog name is ${it.name}, age is ${it.age}!!" },
+        )
     )
-)
+}
 
 fun myMod1(endpoint: URL): ConfigurationEntry =
     ConfigurationEntry(MyMod1ModuleKey, MyMod1Configuration(endpoint))
 
 fun myMod2(name: String, endpoint: URL): ConfigurationEntry =
-    ConfigurationEntry(MyMod2ModuleKey(name), MyMod2Configuration(endpoint), assertableProxies = listOf(FromDog))
+    ConfigurationEntry(MyMod2ModuleKey(name), MyMod2Configuration(endpoint))
 
 class ConfigurationTest : FunSpec({
     beforeSpec {
@@ -69,9 +69,5 @@ class ConfigurationTest : FunSpec({
         ) { key, config ->
             Configuration[key] shouldBe config
         }
-    }
-
-    test("Configuration should set the assertable proxies into the SuiteDataStore") {
-        (SuiteDataStore.get(K.AssertableProxyFactories) as List<*>).shouldContain(FromDog)
     }
 })

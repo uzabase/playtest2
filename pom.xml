@@ -38,7 +38,6 @@
         <module>playtest-http</module>
         <module>playtest-wiremock</module>
         <module>playtest-core</module>
-        <module>playtest-json</module>
     </modules>
 
     <properties>

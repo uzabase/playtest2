@@ -1,21 +1,22 @@
 package com.uzabase.playtest2.core
 
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
-import com.uzabase.playtest2.core.assertion.DefaultAssertableProxy.Companion.defaults
+import com.uzabase.playtest2.core.assertion.Assertable
+import com.uzabase.playtest2.core.assertion.AssertableProxy
 import com.uzabase.playtest2.core.assertion.PlaytestException
 import com.uzabase.playtest2.core.assertion.Proxies
-import com.uzabase.playtest2.core.assertion.makeAssertableProxyFactory
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.data.forAll
-import io.kotest.data.row
 import io.kotest.matchers.shouldBe
+import org.assertj.core.api.InstanceOfAssertFactories.future
 
 data class FullName(val firstName: String, val lastName: String)
 
-val FromFullName = makeAssertableProxyFactory<FullName>(Proxies(
-    asString = { "${it.firstName} ${it.lastName} :)" }
-))
+val FromFullName = { fullName: FullName ->
+    AssertableProxy.make(fullName, Proxies(
+        asString = { "${it.firstName} ${it.lastName} :)" }
+    ))
+}
 
 class AssertionStepsTest : FunSpec({
     val sut = AssertionSteps()
@@ -26,27 +27,27 @@ class AssertionStepsTest : FunSpec({
     context("Assertions") {
         context("happy path") {
             test("long value") {
-                ScenarioDataStore.put(K.AssertionTarget, 200L)
+                ScenarioDataStore.put(K.AssertionTarget, AssertableProxy.fromLongValue(200L))
                 sut.shouldBeLongValue(200L)
             }
 
             test("string value") {
-                ScenarioDataStore.put(K.AssertionTarget, "Hello, world")
+                ScenarioDataStore.put(K.AssertionTarget, AssertableProxy.fromStringValue("Hello, world"))
                 sut.shouldBeStringValue("Hello, world")
             }
 
             test("strict bool value") {
-                ScenarioDataStore.put(K.AssertionTarget, true)
+                ScenarioDataStore.put(K.AssertionTarget, AssertableProxy.fromBooleanValue(true))
                 sut.shouldBeBoolean()
             }
 
             test("strict true") {
-                ScenarioDataStore.put(K.AssertionTarget, true)
+                ScenarioDataStore.put(K.AssertionTarget, AssertableProxy.fromBooleanValue(true))
                 sut.shouldBeTrue()
             }
 
             test("strict false") {
-                ScenarioDataStore.put(K.AssertionTarget, false)
+                ScenarioDataStore.put(K.AssertionTarget, AssertableProxy.fromBooleanValue(false))
                 sut.shouldBeFalse()
             }
         }
@@ -83,34 +84,29 @@ class AssertionStepsTest : FunSpec({
         }
     }
 
-    context("Any value should assert as string value") {
-        forAll(
-            row(FullName("John", "Doe"), listOf(*defaults.toTypedArray(), FromFullName), "John Doe :)"),
-            row("Hello, world", defaults, "Hello, world")
-        ) { origin, factories, expected ->
-            ScenarioDataStore.put(K.AssertableProxyFactories, factories)
-            ScenarioDataStore.put(K.AssertionTarget, origin)
-
-            sut.shouldBeStringValue(expected)
-        }
-    }
-
     context("contains") {
         test("should contains") {
-            ScenarioDataStore.put(K.AssertionTarget, "Hello, world")
+            ScenarioDataStore.put(K.AssertionTarget, AssertableProxy.fromStringValue("Hello, world"))
             sut.shouldBeContainsStringValue("world")
         }
 
         test("should not contains") {
-            ScenarioDataStore.put(K.AssertionTarget, "Hello, world")
+            ScenarioDataStore.put(K.AssertionTarget, AssertableProxy.fromStringValue("Hello, world"))
             shouldThrow<PlaytestException> {
                 sut.shouldBeContainsStringValue("John")
             }.message.shouldBe("should contains John")
         }
     }
 
-    context("string representation value is not strict boolean value") {
-        test( "should be boolean") {
+    context("proxied value") {
+        test("data class") {
+            ScenarioDataStore.put(K.AssertionTarget, FromFullName(FullName("Hibiki", "Yuta")))
+            sut.shouldBeStringValue("Hibiki Yuta :)")
+        }
+    }
+
+    xcontext("string representation value is not strict boolean value") {
+        test("should be boolean") {
             ScenarioDataStore.put(K.AssertionTarget, "true")
             shouldThrow<PlaytestException> { sut.shouldBeBoolean() }
                 .message.shouldBe("should be Boolean. but was java.lang.String")

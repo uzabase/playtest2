@@ -1,5 +1,6 @@
 package com.uzabase.playtest2.http.assertion
 
+import com.uzabase.playtest2.core.assertion.Assertable
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
@@ -29,7 +30,7 @@ class FromHeadersTest : FunSpec({
             )
         ) { headers, expected ->
             test("FromHeaders should convert Headers to String -- for $headers") {
-                FromHeaders.create(headers).asString() shouldBe expected
+                (FromHeaders(headers) as Assertable).asString() shouldBe expected
             }
         }
     }
