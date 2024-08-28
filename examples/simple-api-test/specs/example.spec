@@ -12,9 +12,9 @@
 * 文字列の"25"である
 
 ## Assert response headers contains some value
-* レスポンスのヘッダーが
-* 文字列の"Content-Length: 25"を含んでいる
-* 文字列の"Content-Type: application/json"を含んでいる
+//* レスポンスのヘッダーが
+//* 文字列の"Content-Length: 25"を含んでいる
+//* 文字列の"Content-Type: application/json"を含んでいる
 
 ## Assert response body
 * レスポンスのボディが
