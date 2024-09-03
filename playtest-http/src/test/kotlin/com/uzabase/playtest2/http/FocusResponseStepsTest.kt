@@ -3,6 +3,7 @@ package com.uzabase.playtest2.http
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.uzabase.playtest2.core.assertion.Assertable
+import com.uzabase.playtest2.core.zoom.Zoomable
 import com.uzabase.playtest2.http.internal.K
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -61,7 +62,9 @@ class FocusResponseStepsTest : FunSpec({
                 .let { ScenarioDataStore.put(K.RESPONSE, it) }
             sut.headers()
 
-            ScenarioDataStore.get(coreK.AssertionTarget).shouldBeInstanceOf<Headers>()
+            ScenarioDataStore.get(coreK.AssertionTarget)
+                .also { it.shouldBeInstanceOf<Zoomable<String>>() }
+                .also { it.shouldBeInstanceOf<Assertable>() }
         }
     }
 })

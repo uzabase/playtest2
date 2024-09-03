@@ -3,9 +3,7 @@ package com.uzabase.playtest2.core.proxy
 import com.uzabase.playtest2.core.assertion.Assertable
 import com.uzabase.playtest2.core.assertion.PlaytestException
 import com.uzabase.playtest2.core.assertion.playtestException
-import com.uzabase.playtest2.core.zoom.Zoom
 import com.uzabase.playtest2.core.zoom.Zoomable
-import java.lang.UnsupportedOperationException
 import java.lang.reflect.Proxy
 
 data class AssertableProxyFunctions<T>(
@@ -15,7 +13,7 @@ data class AssertableProxyFunctions<T>(
     val asRaw: (T) -> Any = { it as Any }
 )
 
-fun <K> unzoomable(): Zoomable<K> = object: Zoomable<K> {
+fun <K> unzoomable(): Zoomable<K> = object : Zoomable<K> {
     override fun zoom(key: K): Any {
         throw UnsupportedOperationException("Cannot zoom")
     }
@@ -25,9 +23,11 @@ fun <K> unzoomable(): Zoomable<K> = object: Zoomable<K> {
 @Suppress("UNCHECKED_CAST")
 class ProxyFactory {
     companion object {
-        inline fun <reified A, K> make(obj: A,
-                                       fns: AssertableProxyFunctions<A>,
-                                        zoomable: Zoomable<K> = unzoomable() ): Any =
+        inline fun <reified A, K> make(
+            obj: A,
+            fns: AssertableProxyFunctions<A>,
+            zoomable: Zoomable<K> = unzoomable()
+        ): Any =
             Proxy.newProxyInstance(
                 Assertable::class.java.classLoader,
                 arrayOf(

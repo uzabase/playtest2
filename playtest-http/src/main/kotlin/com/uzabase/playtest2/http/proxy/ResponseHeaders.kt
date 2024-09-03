@@ -16,7 +16,7 @@ fun Headers.toProxy(): Any =
                 }
             ),
             zoomable = object : Zoomable<String> {
-                override fun zoom(key: String): Any = headers[key] ?: throw Exception("Key not found: $key")
+                override fun zoom(key: String): Any? = headers[key]
             }
         )
     }

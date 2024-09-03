@@ -12,5 +12,6 @@ class ZoomResponseHeadersSteps {
     fun zoomMap(key: String): Any =
         ScenarioDataStoreExt.ensureGet<Zoomable<String>>(K.AssertionTarget)
             .zoom(key)
-            .let { ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.fromStringValue(it as String)) }
+            ?.let { ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.fromStringValue(it as String)) }
+            ?: ScenarioDataStore.remove(K.AssertionTarget)
 }
