@@ -16,21 +16,25 @@ class App {
             .setHandler(Handlers.path().addExactPath("/ping") { exchange ->
                 client.newCall(Request.Builder().url("http://localhost:3000/ping").build()).execute()
                 exchange.responseHeaders.put(HttpString.tryFromString("Content-Type"), "application/json")
-                exchange.responseSender.send("""
+                exchange.responseSender.send(
+                    """
                     {
                         "message": "pong"
                     }
-                """.trimIndent())
+                """.trimIndent()
+                )
             }.addExactPath("/values") { exchange ->
                 exchange.responseHeaders.put(HttpString.tryFromString("Content-Type"), "application/json")
-                exchange.responseSender.send("""
+                exchange.responseSender.send(
+                    """
                     {
                         "boolValue": {
                             "trueValue": true,
                             "falseValue": false
                         }
                     }
-                """.trimIndent())
+                """.trimIndent()
+                )
             })
             .build()
 
