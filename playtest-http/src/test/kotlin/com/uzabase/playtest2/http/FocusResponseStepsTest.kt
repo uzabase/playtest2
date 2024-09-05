@@ -8,18 +8,17 @@ import com.uzabase.playtest2.http.internal.K
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
-import okhttp3.Headers
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.ResponseBody
 import java.net.URI
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse.BodyHandlers
 import com.uzabase.playtest2.core.K as coreK
 import com.uzabase.playtest2.http.FocusResponseSteps as Sut
 
 class FocusResponseStepsTest : FunSpec({
     val sut = Sut()
     val server = WireMockServer(8080)
-    val client = OkHttpClient.Builder().build()
+    val client = HttpClient.newHttpClient()
 
     beforeSpec {
         server.start()
@@ -36,7 +35,7 @@ class FocusResponseStepsTest : FunSpec({
 
     context("About status code") {
         test("should be store as assertion target") {
-            client.newCall(Request.Builder().url(URI("http://localhost:8080/articles").toURL()).build()).execute()
+            client.send(HttpRequest.newBuilder(URI("http://localhost:8080/articles")).build(), BodyHandlers.ofString())
                 .let { ScenarioDataStore.put(K.RESPONSE, it) }
             sut.statusCode()
 
@@ -48,17 +47,16 @@ class FocusResponseStepsTest : FunSpec({
 
     context("About response body") {
         test("should be store as assertion target") {
-            client.newCall(Request.Builder().url(URI("http://localhost:8080/articles").toURL()).build()).execute()
+            client.send(HttpRequest.newBuilder(URI("http://localhost:8080/articles")).build(), BodyHandlers.ofString())
                 .let { ScenarioDataStore.put(K.RESPONSE, it) }
             sut.body()
-
-            ScenarioDataStore.get(coreK.AssertionTarget).shouldBeInstanceOf<ResponseBody>()
+            ScenarioDataStore.get(coreK.AssertionTarget).shouldBeInstanceOf<String>()
         }
     }
 
     context("About response headers") {
         test("should be store as assertion target") {
-            client.newCall(Request.Builder().url(URI("http://localhost:8080/articles").toURL()).build()).execute()
+            client.send(HttpRequest.newBuilder(URI("http://localhost:8080/articles")).build(), BodyHandlers.ofString())
                 .let { ScenarioDataStore.put(K.RESPONSE, it) }
             sut.headers()
 
