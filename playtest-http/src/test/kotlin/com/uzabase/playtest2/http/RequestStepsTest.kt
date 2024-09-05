@@ -13,6 +13,7 @@ import io.kotest.data.forAll
 import io.kotest.data.row
 import io.kotest.matchers.shouldBe
 import java.net.URI
+import java.net.http.HttpResponse
 import com.uzabase.playtest2.http.RequestSteps as Sut
 
 class RequestStepsTest : FunSpec({
@@ -43,8 +44,8 @@ class RequestStepsTest : FunSpec({
         sut.pathIntoRequest("/hello")
         sut.methodIntoRequest(Sut.Method.GET)
         sut.sendRequest()
-        val response = ScenarioDataStore.get(K.RESPONSE) as okhttp3.Response
-        response.body.string().shouldBe("Hello, world!")
+        val response = ScenarioDataStore.get(K.RESPONSE) as HttpResponse<*>
+        response.body().toString().shouldBe("Hello, world!")
     }
 
     context("Simple requests") {
@@ -132,11 +133,6 @@ class RequestStepsTest : FunSpec({
             row("Method") {
                 sut.pathIntoRequest("/articles")
             },
-            row("Media Type") {
-                sut.pathIntoRequest("/articles")
-                sut.methodIntoRequest(Sut.Method.POST)
-                sut.jsonBodyIntoRequest("""{}""")
-            }
         ) { expected, prep ->
             test("if the `$expected` is not specified") {
                 prep()

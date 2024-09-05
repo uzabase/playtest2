@@ -6,13 +6,14 @@ import com.uzabase.playtest2.core.config.Configuration
 import com.uzabase.playtest2.http.config.HttpModuleConfiguration
 import com.uzabase.playtest2.http.config.HttpModuleKey
 import com.uzabase.playtest2.http.internal.K
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpRequest.BodyPublishers
+import java.net.http.HttpResponse.BodyHandlers
 
 class RequestSteps {
 
-    private val client = okhttp3.OkHttpClient().newBuilder().build()
+    private val client = HttpClient.newHttpClient()
 
     private val httpConfig: HttpModuleConfiguration
         get() = Configuration[HttpModuleKey] as HttpModuleConfiguration
@@ -28,7 +29,7 @@ class RequestSteps {
 
     @Step("メディアタイプ<mediaType>で")
     fun mediaTypeIntoRequest(mediaType: String) =
-        ScenarioDataStore.put(K.MEDIA_TYPE, mediaType)
+        headerIntoRequest("Content-Type: $mediaType")
 
     enum class Method {
         GET,
@@ -56,10 +57,10 @@ class RequestSteps {
     @Step("リクエストを送る")
     fun sendRequest() =
         buildRequest()
-            .let { client.newCall(it).execute() }
+            .let { client.send(it, BodyHandlers.ofString()) }
             .run { ScenarioDataStore.put(K.RESPONSE, this) }
 
-    private fun buildRequest(): Request {
+    private fun buildRequest(): HttpRequest {
         @Suppress("UNCHECKED_CAST")
         fun <T> ensureGet(key: K): T =
             (ScenarioDataStore.get(key) as? T) ?: throw IllegalStateException(
@@ -68,31 +69,23 @@ class RequestSteps {
                     when (key) {
                         K.REQUEST_PATH -> "Request Path"
                         K.METHOD -> "Method"
-                        K.MEDIA_TYPE -> "Media Type"
                         else -> "Something wrong..."
                     }
                 }`
                 """.trimIndent()
             )
 
-        return Request.Builder()
-            .url(
-                ensureGet<String>(K.REQUEST_PATH)
-                    .let(httpConfig.endpoint.toURI()::resolve).toURL()
-            )
-            .let { rb ->
-                ensureHeaders().fold(rb) { b, (k, v) ->
-                    b.addHeader(k, v)
-                }
-            }
+        return HttpRequest.newBuilder(ensureGet<String>(K.REQUEST_PATH).let(httpConfig.endpoint.toURI()::resolve))
+            .let { rb -> ensureHeaders().fold(rb) { b, (k, v) -> b.header(k, v) } }
             .let { rb ->
                 when (val method = ensureGet<Method>(K.METHOD)) {
-                    Method.GET -> rb.get()
-                    else -> rb.method(
-                        method.name,
-                        (ScenarioDataStore.get(K.JSON_BODY) as? String)
-                            ?.toRequestBody(ensureGet<String>(K.MEDIA_TYPE).toMediaType()) ?: "".toRequestBody()
-                    )
+                    Method.GET -> rb.method(method.name, BodyPublishers.noBody())
+                    Method.PUT, Method.POST, Method.DELETE, Method.PATCH ->
+                        rb.method(
+                            method.name,
+                            (ScenarioDataStore.get(K.JSON_BODY) as? String)
+                                ?.let(BodyPublishers::ofString) ?: BodyPublishers.noBody()
+                        )
                 }
             }
             .build()

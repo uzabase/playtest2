@@ -5,32 +5,35 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
 import io.kotest.matchers.shouldBe
-import okhttp3.Headers
+import java.net.http.HttpHeaders
 
 class FromHeadersTest : FunSpec({
-    xcontext("FromHeaders") {
+    context("FromHeaders") {
         forAll(
             row(
-                Headers.headersOf(),
+                HttpHeaders.of(mapOf(), { _, _ -> true }),
                 ""
             ),
             row(
-                Headers.headersOf("Content-Type", "application/json"),
+                HttpHeaders.of(mapOf("Content-Type" to listOf("application/json")), { _, _ -> true }),
                 "Content-Type: application/json"
             ),
             row(
-                Headers.headersOf(
-                    "Content-Type", "application/json",
-                    "Content-Length", "100"
+                HttpHeaders.of(
+                    mapOf(
+                        "Content-Type" to listOf("application/json"),
+                        "Content-Length" to listOf("100")
+                    ),
+                    { _, _ -> true }
                 ),
                 """
                     Content-Length: 100
                     Content-Type: application/json
                     """.trimIndent()
-            )
+            ),
         ) { headers, expected ->
             test("FromHeaders should convert Headers to String -- for $headers") {
-//                (FromHeaders(headers) as Assertable).asString() shouldBe expected
+                (headers.toProxy() as Assertable).asString() shouldBe expected
             }
         }
     }
