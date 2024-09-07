@@ -16,6 +16,6 @@ class JsonPathProxy private constructor(val json: String, val path: String) : As
 
     override fun asBoolean(): Boolean = JsonPath.read(json, path)
 
-    override fun asRaw(): String = json
+    override fun asRaw(): Any = JsonPath.read(json, path)
 
 }
