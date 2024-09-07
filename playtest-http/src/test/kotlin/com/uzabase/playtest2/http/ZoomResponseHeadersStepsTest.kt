@@ -3,7 +3,7 @@ package com.uzabase.playtest2.http
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.uzabase.playtest2.core.K
 import com.uzabase.playtest2.core.assertion.Assertable
-import com.uzabase.playtest2.http.proxy.toProxy
+import com.uzabase.playtest2.http.proxy.HttpHeadersProxy
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
@@ -18,7 +18,7 @@ class ZoomResponseHeadersStepsTest : FunSpec({
         test("should be zoomed") {
             ScenarioDataStore.put(
                 K.AssertionTarget,
-                HttpHeaders.of(mapOf("any-header" to listOf("any")), { _, _ -> true }).toProxy()
+                HttpHeaders.of(mapOf("any-header" to listOf("any"))) { _, _ -> true }.let(HttpHeadersProxy::of)
             )
             sut.zoomMap("any-header")
             ScenarioDataStore.get(K.AssertionTarget)
@@ -29,7 +29,7 @@ class ZoomResponseHeadersStepsTest : FunSpec({
         test("should be removed if key is not found") {
             ScenarioDataStore.put(
                 K.AssertionTarget,
-                HttpHeaders.of(mapOf("any-header" to listOf("any")), { _, _ -> true }).toProxy()
+                HttpHeaders.of(mapOf("any-header" to listOf("any"))) { _, _ -> true }.let(HttpHeadersProxy::of)
             )
             sut.zoomMap("not-found")
             ScenarioDataStore.get(K.AssertionTarget).shouldBeNull()

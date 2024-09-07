@@ -1,8 +1,8 @@
 package com.uzabase.playtest2.core
 
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
+import com.uzabase.playtest2.core.assertion.Assertable
 import com.uzabase.playtest2.core.assertion.PlaytestException
-import com.uzabase.playtest2.core.proxy.AssertableProxyFunctions
 import com.uzabase.playtest2.core.proxy.ProxyFactory
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
@@ -10,10 +10,17 @@ import io.kotest.matchers.shouldBe
 
 data class FullName(val firstName: String, val lastName: String)
 
-val FromFullName = { fullName: FullName ->
-    ProxyFactory.make<FullName, Unit>(fullName, AssertableProxyFunctions(
-        asString = { "${it.firstName} ${it.lastName} :)" }
-    ))
+private val FromFullName = { fullName: FullName ->
+    object : Assertable {
+        override fun asLong(): Long = throw UnsupportedOperationException()
+
+        override fun asString(): String = "${fullName.firstName} ${fullName.lastName} :)"
+
+        override fun asBoolean(): Boolean = false
+
+        override fun asRaw(): Any = throw UnsupportedOperationException()
+
+    }
 }
 
 class AssertionStepsTest : FunSpec({
@@ -25,27 +32,27 @@ class AssertionStepsTest : FunSpec({
     context("Assertions") {
         context("happy path") {
             test("long value") {
-                ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.fromLongValue(200L))
+                ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.ofLong(200L))
                 sut.shouldBeLongValue(200L)
             }
 
             test("string value") {
-                ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.fromStringValue("Hello, world"))
+                ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.ofString("Hello, world"))
                 sut.shouldBeStringValue("Hello, world")
             }
 
             test("strict bool value") {
-                ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.fromBooleanValue(true))
+                ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.ofBoolean(true))
                 sut.shouldBeBoolean()
             }
 
             test("strict true") {
-                ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.fromBooleanValue(true))
+                ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.ofBoolean(true))
                 sut.shouldBeTrue()
             }
 
             test("strict false") {
-                ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.fromBooleanValue(false))
+                ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.ofBoolean(false))
                 sut.shouldBeFalse()
             }
         }
@@ -84,12 +91,12 @@ class AssertionStepsTest : FunSpec({
 
     context("contains") {
         test("should contains") {
-            ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.fromStringValue("Hello, world"))
+            ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.ofString("Hello, world"))
             sut.shouldBeContainsStringValue("world")
         }
 
         test("should not contains") {
-            ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.fromStringValue("Hello, world"))
+            ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.ofString("Hello, world"))
             shouldThrow<PlaytestException> {
                 sut.shouldBeContainsStringValue("John")
             }.message.shouldBe("should contains John")

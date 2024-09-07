@@ -33,7 +33,7 @@ class FromHeadersTest : FunSpec({
             ),
         ) { headers, expected ->
             test("FromHeaders should convert Headers to String -- for $headers") {
-                (headers.toProxy() as Assertable).asString() shouldBe expected
+                headers.let(HttpHeadersProxy::of).asString() shouldBe expected
             }
         }
     }
