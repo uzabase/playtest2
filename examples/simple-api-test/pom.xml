@@ -11,7 +11,7 @@
     <properties>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <java.version>21</java.version>
-        <kotlin.version>1.9.20</kotlin.version>
+        <kotlin.version>2.0.20</kotlin.version>
         <kotlin.compiler.jvmTarget>${java.version}</kotlin.compiler.jvmTarget>
         <gauge.java.version>0.10.3</gauge.java.version>
         <gauge.maven.version>1.6.1</gauge.maven.version>
