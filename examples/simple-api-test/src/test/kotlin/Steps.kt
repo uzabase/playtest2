@@ -15,7 +15,7 @@ class Steps {
     fun beforeSuite() {
         playtest2 {
             http(URI("http://localhost:8080").toURL()) +
-                    wireMock("InnerAPI", URI("http://localhost:3000").toURL())
+            wireMock("InnerAPI", URI("http://localhost:3000").toURL())
         }
         App.startServer()
         innerApi.start()
