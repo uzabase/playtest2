@@ -6,9 +6,9 @@ import com.uzabase.playtest2.core.assertion.Assertable
 import com.uzabase.playtest2.core.assertion.PlaytestException
 import com.uzabase.playtest2.core.assertion.playtestException
 
-internal fun assertable(f: (Assertable) -> Unit) =
+internal fun assertable(f: (Assertable<*>) -> Unit) =
     ScenarioDataStore.get(K.AssertionTarget)
-        .let { it as? Assertable }
+        .let { it as? Assertable<*> }
         ?.let(f)
         ?: playtestException("Assertion target is not found")
 
@@ -22,7 +22,7 @@ class AssertionSteps {
     fun shouldBeLongValue(value: Long) =
         assertable {
             test("should be $value") {
-                it.asLong() == value
+                it.shouldBe(value)
             }
         }
 
@@ -30,7 +30,7 @@ class AssertionSteps {
     fun shouldBeStringValue(value: String) =
         assertable {
             test("should be $value") {
-                it.asString() == value
+                it.shouldBe(value)
             }
         }
 
@@ -38,15 +38,7 @@ class AssertionSteps {
     fun shouldBeContainsStringValue(value: String) =
         assertable {
             test("should contains $value") {
-                it.asString().contains(value)
-            }
-        }
-
-    @Step("真偽値である")
-    fun shouldBeBoolean() =
-        assertable {
-            test("should be Boolean. but was ${it.asRaw().javaClass.name}") {
-                it.asRaw() is Boolean
+                it.shouldContain(value)
             }
         }
 
@@ -54,7 +46,7 @@ class AssertionSteps {
     fun shouldBeTrue() =
         assertable {
             test("should be strict true") {
-                it.asBoolean()
+                it.shouldBe(true)
             }
         }
 
@@ -62,7 +54,7 @@ class AssertionSteps {
     fun shouldBeFalse() =
         assertable {
             test("should be strict false") {
-                !it.asBoolean()
+                it.shouldBe(false)
             }
         }
 }

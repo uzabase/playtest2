@@ -1,19 +1,24 @@
 package com.uzabase.playtest2.core.assertion
 
-interface AsLong {
-    fun asLong(): Long
+fun interface ShouldBeLong {
+    fun shouldBe(expected: Long): Boolean
 }
 
-interface AsString {
-    fun asString(): String
+fun interface ShouldBeString {
+    fun shouldBe(expected: String): Boolean
 }
 
-interface AsBoolean {
-    fun asBoolean(): Boolean
+fun interface ShouldContainsString {
+    fun shouldContain(expected: String): Boolean
 }
 
-interface AsRaw {
-    fun asRaw(): Any
+fun interface ShouldBeBoolean {
+    fun shouldBe(expected: Boolean): Boolean
 }
 
-interface Assertable : AsLong, AsString, AsBoolean, AsRaw
+fun interface ShouldBe<T> {
+    fun shouldBe(expected: T): Boolean
+}
+
+interface Assertable<T> : ShouldBeLong, ShouldBeString, ShouldContainsString, ShouldBeBoolean, ShouldBe<T>
+

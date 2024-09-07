@@ -5,6 +5,7 @@ import com.uzabase.playtest2.core.K
 import com.uzabase.playtest2.core.assertion.Assertable
 import com.uzabase.playtest2.http.proxy.HttpHeadersProxy
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import java.net.http.HttpHeaders
@@ -22,8 +23,8 @@ class ZoomResponseHeadersStepsTest : FunSpec({
             )
             sut.zoomMap("any-header")
             ScenarioDataStore.get(K.AssertionTarget)
-                .let { it as Assertable }
-                .asString().shouldBe("any")
+                .let { it as Assertable<*> }
+                .shouldBe("any").shouldBeTrue()
         }
 
         test("should be removed if key is not found") {

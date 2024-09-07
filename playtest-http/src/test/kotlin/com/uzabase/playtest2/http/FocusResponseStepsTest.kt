@@ -6,6 +6,7 @@ import com.uzabase.playtest2.core.assertion.Assertable
 import com.uzabase.playtest2.core.zoom.Zoomable
 import com.uzabase.playtest2.http.internal.K
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import java.net.URI
@@ -40,8 +41,8 @@ class FocusResponseStepsTest : FunSpec({
             sut.statusCode()
 
             ScenarioDataStore.get(coreK.AssertionTarget)
-                .let { it as Assertable }
-                .asLong().shouldBe(200L)
+                .let { it as Assertable<*> }
+                .shouldBe(200L).shouldBeTrue()
         }
     }
 
@@ -62,7 +63,7 @@ class FocusResponseStepsTest : FunSpec({
 
             ScenarioDataStore.get(coreK.AssertionTarget)
                 .also { it.shouldBeInstanceOf<Zoomable<String>>() }
-                .also { it.shouldBeInstanceOf<Assertable>() }
+                .also { it.shouldBeInstanceOf<Assertable<String>>() }
         }
     }
 })

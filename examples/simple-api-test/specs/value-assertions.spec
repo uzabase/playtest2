@@ -2,11 +2,6 @@
 
 * GETメソッドでパス"/values"にリクエストを送る
 
-## Assert as boolean
-* レスポンスのボディが
-* JSONのパス"$.boolValue.trueValue"に対応する値が
-* 真偽値である
-
 ## Assert true
 * レスポンスのボディが
 * JSONのパス"$.boolValue.trueValue"に対応する値が
