@@ -2,7 +2,7 @@ import com.example.demoapp.App
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.thoughtworks.gauge.AfterSuite
 import com.thoughtworks.gauge.BeforeSuite
-import com.uzabase.playtest2.core.config.Configuration
+import com.uzabase.playtest2.core.config.Configuration.Companion.playtest2
 import com.uzabase.playtest2.core.config.plus
 import com.uzabase.playtest2.http.config.http
 import com.uzabase.playtest2.wiremock.config.wireMock
@@ -13,7 +13,7 @@ class Steps {
 
     @BeforeSuite
     fun beforeSuite() {
-        Configuration.playtest2 {
+        playtest2 {
             http(URI("http://localhost:8080").toURL()) +
                     wireMock("InnerAPI", URI("http://localhost:3000").toURL())
         }

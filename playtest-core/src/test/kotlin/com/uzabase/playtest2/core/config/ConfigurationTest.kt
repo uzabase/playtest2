@@ -1,7 +1,5 @@
 package com.uzabase.playtest2.core.config
 
-import com.uzabase.playtest2.core.proxy.ProxyFactory
-import com.uzabase.playtest2.core.proxy.AssertableProxyFunctions
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
@@ -24,15 +22,6 @@ data class MyMod2Configuration(
 ) : ModuleConfiguration
 
 data class Dog(val name: String, val age: Int)
-
-val FromDog = { it: Dog ->
-    ProxyFactory.make<Dog, Unit>(
-        it,
-        AssertableProxyFunctions(
-            asString = { "My dog name is ${it.name}, age is ${it.age}!!" },
-        )
-    )
-}
 
 fun myMod1(endpoint: URL): ConfigurationEntry =
     ConfigurationEntry(MyMod1ModuleKey, MyMod1Configuration(endpoint))
