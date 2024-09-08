@@ -18,6 +18,6 @@ class JsonPathProxy private constructor(val json: String, val path: String) : As
 
     override fun shouldBe(expected: Boolean): Boolean = JsonPath.read<Boolean>(json, path) == expected
 
-    override fun shouldBe(expected: Any): Boolean = throw UnsupportedOperationException()
+    override fun shouldBe(expected: Any): Boolean = throw UnsupportedOperationException()   
 
 }
