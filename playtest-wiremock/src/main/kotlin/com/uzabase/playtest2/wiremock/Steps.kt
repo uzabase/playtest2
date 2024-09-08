@@ -14,7 +14,7 @@ class Steps {
     private fun dataStoreKey(apiName: String, type: KEY): Pair<WireMockModuleKey, KEY> =
         Pair(WireMockModuleKey(apiName), type)
 
-    private fun moduleConfig(apiName: String): WireMockModuleConfiguration =
+    private fun wireMockConfig(apiName: String): WireMockModuleConfiguration =
         Configuration[WireMockModuleKey(apiName)] as WireMockModuleConfiguration
 
     @Step("API<apiName>のパス<path>に")
@@ -25,14 +25,14 @@ class Steps {
     @Step("(<apiName>に)GETリクエストされた")
     fun assertRequestedAsGetRequest(apiName: String) {
         val path = ScenarioDataStore.get(dataStoreKey(apiName, KEY.REQUEST_PATH)) as String
-        val mock = moduleConfig(apiName).endpoint.let { WireMock(it.host, it.port) }
+        val mock = wireMockConfig(apiName).endpoint.let { WireMock(it.host, it.port) }
         mock.verifyThat(getRequestedFor(urlPathEqualTo(path)))
     }
 
     @Step("(<apiName>に)GETリクエストされていない")
     fun assertNotRequestedAsGetRequest(apiName: String) {
         val path = ScenarioDataStore.get(dataStoreKey(apiName, KEY.REQUEST_PATH)) as String
-        val mock = moduleConfig(apiName).endpoint.let { WireMock(it.host, it.port) }
+        val mock = wireMockConfig(apiName).endpoint.let { WireMock(it.host, it.port) }
         mock.verifyThat(0, getRequestedFor(urlPathEqualTo(path)))
     }
 
