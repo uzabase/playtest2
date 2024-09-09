@@ -11,15 +11,15 @@ import io.kotest.matchers.shouldBe
 data class FullName(val firstName: String, val lastName: String)
 
 private val FromFullName = { fullName: FullName ->
-    object : Assertable {
-        override fun asLong(): Long = throw UnsupportedOperationException()
+    object : Assertable<FullName> {
+        override fun shouldBe(expected: Long): Boolean = throw UnsupportedOperationException()
 
-        override fun asString(): String = "${fullName.firstName} ${fullName.lastName} :)"
+        override fun shouldBe(expected: String): Boolean = "${fullName.firstName} ${fullName.lastName} :)" == expected
+        override fun shouldContain(expected: String): Boolean = throw UnsupportedOperationException()
 
-        override fun asBoolean(): Boolean = false
+        override fun shouldBe(expected: Boolean): Boolean = false
 
-        override fun asRaw(): Any = throw UnsupportedOperationException()
-
+        override fun shouldBe(expected: FullName): Boolean = fullName == expected
     }
 }
 
@@ -41,17 +41,12 @@ class AssertionStepsTest : FunSpec({
                 sut.shouldBeStringValue("Hello, world")
             }
 
-            test("strict bool value") {
-                ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.ofBoolean(true))
-                sut.shouldBeBoolean()
-            }
-
-            test("strict true") {
+            test("true") {
                 ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.ofBoolean(true))
                 sut.shouldBeTrue()
             }
 
-            test("strict false") {
+            test("false") {
                 ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.ofBoolean(false))
                 sut.shouldBeFalse()
             }
@@ -72,17 +67,12 @@ class AssertionStepsTest : FunSpec({
                 }.message.shouldBe("Assertion target is not found")
             }
 
-            test("strict bool assertion target is missing") {
-                shouldThrow<PlaytestException> { sut.shouldBeBoolean() }
-                    .message.shouldBe("Assertion target is not found")
-            }
-
-            test("strict true assertion target is missing") {
+            test("true value") {
                 shouldThrow<PlaytestException> { sut.shouldBeTrue() }
                     .message.shouldBe("Assertion target is not found")
             }
 
-            test("strict false assertion target is missing") {
+            test("false value") {
                 shouldThrow<PlaytestException> { sut.shouldBeFalse() }
                     .message.shouldBe("Assertion target is not found")
             }
@@ -111,12 +101,6 @@ class AssertionStepsTest : FunSpec({
     }
 
     xcontext("string representation value is not strict boolean value") {
-        test("should be boolean") {
-            ScenarioDataStore.put(K.AssertionTarget, "true")
-            shouldThrow<PlaytestException> { sut.shouldBeBoolean() }
-                .message.shouldBe("should be Boolean. but was java.lang.String")
-        }
-
         test("should be true") {
             ScenarioDataStore.put(K.AssertionTarget, "true")
             shouldThrow<PlaytestException> { sut.shouldBeTrue() }

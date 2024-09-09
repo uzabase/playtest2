@@ -2,13 +2,11 @@ package com.uzabase.playtest2.core
 
 import com.thoughtworks.gauge.Step
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
-import com.uzabase.playtest2.core.assertion.Assertable
-import com.uzabase.playtest2.core.assertion.PlaytestException
-import com.uzabase.playtest2.core.assertion.playtestException
+import com.uzabase.playtest2.core.assertion.*
 
-internal fun assertable(f: (Assertable) -> Unit) =
+internal inline fun <reified T> assertable(f: (T) -> Unit) =
     ScenarioDataStore.get(K.AssertionTarget)
-        .let { it as? Assertable }
+        .let { it as? T }
         ?.let(f)
         ?: playtestException("Assertion target is not found")
 
@@ -20,49 +18,41 @@ class AssertionSteps {
 
     @Step("整数値の<value>である")
     fun shouldBeLongValue(value: Long) =
-        assertable {
+        assertable<ShouldBeLong> {
             test("should be $value") {
-                it.asLong() == value
+                it.shouldBe(value)
             }
         }
 
     @Step("文字列の<value>である")
     fun shouldBeStringValue(value: String) =
-        assertable {
+        assertable<ShouldBeString> {
             test("should be $value") {
-                it.asString() == value
+                it.shouldBe(value)
             }
         }
 
     @Step("文字列の<value>を含んでいる")
     fun shouldBeContainsStringValue(value: String) =
-        assertable {
+        assertable<ShouldContainsString> {
             test("should contains $value") {
-                it.asString().contains(value)
-            }
-        }
-
-    @Step("真偽値である")
-    fun shouldBeBoolean() =
-        assertable {
-            test("should be Boolean. but was ${it.asRaw().javaClass.name}") {
-                it.asRaw() is Boolean
+                it.shouldContain(value)
             }
         }
 
     @Step("真である")
     fun shouldBeTrue() =
-        assertable {
+        assertable<ShouldBeBoolean> {
             test("should be strict true") {
-                it.asBoolean()
+                it.shouldBe(true)
             }
         }
 
     @Step("偽である")
     fun shouldBeFalse() =
-        assertable {
+        assertable<ShouldBeBoolean> {
             test("should be strict false") {
-                !it.asBoolean()
+                it.shouldBe(false)
             }
         }
 }

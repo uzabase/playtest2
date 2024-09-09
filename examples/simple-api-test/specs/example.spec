@@ -22,5 +22,7 @@
 * 文字列の"pong"である
 
 ## Assert wiremock
-* API"InnerAPI"のパス"/ping"に
-* ("InnerAPI"に)GETリクエストされた
+* API"InnerAPI"について
+* メソッド"GET"でパス"/ping"に
+* リクエストが送られた回数が
+* 整数値の"1"である
