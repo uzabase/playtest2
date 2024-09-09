@@ -1,6 +1,7 @@
 package com.uzabase.playtest2.wiremock
 
 import com.github.tomakehurst.wiremock.WireMockServer
+import com.github.tomakehurst.wiremock.client.WireMock
 import com.uzabase.playtest2.core.AssertionSteps
 import com.uzabase.playtest2.core.config.Configuration.Companion.playtest2
 import com.uzabase.playtest2.wiremock.config.wireMock
@@ -24,7 +25,7 @@ class StepsTest : FunSpec({
     }
 
     beforeEach {
-        server.resetAll()
+        WireMock(3000).resetRequests()
     }
 
     afterSpec { server.stop() }
@@ -49,5 +50,20 @@ class StepsTest : FunSpec({
             sut.initParams("GET", "/byebye")
             assert.shouldBeLongValue(0)
         }
+    }
+
+
+    test("Complicated Request") {
+        Request.Builder().url("http://localhost:3000/path?p1=a&p1=b&p2=42")
+            .build()
+            .let { client.newCall(it).execute() }
+            .close()
+
+        sut.setApi("MyAPI")
+        sut.initParams("GET", "/path")
+        sut.query("p1", "a")
+        sut.query("p1", "b")
+        sut.query("p2", "42")
+        assert.shouldBeLongValue(1)
     }
 })

@@ -22,10 +22,21 @@ internal data class WireMockRequestParameters(
             UpdateWireMockRequestParameters {
                 it?.copy(method = method, path = path) ?: WireMockRequestParameters(path, method, emptyMap())
             }
+
+        fun updateQuery(name: String, value: String): UpdateWireMockRequestParameters =
+            UpdateWireMockRequestParameters {
+                it?.copy(queries = it.queries + (name to (it.queries[name] ?: emptyList()) + listOf(value)))
+                    ?: WireMockRequestParameters("", "", mapOf(name to listOf(value)))
+            }
     }
 
     fun buildRequest(): RequestPatternBuilder =
         WireMock.requestedFor(method, WireMock.urlPathEqualTo(path))
+            .let {
+                queries.entries.fold(it) { r, (k, v) ->
+                    v.fold(r) { rx, x -> rx.withQueryParam(k, WireMock.equalTo(x)) }
+                }
+            }
 }
 
 

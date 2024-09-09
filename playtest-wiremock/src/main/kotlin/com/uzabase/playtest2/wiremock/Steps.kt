@@ -8,6 +8,7 @@ import com.uzabase.playtest2.wiremock.config.WireMockModuleConfiguration
 import com.uzabase.playtest2.wiremock.config.WireMockModuleKey
 import com.uzabase.playtest2.wiremock.proxy.WireMockProxy
 import com.uzabase.playtest2.wiremock.proxy.WireMockRequestParameters.Companion.updateMethodAndName
+import com.uzabase.playtest2.wiremock.proxy.WireMockRequestParameters.Companion.updateQuery
 
 
 class Steps {
@@ -25,8 +26,16 @@ class Steps {
             .update(updateMethodAndName(method, path))
             .let { ScenarioDataStore.put(K.AssertionTarget, it) }
 
+
+    fun query(name: String, value: String) {
+        (ScenarioDataStore.get(K.AssertionTarget) as WireMockProxy)
+            .update(updateQuery(name, value))
+            .let { ScenarioDataStore.put(K.AssertionTarget, it) }
+    }
+
     @Step("リクエストが送られた回数が")
     fun assertRequestCount() {
         // 日本語表現のためだけの飾り(本質的に必要はない)
     }
+
 }
