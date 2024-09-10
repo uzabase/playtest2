@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "PUT",
+    "urlPath": "/dogeWithHeader",
+    "headers": {
+      "name": {
+        "equalTo": "kabosu"
+      }
+    }
+  },
+  "response": {
+    "status": 204,
+    "jsonBody": {
+      "message": "smile"
+    }
+  }
+}
