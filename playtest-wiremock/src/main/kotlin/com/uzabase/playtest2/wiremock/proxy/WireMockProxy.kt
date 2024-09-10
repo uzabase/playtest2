@@ -2,6 +2,7 @@ package com.uzabase.playtest2.wiremock.proxy
 
 import com.github.tomakehurst.wiremock.client.CountMatchingStrategy
 import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import com.uzabase.playtest2.core.assertion.ShouldBeLong
 
@@ -12,6 +13,7 @@ internal fun interface UpdateWireMockRequestParameters {
 internal data class WireMockRequestParameters(
     val path: String,
     val method: String,
+    val headers: Map<String, List<String>>,
     val queries: Map<String, List<String>>,
 ) {
     companion object {
@@ -20,13 +22,35 @@ internal data class WireMockRequestParameters(
             path: String,
         ): UpdateWireMockRequestParameters =
             UpdateWireMockRequestParameters {
-                it?.copy(method = method, path = path) ?: WireMockRequestParameters(path, method, emptyMap())
+                it?.copy(method = method, path = path) ?: WireMockRequestParameters(
+                    path,
+                    method,
+                    emptyMap(),
+                    emptyMap()
+                )
             }
 
         fun updateQuery(name: String, value: String): UpdateWireMockRequestParameters =
+            /*
+            * TODO: クエリ文字列の扱いについて要検討
+            *       `?q=a,b,c` と `?q=a&q=b&q=c` のそれぞれについてどう取り扱いたいか
+            * */
+
             UpdateWireMockRequestParameters {
                 it?.copy(queries = it.queries + (name to (it.queries[name] ?: emptyList()) + listOf(value)))
-                    ?: WireMockRequestParameters("", "", mapOf(name to listOf(value)))
+                    ?: WireMockRequestParameters("", "", emptyMap(), mapOf(name to listOf(value)))
+            }
+
+        fun updateHeader(header: String): UpdateWireMockRequestParameters =
+            // TODO: ヘッダーのパースを積極的にやりたくないコロンで名前と値が区切られることを前提にしてパースする
+            // c.f. https://www.rfc-editor.org/rfc/rfc2616#page-31
+            //      https://www.rfc-editor.org/rfc/rfc7230#section-3.2.4
+            header.split(":").map { it.trim() }.let { (name, value) -> updateHeader(name, value) }
+
+        fun updateHeader(name: String, value: String): UpdateWireMockRequestParameters =
+            UpdateWireMockRequestParameters {
+                it?.copy(headers = it.headers + (name to (it.headers[name] ?: emptyList()) + listOf(value)))
+                    ?: WireMockRequestParameters("", "", mapOf(name to listOf(value)), emptyMap())
             }
     }
 
@@ -34,11 +58,15 @@ internal data class WireMockRequestParameters(
         WireMock.requestedFor(method, WireMock.urlPathEqualTo(path))
             .let {
                 queries.entries.fold(it) { r, (k, v) ->
-                    v.fold(r) { rx, x -> rx.withQueryParam(k, WireMock.equalTo(x)) }
+                    v.fold(r) { rx, x -> rx.withQueryParam(k, equalTo(x)) }
+                }
+            }
+            .let {
+                headers.entries.fold(it) { r, (k, v) ->
+                    v.fold(r) { rx, x -> rx.withHeader(k, equalTo(x)) }
                 }
             }
 }
-
 
 internal class WireMockProxy private constructor(
     private val mock: WireMock,
