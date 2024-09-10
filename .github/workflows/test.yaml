@@ -37,6 +37,6 @@ jobs:
       - name: Run tests
         run: |
           export JAVA_HOME=$(sdk home java 21.0.1-tem)
-          mvn clean install -Dgpg.skip
+          mvn clean install -Dgpg.skip --no-transfer-progress
           cd examples/${{ matrix.environment }}
-          mvn test
+          mvn test --no-transfer-progress
