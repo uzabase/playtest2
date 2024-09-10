@@ -1,0 +1,12 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/ping"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "message": "pong"
+    }
+  }
+}

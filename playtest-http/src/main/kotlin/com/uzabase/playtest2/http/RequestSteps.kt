@@ -13,7 +13,9 @@ import java.net.http.HttpResponse.BodyHandlers
 
 class RequestSteps {
 
-    private val client = HttpClient.newHttpClient()
+    private val client = HttpClient.newBuilder()
+        .version(HttpClient.Version.HTTP_1_1) // TODO: リクエストのバージョンを設定で変更できていいかも
+        .build()
 
     private val httpConfig: HttpModuleConfiguration
         get() = Configuration[HttpModuleKey] as HttpModuleConfiguration

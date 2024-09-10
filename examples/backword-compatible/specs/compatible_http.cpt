@@ -1,0 +1,21 @@
+# URL<url>にGETリクエストを送る
+* パス<url>に
+* メソッド"GET"で
+* メディアタイプ"application/json"で
+* リクエストを送る
+
+@Step("URL<url>にヘッダー<header>で、GETリクエストを送る")
+@Step("URL<url>にPUTリクエストを送る")
+@Step("URL<url>にヘッダー<header>で、PUTリクエストを送る")
+@Step("URL<url>にボディ<requestBody>、ヘッダー<header>で、PUTリクエストを送る")
+@Step("URL<url>にボディ<requestBody>で、PUTリクエストを送る")
+@Step("URL<url>にPOSTリクエストを送る")
+@Step("URL<url>にヘッダー<header>で、POSTリクエストを送る")
+@Step("URL<url>にボディ<requestBody>、ヘッダー<header>で、POSTリクエストを送る")
+@Step("URL<url>にボディ<requestBody>で、POSTリクエストを送る")
+@Step("URL<url>にDELETEリクエストを送る")ping
+@Step("URL<url>にヘッダー<header>で、DELETEリクエストを送る")
+
+# レスポンスステータスコードが<statusCode>である
+* レスポンスのステータスコードが
+* 整数値の<statusCode>である

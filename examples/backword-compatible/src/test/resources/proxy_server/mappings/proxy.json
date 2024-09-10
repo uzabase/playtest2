@@ -1,0 +1,8 @@
+{
+  "request": {
+    "urlPattern": ".*"
+  },
+  "response": {
+    "proxyBaseUrl": "http://localhost:3010"
+  }
+}
