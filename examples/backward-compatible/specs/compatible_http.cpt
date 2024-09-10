@@ -4,7 +4,13 @@
 * メディアタイプ"application/json"で
 * リクエストを送る
 
-@Step("URL<url>にヘッダー<header>で、GETリクエストを送る")
+# URL<url>にヘッダー<header>で、GETリクエストを送る
+* パス<url>に
+* メソッド"GET"で
+* メディアタイプ"application/json"で
+* ヘッダー<header>で
+* リクエストを送る
+
 @Step("URL<url>にPUTリクエストを送る")
 @Step("URL<url>にヘッダー<header>で、PUTリクエストを送る")
 @Step("URL<url>にボディ<requestBody>、ヘッダー<header>で、PUTリクエストを送る")

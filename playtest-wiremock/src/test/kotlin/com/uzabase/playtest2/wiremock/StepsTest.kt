@@ -55,6 +55,7 @@ class StepsTest : FunSpec({
 
     test("Complicated Request") {
         Request.Builder().url("http://localhost:3000/path?p1=a&p1=b&p2=42")
+            .header("great-answer", "42")
             .build()
             .let { client.newCall(it).execute() }
             .close()
@@ -64,6 +65,7 @@ class StepsTest : FunSpec({
         sut.query("p1", "a")
         sut.query("p1", "b")
         sut.query("p2", "42")
+        sut.header("great-answer", "42")
         assert.shouldBeLongValue(1)
     }
 })

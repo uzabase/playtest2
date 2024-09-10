@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/pingWithHeader",
+    "headers": {
+      "great-answer": {
+        "equalTo": "42"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "message": "pong"
+    }
+  }
+}
