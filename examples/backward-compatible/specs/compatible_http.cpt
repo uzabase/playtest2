@@ -25,14 +25,14 @@
 * リクエストを送る
 
 
-@Step("URL<url>にボディ<requestBody>、ヘッダー<header>で、PUTリクエストを送る")
-@Step("URL<url>にボディ<requestBody>で、PUTリクエストを送る")
-@Step("URL<url>にPOSTリクエストを送る")
-@Step("URL<url>にヘッダー<header>で、POSTリクエストを送る")
-@Step("URL<url>にボディ<requestBody>、ヘッダー<header>で、POSTリクエストを送る")
-@Step("URL<url>にボディ<requestBody>で、POSTリクエストを送る")
-@Step("URL<url>にDELETEリクエストを送る")ping
-@Step("URL<url>にヘッダー<header>で、DELETEリクエストを送る")
+URL<url>にボディ<requestBody>、ヘッダー<header>で、PUTリクエストを送る
+URL<url>にボディ<requestBody>で、PUTリクエストを送る
+URL<url>にPOSTリクエストを送る
+URL<url>にヘッダー<header>で、POSTリクエストを送る
+URL<url>にボディ<requestBody>、ヘッダー<header>で、POSTリクエストを送る
+URL<url>にボディ<requestBody>で、POSTリクエストを送る
+URL<url>にDELETEリクエストを送るping
+URL<url>にヘッダー<header>で、DELETEリクエストを送る
 
 # レスポンスステータスコードが<statusCode>である
 * レスポンスのステータスコードが

@@ -4,9 +4,14 @@
 * リクエストが送られた回数が
 * 整数値の<callCount>である
 
-@Step("API<apiName>のURL<url>に<callCount>回POSTリクエストされた")
-@Step("API<apiName>のURL<url>に<callCount>回PUTリクエストされた")
-@Step("API<apiName>のURL<url>に<callCount>回DELETEリクエストされた")
+API<apiName>のURL<url>に<callCount>回POSTリクエストされた
+# API<apiName>のURL<url>に<callCount>回PUTリクエストされた
+* API<apiName>について
+* メソッド"PUT"でパス<url>に
+* リクエストが送られた回数が
+* 整数値の<callCount>である
+
+API<apiName>のURL<url>に<callCount>回DELETEリクエストされた
 
 # API<apiName>のURL<url>にヘッダー<header>で、GETリクエストされた
 * API<apiName>について
@@ -15,36 +20,43 @@
 * リクエストが送られた回数が
 * 整数値の"1"である
 
-@Step("API<apiName>のURLパス<urlPath>にクエリパラメータ<queryParameterName>が<queryParameterValue>でGETリクエストされた")
-@Step("API<apiName>のURL<url>にボディ<jsonFilePath>JSONファイルの内容でPOSTリクエストされた")
-@Step("API<apiName>のURL<url>にボディ<json>でPOSTリクエストされた")
-@Step("API<apiName>のURL<url>にボディ<jsonFilePath>JSONファイルの内容、ヘッダー<header>で、POSTリクエストされた")
-@Step("API<apiName>のURL<url>にボディ<json>、ヘッダー<header>で、POSTリクエストされた")
-@Step("API<apiName>のURL<url>にヘッダー<header>で、POSTリクエストされた")
-@Step("API<apiName>のURL<url>にパス<jsonPath>に文字列<value>を持つJSONでPOSTリクエストされた")
-@Step("API<apiName>のURL<url>にパス<jsonPath>に整数値<value>を持つJSONでPOSTリクエストされた")
-@Step("API<apiName>のURL<url>にパス<jsonPath>に小数値<value>を持つJSONでPOSTリクエストされた")
-@Step("API<apiName>のURL<url>にパス<jsonPath>に真偽値<value>を持つJSONでPOSTリクエストされた")
-@Step("API<apiName>のURL<url>にボディ<jsonFilePath>JSONファイルの内容でPUTリクエストされた")
-@Step("API<apiName>のURL<url>にボディ<json>でPUTリクエストされた")
-@Step("API<apiName>のURL<url>にボディ<jsonFilePath>JSONファイルの内容、ヘッダー<header>で、PUTリクエストされた")
-@Step("API<apiName>のURL<url>にボディ<json>、ヘッダー<header>で、PUTリクエストされた")
-@Step("API<apiName>のURL<url>にmodify-pヘッダー<header>で、PUTリクエストされた")
-@Step("API<apiName>のURL<url>にパス<jsonPath>に文字列<value>を持つJSONでPUTリクエストされた")
-@Step("API<apiName>のURL<url>にパス<jsonPath>に整数値<value>を持つJSONでPUTリクエストされた")
-@Step("API<apiName>のURL<url>にパス<jsonPath>に小数値<value>を持つJSONでPUTリクエストされた")
-@Step("API<apiName>のURL<url>にパス<jsonPath>に真偽値<value>を持つJSONでPUTリクエストされた")
-@Step("API<apiName>のURL<url>にヘッダー<header>で、DELETEリクエストされた")
-@Step("API<apiName>のURL<url>にヘッダー<header>:<value>を含むリクエストをされた")
-@Step("API<apiName>のURL<url>にパス<jsonPathURL>に文字列<value>を持つJSONをリクエストされた")
-@Step("API<apiName>のURL<url>にパス<jsonPath>に整数値<value>を持つJSONをリクエストされた")
-@Step("API<apiName>のURL<url>にパス<jsonPath>に小数値<value>を持つJSONをリクエストされた")
-@Step("API<apiName>のURL<url>にパス<jsonPath>に真偽値<value>を持つJSONをリクエストされた")
-@Step("API<apiName>のURL<url>にGETリクエストされた")
-@Step("API<apiName>のURL<url>にGETリクエストされていない")
-@Step("API<apiName>のURL<url>にPOSTリクエストされた")
-@Step("API<apiName>のURL<url>にPOSTリクエストされていない")
-@Step("API<apiName>のURL<url>にPUTリクエストされた")
-@Step("API<apiName>のURL<url>にPUTリクエストされていない")
-@Step("API<apiName>のURL<url>にDELETEリクエストされた")
-@Step("API<apiName>のURL<url>にDELETEリクエストされていない")
+API<apiName>のURLパス<urlPath>にクエリパラメータ<queryParameterName>が<queryParameterValue>でGETリクエストされた
+API<apiName>のURL<url>にボディ<jsonFilePath>JSONファイルの内容でPOSTリクエストされた
+API<apiName>のURL<url>にボディ<json>でPOSTリクエストされた
+API<apiName>のURL<url>にボディ<jsonFilePath>JSONファイルの内容、ヘッダー<header>で、POSTリクエストされた
+API<apiName>のURL<url>にボディ<json>、ヘッダー<header>で、POSTリクエストされた
+API<apiName>のURL<url>にヘッダー<header>で、POSTリクエストされた
+API<apiName>のURL<url>にパス<jsonPath>に文字列<value>を持つJSONでPOSTリクエストされた
+API<apiName>のURL<url>にパス<jsonPath>に整数値<value>を持つJSONでPOSTリクエストされた
+API<apiName>のURL<url>にパス<jsonPath>に小数値<value>を持つJSONでPOSTリクエストされた
+API<apiName>のURL<url>にパス<jsonPath>に真偽値<value>を持つJSONでPOSTリクエストされた
+API<apiName>のURL<url>にボディ<jsonFilePath>JSONファイルの内容でPUTリクエストされた
+API<apiName>のURL<url>にボディ<json>でPUTリクエストされた
+API<apiName>のURL<url>にボディ<jsonFilePath>JSONファイルの内容、ヘッダー<header>で、PUTリクエストされた
+API<apiName>のURL<url>にボディ<json>、ヘッダー<header>で、PUTリクエストされた
+
+# API<apiName>のURL<url>にヘッダー<header>で、PUTリクエストされた
+* API<apiName>について
+* メソッド"PUT"でパス<url>に
+* ヘッダー<header>として
+* リクエストが送られた回数が
+* 整数値の"1"である
+
+API<apiName>のURL<url>にパス<jsonPath>に文字列<value>を持つJSONでPUTリクエストされた
+API<apiName>のURL<url>にパス<jsonPath>に整数値<value>を持つJSONでPUTリクエストされた
+API<apiName>のURL<url>にパス<jsonPath>に小数値<value>を持つJSONでPUTリクエストされた
+API<apiName>のURL<url>にパス<jsonPath>に真偽値<value>を持つJSONでPUTリクエストされた
+API<apiName>のURL<url>にヘッダー<header>で、DELETEリクエストされた
+API<apiName>のURL<url>にヘッダー<header>:<value>を含むリクエストをされた
+API<apiName>のURL<url>にパス<jsonPathURL>に文字列<value>を持つJSONをリクエストされた
+API<apiName>のURL<url>にパス<jsonPath>に整数値<value>を持つJSONをリクエストされた
+API<apiName>のURL<url>にパス<jsonPath>に小数値<value>を持つJSONをリクエストされた
+API<apiName>のURL<url>にパス<jsonPath>に真偽値<value>を持つJSONをリクエストされた
+API<apiName>のURL<url>にGETリクエストされた
+API<apiName>のURL<url>にGETリクエストされていない
+API<apiName>のURL<url>にPOSTリクエストされた
+API<apiName>のURL<url>にPOSTリクエストされていない
+API<apiName>のURL<url>にPUTリクエストされた
+API<apiName>のURL<url>にPUTリクエストされていない
+API<apiName>のURL<url>にDELETEリクエストされた
+API<apiName>のURL<url>にDELETEリクエストされていない
