@@ -1,0 +1,12 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/doge"
+  },
+  "response": {
+    "status": 201,
+    "jsonBody": {
+      "message": "funny"
+    }
+  }
+}

@@ -27,10 +27,21 @@
 
 URL<url>にボディ<requestBody>、ヘッダー<header>で、PUTリクエストを送る
 URL<url>にボディ<requestBody>で、PUTリクエストを送る
-URL<url>にPOSTリクエストを送る
+# URL<url>にPOSTリクエストを送る
+* パス<url>に
+* メソッド"POST"で
+* メディアタイプ"application/json"で
+* リクエストを送る
+
 URL<url>にヘッダー<header>で、POSTリクエストを送る
 URL<url>にボディ<requestBody>、ヘッダー<header>で、POSTリクエストを送る
-URL<url>にボディ<requestBody>で、POSTリクエストを送る
+# URL<url>にボディ<requestBody>で、POSTリクエストを送る
+* パス<url>に
+* メソッド"POST"で
+* JSONボディ<requestBody>を
+* メディアタイプ"application/json"で
+* リクエストを送る
+
 URL<url>にDELETEリクエストを送るping
 URL<url>にヘッダー<header>で、DELETEリクエストを送る
 
