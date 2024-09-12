@@ -27,6 +27,7 @@ API<apiName>のURL<url>に<callCount>回DELETEリクエストされた
 
 API<apiName>のURLパス<urlPath>にクエリパラメータ<queryParameterName>が<queryParameterValue>でGETリクエストされた
 API<apiName>のURL<url>にボディ<jsonFilePath>JSONファイルの内容でPOSTリクエストされた
+
 # API<apiName>のURL<url>にボディ<json>でPOSTリクエストされた
 * API<apiName>について
 * メソッド"POST"でパス<url>に

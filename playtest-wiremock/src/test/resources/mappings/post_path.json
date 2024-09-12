@@ -1,6 +1,6 @@
 {
   "request": {
-    "method": "POST",
+    "method": "POST ",
     "urlPath": "/path"
   },
   "response": {
