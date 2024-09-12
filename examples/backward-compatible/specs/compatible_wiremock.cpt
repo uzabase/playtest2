@@ -4,7 +4,12 @@
 * リクエストが送られた回数が
 * 整数値の<callCount>である
 
-API<apiName>のURL<url>に<callCount>回POSTリクエストされた
+# API<apiName>のURL<url>に<callCount>回POSTリクエストされた
+* API<apiName>について
+* メソッド"POST"でパス<url>に
+* リクエストが送られた回数が
+* 整数値の<callCount>である
+
 # API<apiName>のURL<url>に<callCount>回PUTリクエストされた
 * API<apiName>について
 * メソッド"PUT"でパス<url>に
@@ -22,7 +27,13 @@ API<apiName>のURL<url>に<callCount>回DELETEリクエストされた
 
 API<apiName>のURLパス<urlPath>にクエリパラメータ<queryParameterName>が<queryParameterValue>でGETリクエストされた
 API<apiName>のURL<url>にボディ<jsonFilePath>JSONファイルの内容でPOSTリクエストされた
-API<apiName>のURL<url>にボディ<json>でPOSTリクエストされた
+# API<apiName>のURL<url>にボディ<json>でPOSTリクエストされた
+* API<apiName>について
+* メソッド"POST"でパス<url>に
+* JSONボディ<json>として
+* リクエストが送られた回数が
+* 整数値の"1"である
+
 API<apiName>のURL<url>にボディ<jsonFilePath>JSONファイルの内容、ヘッダー<header>で、POSTリクエストされた
 API<apiName>のURL<url>にボディ<json>、ヘッダー<header>で、POSTリクエストされた
 API<apiName>のURL<url>にヘッダー<header>で、POSTリクエストされた
