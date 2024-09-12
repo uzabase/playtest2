@@ -73,7 +73,10 @@ internal data class WireMockRequestParameters(
                     v.fold(r) { rx, x -> rx.withHeader(k, equalTo(x)) }
                 }
             }
-            .withRequestBody(equalToJson(body))
+            .let {
+                if (body.isEmpty()) it
+                else it.withRequestBody(equalToJson(body))
+            }
 }
 
 internal class WireMockProxy private constructor(
