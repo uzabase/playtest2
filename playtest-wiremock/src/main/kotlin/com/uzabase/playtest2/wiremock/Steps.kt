@@ -7,6 +7,7 @@ import com.uzabase.playtest2.core.config.Configuration
 import com.uzabase.playtest2.wiremock.config.WireMockModuleConfiguration
 import com.uzabase.playtest2.wiremock.config.WireMockModuleKey
 import com.uzabase.playtest2.wiremock.proxy.WireMockProxy
+import com.uzabase.playtest2.wiremock.proxy.WireMockRequestParameters.Companion.updateBody
 import com.uzabase.playtest2.wiremock.proxy.WireMockRequestParameters.Companion.updateHeader
 import com.uzabase.playtest2.wiremock.proxy.WireMockRequestParameters.Companion.updateMethodAndName
 import com.uzabase.playtest2.wiremock.proxy.WireMockRequestParameters.Companion.updateQuery
@@ -27,7 +28,6 @@ class Steps {
             .update(updateMethodAndName(method, path))
             .let { ScenarioDataStore.put(K.AssertionTarget, it) }
 
-
     fun query(name: String, value: String) {
         (ScenarioDataStore.get(K.AssertionTarget) as WireMockProxy)
             .update(updateQuery(name, value))
@@ -45,6 +45,13 @@ class Steps {
     fun header(name: String, value: String) {
         (ScenarioDataStore.get(K.AssertionTarget) as WireMockProxy)
             .update(updateHeader(name, value))
+            .let { ScenarioDataStore.put(K.AssertionTarget, it) }
+    }
+
+    @Step("JSONボディ<json>として")
+    fun jsonBody(json: String) {
+        (ScenarioDataStore.get(K.AssertionTarget) as WireMockProxy)
+            .update(updateBody(json))
             .let { ScenarioDataStore.put(K.AssertionTarget, it) }
     }
 

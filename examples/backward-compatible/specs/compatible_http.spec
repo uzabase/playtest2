@@ -19,3 +19,11 @@
 ## レスポンスステータスコードが<statusCode>である
 * URL"/ping"にGETリクエストを送る
 * レスポンスステータスコードが"200"である
+
+## URL<url>にPOSTリクエストを送る
+* URL"/doge"にPOSTリクエストを送る
+* レスポンスステータスコードが"201"である
+
+## URL<url>にボディ<requestBody>で、POSTリクエストを送る
+* URL"/dogeWithJson"にボディ"{\"message\":\"funny\"}"で、POSTリクエストを送る
+* レスポンスステータスコードが"201"である

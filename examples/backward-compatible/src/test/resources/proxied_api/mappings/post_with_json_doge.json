@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/dogeWithJson",
+    "bodyPatterns": [
+      {
+        "equalToJson": "{\"message\":\"funny\"}"
+      }
+    ]
+  },
+  "response": {
+    "status": 201,
+    "jsonBody": {
+      "message": "funny"
+    }
+  }
+}
