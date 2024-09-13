@@ -24,6 +24,14 @@
 * URL"/doge"にPOSTリクエストを送る
 * レスポンスステータスコードが"201"である
 
+## URL<url>にヘッダー<header>で、POSTリクエストを送る
+* URL"/dogeWithHeader"にヘッダー"name: kabosu"で、POSTリクエストを送る
+* レスポンスステータスコードが"201"である
+
+## URL<url>にボディ<requestBody>、ヘッダー<header>で、POSTリクエストを送る
+* URL"/dogeWithHeaderAndJson"にボディ"{\"message\": \"funny\"}"、ヘッダー"name: kabosu"で、POSTリクエストを送る
+* レスポンスステータスコードが"201"である
+
 ## URL<url>にボディ<requestBody>で、POSTリクエストを送る
 * URL"/dogeWithJson"にボディ"{\"message\":\"funny\"}"で、POSTリクエストを送る
 * レスポンスステータスコードが"201"である
