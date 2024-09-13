@@ -27,14 +27,28 @@
 
 URL<url>にボディ<requestBody>、ヘッダー<header>で、PUTリクエストを送る
 URL<url>にボディ<requestBody>で、PUTリクエストを送る
+
 # URL<url>にPOSTリクエストを送る
 * パス<url>に
 * メソッド"POST"で
 * メディアタイプ"application/json"で
 * リクエストを送る
 
-URL<url>にヘッダー<header>で、POSTリクエストを送る
-URL<url>にボディ<requestBody>、ヘッダー<header>で、POSTリクエストを送る
+# URL<url>にヘッダー<header>で、POSTリクエストを送る
+* パス<url>に
+* メソッド"POST"で
+* メディアタイプ"application/json"で
+* ヘッダー<header>で
+* リクエストを送る
+
+# URL<url>にボディ<requestBody>、ヘッダー<header>で、POSTリクエストを送る
+* パス<url>に
+* メソッド"POST"で
+* メディアタイプ"application/json"で
+* ヘッダー<header>で
+* JSONボディ<requestBody>を
+* リクエストを送る
+
 # URL<url>にボディ<requestBody>で、POSTリクエストを送る
 * パス<url>に
 * メソッド"POST"で
