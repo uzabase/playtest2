@@ -16,6 +16,14 @@
 * URL"/dogeWithHeader"にヘッダー"name: kabosu"で、PUTリクエストを送る
 * レスポンスステータスコードが"204"である
 
+## URL<url>にボディ<requestBody>、ヘッダー<header>で、PUTリクエストを送る
+* URL"/dogeWithJsonAndHeader"にボディ"{\"bark\": \"bow-wow\"}"、ヘッダー"name: kabosu"で、PUTリクエストを送る
+* レスポンスステータスコードが"204"である
+
+## URL<url>にボディ<requestBody>で、PUTリクエストを送る
+* URL"/dogeWithJson"にボディ"{\"bark\": \"bow-wow\"}"で、PUTリクエストを送る
+* レスポンスステータスコードが"204"である
+
 ## レスポンスステータスコードが<statusCode>である
 * URL"/ping"にGETリクエストを送る
 * レスポンスステータスコードが"200"である
@@ -35,3 +43,4 @@
 ## URL<url>にボディ<requestBody>で、POSTリクエストを送る
 * URL"/dogeWithJson"にボディ"{\"message\":\"funny\"}"で、POSTリクエストを送る
 * レスポンスステータスコードが"201"である
+

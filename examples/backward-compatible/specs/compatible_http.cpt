@@ -24,9 +24,20 @@
 * ヘッダー<header>で
 * リクエストを送る
 
+# URL<url>にボディ<requestBody>、ヘッダー<header>で、PUTリクエストを送る
+* パス<url>に
+* メソッド"PUT"で
+* メディアタイプ"application/json"で
+* ヘッダー<header>で
+* JSONボディ<requestBody>を
+* リクエストを送る
 
-URL<url>にボディ<requestBody>、ヘッダー<header>で、PUTリクエストを送る
-URL<url>にボディ<requestBody>で、PUTリクエストを送る
+# URL<url>にボディ<requestBody>で、PUTリクエストを送る
+* パス<url>に
+* メソッド"PUT"で
+* メディアタイプ"application/json"で
+* JSONボディ<requestBody>を
+* リクエストを送る
 
 # URL<url>にPOSTリクエストを送る
 * パス<url>に
@@ -56,7 +67,7 @@ URL<url>にボディ<requestBody>で、PUTリクエストを送る
 * メディアタイプ"application/json"で
 * リクエストを送る
 
-URL<url>にDELETEリクエストを送るping
+URL<url>にDELETEリクエストを送る
 URL<url>にヘッダー<header>で、DELETEリクエストを送る
 
 # レスポンスステータスコードが<statusCode>である

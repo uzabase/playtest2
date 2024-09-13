@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "PUT",
+    "urlPath": "/dogeWithJsonAndHeader",
+    "headers": {
+      "name": {
+        "equalTo": "kabosu"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "equalToJson": "{\"bark\": \"bow-wow\"}"
+      }
+    ]
+  },
+  "response": {
+    "status": 204,
+    "jsonBody": {
+      "message": "smile"
+    }
+  }
+}

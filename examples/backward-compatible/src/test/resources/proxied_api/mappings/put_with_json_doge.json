@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "PUT",
+    "urlPath": "/dogeWithJson",
+    "bodyPatterns": [
+      {
+        "equalToJson": "{\"bark\": \"bow-wow\"}"
+      }
+    ]
+  },
+  "response": {
+    "status": 204,
+    "jsonBody": {
+      "message": "smile"
+    }
+  }
+}
