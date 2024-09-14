@@ -28,6 +28,7 @@ class Steps {
             .update(updateMethodAndName(method, path))
             .let { ScenarioDataStore.put(K.AssertionTarget, it) }
 
+    @Step("クエリ<name>が<value>として")
     fun query(name: String, value: String) {
         (ScenarioDataStore.get(K.AssertionTarget) as WireMockProxy)
             .update(updateQuery(name, value))

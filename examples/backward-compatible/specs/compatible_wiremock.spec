@@ -12,9 +12,17 @@
 * URL"/doge"にPUTリクエストを送る
 * API"ProxiedAPI"のURL"/doge"に"1"回PUTリクエストされた
 
+## API<apiName>のURL<url>に<callCount>回DELETEリクエストされた
+* URL"/doge"にDELETEリクエストを送る
+* API"ProxiedAPI"のURL"/doge"に"1"回DELETEリクエストされた
+
 ## API<apiName>のURL<url>にヘッダー<header>で、GETリクエストされた
 * URL"/pingWithHeader"にヘッダー"great-answer: 42"で、GETリクエストを送る
 * API"ProxiedAPI"のURL"/pingWithHeader"にヘッダー"great-answer: 42"で、GETリクエストされた
+
+## API<apiName>のURLパス<urlPath>にクエリパラメータ<queryParameterName>が<queryParameterValue>でGETリクエストされた
+* URL"/dogeWithQuery?name=kabosu"にGETリクエストを送る
+* API"ProxiedAPI"のURLパス"/dogeWithQuery"にクエリパラメータ"name"が"kabosu"でGETリクエストされた
 
 ## API<apiName>のURL<url>にボディ<json>でPOSTリクエストされた
 * URL"/dogeWithJson"にボディ"{\"message\":\"funny\"}"で、POSTリクエストを送る
