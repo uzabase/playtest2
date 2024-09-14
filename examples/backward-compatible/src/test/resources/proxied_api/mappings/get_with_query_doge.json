@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/dogeWithQuery",
+    "queryParameters": {
+      "name": {
+        "equalTo": "kabosu"
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "jsonBody": {
+      "message": "funny"
+    }
+  }
+}
