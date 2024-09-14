@@ -67,8 +67,18 @@
 * メディアタイプ"application/json"で
 * リクエストを送る
 
-URL<url>にDELETEリクエストを送る
-URL<url>にヘッダー<header>で、DELETEリクエストを送る
+# URL<url>にDELETEリクエストを送る
+* パス<url>に
+* メソッド"DELETE"で
+* メディアタイプ"application/json"で
+* リクエストを送る
+
+# URL<url>にヘッダー<header>で、DELETEリクエストを送る
+* パス<url>に
+* メソッド"DELETE"で
+* ヘッダー<header>で
+* メディアタイプ"application/json"で
+* リクエストを送る
 
 # レスポンスステータスコードが<statusCode>である
 * レスポンスのステータスコードが

@@ -1,0 +1,9 @@
+{
+  "request": {
+    "method": "DELETE",
+    "urlPath": "/doge"
+  },
+  "response": {
+    "status": 204
+  }
+}

@@ -44,3 +44,10 @@
 * URL"/dogeWithJson"にボディ"{\"message\":\"funny\"}"で、POSTリクエストを送る
 * レスポンスステータスコードが"201"である
 
+## URL<url>にDELETEリクエストを送る
+* URL"/doge"にDELETEリクエストを送る
+* レスポンスステータスコードが"204"である
+
+## URL<url>にヘッダー<header>で、DELETEリクエストを送る
+* URL"/dogeWithHeader"にヘッダー"name: kabosu"で、DELETEリクエストを送る
+* レスポンスステータスコードが"204"である
