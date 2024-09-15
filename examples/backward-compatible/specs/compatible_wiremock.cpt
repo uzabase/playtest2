@@ -43,8 +43,21 @@
 * リクエストが送られた回数が
 * 整数値の"1"である
 
-API<apiName>のURL<url>にボディ<json>、ヘッダー<header>で、POSTリクエストされた
-API<apiName>のURL<url>にヘッダー<header>で、POSTリクエストされた
+# API<apiName>のURL<url>にボディ<json>、ヘッダー<header>で、POSTリクエストされた
+* API<apiName>について
+* メソッド"POST"でパス<url>に
+* JSONボディ<json>として
+* ヘッダー<header>として
+* リクエストが送られた回数が
+* 整数値の"1"である
+
+# API<apiName>のURL<url>にヘッダー<header>で、POSTリクエストされた
+* API<apiName>について
+* メソッド"POST"でパス<url>に
+* ヘッダー<header>として
+* リクエストが送られた回数が
+* 整数値の"1"である
+
 API<apiName>のURL<url>にパス<jsonPath>に文字列<value>を持つJSONでPOSTリクエストされた
 API<apiName>のURL<url>にパス<jsonPath>に整数値<value>を持つJSONでPOSTリクエストされた
 API<apiName>のURL<url>にパス<jsonPath>に小数値<value>を持つJSONでPOSTリクエストされた
