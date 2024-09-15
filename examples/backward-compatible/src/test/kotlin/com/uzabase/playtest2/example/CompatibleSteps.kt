@@ -14,37 +14,28 @@ import com.uzabase.playtest2.wiremock.config.wireMock
 import java.net.URI
 
 class CompatibleSteps {
-    private val proxyServer =
+    private val server =
         WireMockConfiguration().port(3000)
-            .usingFilesUnderClasspath("proxy_server")
+            .usingFilesUnderClasspath("server")
             .let(::WireMockServer)
-
-    private val proxiedApi =
-        WireMockConfiguration().port(3010)
-            .usingFilesUnderClasspath("proxied_api")
-            .let(::WireMockServer)
-
 
     @BeforeSuite
     fun beforeSuite() {
         playtest2 {
             http(URI("http://localhost:3000").toURL()) +
-                    wireMock("ProxiedAPI", URI("http://localhost:3010").toURL())
+                    wireMock("ProxiedAPI", URI("http://localhost:3000").toURL())
         }
-        proxiedApi.start()
-        proxyServer.start()
+        server.start()
     }
 
     @AfterScenario
     fun afterScenario() {
         WireMock(3000).resetRequests()
-        WireMock(3010).resetRequests()
     }
 
     @AfterSuite
     fun afterSuite() {
-        proxiedApi.stop()
-        proxyServer.stop()
+        server.stop()
     }
 
     @Step("Hello")
