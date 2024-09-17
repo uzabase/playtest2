@@ -51,3 +51,11 @@
 ## API<apiName>のURL<url>にヘッダー<header>で、PUTリクエストされた
 * URL"/dogeWithHeader"にヘッダー"name: kabosu"で、PUTリクエストを送る
 * API"ProxiedAPI"のURL"/dogeWithHeader"にヘッダー"name: kabosu"で、PUTリクエストされた
+
+## API<apiName>のURL<url>にパス<jsonPath>に文字列<value>を持つJSONでPUTリクエストされた
+* URL"/dogeWithJson"にボディ"{\"bark\":\"bow-wow\"}"で、PUTリクエストを送る
+* API"ProxiedAPI"のURL"/dogeWithJson"にパス"$.bark"に文字列"bow-wow"を持つJSONでPUTリクエストされた
+
+## API<apiName>のURL<url>にヘッダー<header>で、DELETEリクエストされた
+* URL"/dogeWithHeader"にヘッダー"name: kabosu"で、DELETEリクエストを送る
+* API"ProxiedAPI"のURL"/dogeWithHeader"にヘッダー"name: kabosu"で、DELETEリクエストされた
