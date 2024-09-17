@@ -86,7 +86,6 @@
 * リクエストが送られた回数が
 * 整数値の"1"である
 
-
 API<apiName>のURL<url>にヘッダー<header>:<value>を含むリクエストをされた
 API<apiName>のURL<url>にパス<jsonPathURL>に文字列<value>を持つJSONをリクエストされた
 API<apiName>のURL<url>にGETリクエストされた
@@ -97,3 +96,7 @@ API<apiName>のURL<url>にPUTリクエストされた
 API<apiName>のURL<url>にPUTリクエストされていない
 API<apiName>のURL<url>にDELETEリクエストされた
 API<apiName>のURL<url>にDELETEリクエストされていない
+API<apiName>の正規表現で全体マッチするURL<url>にDELETEリクエストされた
+API<apiName>の正規表現で全体マッチするURL<url>にGETリクエストされた
+API<apiName>の正規表現で全体マッチするURL<url>にPOSTリクエストされた
+API<apiName>の正規表現で全体マッチするURL<url>にPUTリクエストされた
