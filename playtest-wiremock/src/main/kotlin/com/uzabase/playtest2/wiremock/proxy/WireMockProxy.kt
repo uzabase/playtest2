@@ -45,6 +45,14 @@ internal class RequestPatternBuilderUpdaters private constructor() {
                 }
                 it.withRequestBody(equalToJson(value))
             }
+
+        fun updateJsonPathAndValue(jsonPath: String, value: String): IRequestPatternBuilderUpdater =
+            IRequestPatternBuilderUpdater {
+                if (it == null) {
+                    throw IllegalStateException("RequestPatternBuilder is null")
+                }
+                it.withRequestBody(matchingJsonPath(jsonPath, equalTo(value)))
+            }
     }
 }
 

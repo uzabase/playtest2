@@ -51,13 +51,10 @@
 
 # API<apiName>のURL<url>にパス<jsonPath>に文字列<value>を持つJSONでPOSTリクエストされた
 * API<apiName>についてメソッド"POST"でパス<url>に
-//？
-JSONパス<jsonPath>に文字列<value>として
+* JSONパス<jsonPath>に文字列表現の<value>を持つ
+* リクエストが送られた回数が
 * 整数値の"1"である
 
-API<apiName>のURL<url>にパス<jsonPath>に整数値<value>を持つJSONでPOSTリクエストされた
-API<apiName>のURL<url>にパス<jsonPath>に小数値<value>を持つJSONでPOSTリクエストされた
-API<apiName>のURL<url>にパス<jsonPath>に真偽値<value>を持つJSONでPOSTリクエストされた
 API<apiName>のURL<url>にボディ<json>でPUTリクエストされた
 API<apiName>のURL<url>にボディ<json>、ヘッダー<header>で、PUTリクエストされた
 
@@ -68,15 +65,9 @@ API<apiName>のURL<url>にボディ<json>、ヘッダー<header>で、PUTリク�
 * 整数値の"1"である
 
 API<apiName>のURL<url>にパス<jsonPath>に文字列<value>を持つJSONでPUTリクエストされた
-API<apiName>のURL<url>にパス<jsonPath>に整数値<value>を持つJSONでPUTリクエストされた
-API<apiName>のURL<url>にパス<jsonPath>に小数値<value>を持つJSONでPUTリクエストされた
-API<apiName>のURL<url>にパス<jsonPath>に真偽値<value>を持つJSONでPUTリクエストされた
 API<apiName>のURL<url>にヘッダー<header>で、DELETEリクエストされた
 API<apiName>のURL<url>にヘッダー<header>:<value>を含むリクエストをされた
 API<apiName>のURL<url>にパス<jsonPathURL>に文字列<value>を持つJSONをリクエストされた
-API<apiName>のURL<url>にパス<jsonPath>に整数値<value>を持つJSONをリクエストされた
-API<apiName>のURL<url>にパス<jsonPath>に小数値<value>を持つJSONをリクエストされた
-API<apiName>のURL<url>にパス<jsonPath>に真偽値<value>を持つJSONをリクエストされた
 API<apiName>のURL<url>にGETリクエストされた
 API<apiName>のURL<url>にGETリクエストされていない
 API<apiName>のURL<url>にPOSTリクエストされた
