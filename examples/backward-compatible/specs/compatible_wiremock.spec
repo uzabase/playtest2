@@ -40,6 +40,14 @@
 * URL"/dogeWithJson"にボディ"{\"message\":\"funny\"}"で、POSTリクエストを送る
 * API"ProxiedAPI"のURL"/dogeWithJson"にパス"$.message"に文字列"funny"を持つJSONでPOSTリクエストされた
 
+## API<apiName>のURL<url>にボディ<json>でPUTリクエストされた
+* URL"/dogeWithJson"にボディ"{\"bark\":\"bow-wow\"}"で、PUTリクエストを送る
+* API"ProxiedAPI"のURL"/dogeWithJson"にボディ"{\"bark\":\"bow-wow\"}"でPUTリクエストされた
+
+## API<apiName>のURL<url>にボディ<json>、ヘッダー<header>で、PUTリクエストされた
+* URL"/dogeWithHeaderAndJson"にボディ"{\"bark\":\"bow-wow\"}"、ヘッダー"name: kabosu"で、PUTリクエストを送る
+* API"ProxiedAPI"のURL"/dogeWithHeaderAndJson"にボディ"{\"bark\":\"bow-wow\"}"、ヘッダー"name: kabosu"で、PUTリクエストされた
+
 ## API<apiName>のURL<url>にヘッダー<header>で、PUTリクエストされた
 * URL"/dogeWithHeader"にヘッダー"name: kabosu"で、PUTリクエストを送る
 * API"ProxiedAPI"のURL"/dogeWithHeader"にヘッダー"name: kabosu"で、PUTリクエストされた
