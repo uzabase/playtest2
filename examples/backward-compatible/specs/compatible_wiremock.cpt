@@ -1,64 +1,60 @@
 # API<apiName>のURL<url>に<callCount>回GETリクエストされた
-* API<apiName>について
-* メソッド"GET"でパス<url>に
+* API<apiName>についてメソッド"GET"でパス<url>に
 * リクエストが送られた回数が
 * 整数値の<callCount>である
 
 # API<apiName>のURL<url>に<callCount>回POSTリクエストされた
-* API<apiName>について
-* メソッド"POST"でパス<url>に
+* API<apiName>についてメソッド"POST"でパス<url>に
 * リクエストが送られた回数が
 * 整数値の<callCount>である
 
 # API<apiName>のURL<url>に<callCount>回PUTリクエストされた
-* API<apiName>について
-* メソッド"PUT"でパス<url>に
+* API<apiName>についてメソッド"PUT"でパス<url>に
 * リクエストが送られた回数が
 * 整数値の<callCount>である
 
 # API<apiName>のURL<url>に<callCount>回DELETEリクエストされた
-* API<apiName>について
-* メソッド"DELETE"でパス<url>に
+* API<apiName>についてメソッド"DELETE"でパス<url>に
 * リクエストが送られた回数が
 * 整数値の<callCount>である
 
 # API<apiName>のURL<url>にヘッダー<header>で、GETリクエストされた
-* API<apiName>について
-* メソッド"GET"でパス<url>に
+* API<apiName>についてメソッド"GET"でパス<url>に
 * ヘッダー<header>として
 * リクエストが送られた回数が
 * 整数値の"1"である
 
 # API<apiName>のURLパス<urlPath>にクエリパラメータ<queryParameterName>が<queryParameterValue>でGETリクエストされた
-* API<apiName>について
-* メソッド"GET"でパス<urlPath>に
+* API<apiName>についてメソッド"GET"でパス<urlPath>に
 * クエリ<queryParameterName>が<queryParameterValue>として
 * リクエストが送られた回数が
 * 整数値の"1"である
 
 # API<apiName>のURL<url>にボディ<json>でPOSTリクエストされた
-* API<apiName>について
-* メソッド"POST"でパス<url>に
+* API<apiName>についてメソッド"POST"でパス<url>に
 * JSONボディ<json>として
 * リクエストが送られた回数が
 * 整数値の"1"である
 
 # API<apiName>のURL<url>にボディ<json>、ヘッダー<header>で、POSTリクエストされた
-* API<apiName>について
-* メソッド"POST"でパス<url>に
+* API<apiName>についてメソッド"POST"でパス<url>に
 * JSONボディ<json>として
 * ヘッダー<header>として
 * リクエストが送られた回数が
 * 整数値の"1"である
 
 # API<apiName>のURL<url>にヘッダー<header>で、POSTリクエストされた
-* API<apiName>について
-* メソッド"POST"でパス<url>に
+* API<apiName>についてメソッド"POST"でパス<url>に
 * ヘッダー<header>として
 * リクエストが送られた回数が
 * 整数値の"1"である
 
-API<apiName>のURL<url>にパス<jsonPath>に文字列<value>を持つJSONでPOSTリクエストされた
+# API<apiName>のURL<url>にパス<jsonPath>に文字列<value>を持つJSONでPOSTリクエストされた
+* API<apiName>についてメソッド"POST"でパス<url>に
+//？
+JSONパス<jsonPath>に文字列<value>として
+* 整数値の"1"である
+
 API<apiName>のURL<url>にパス<jsonPath>に整数値<value>を持つJSONでPOSTリクエストされた
 API<apiName>のURL<url>にパス<jsonPath>に小数値<value>を持つJSONでPOSTリクエストされた
 API<apiName>のURL<url>にパス<jsonPath>に真偽値<value>を持つJSONでPOSTリクエストされた
@@ -66,8 +62,7 @@ API<apiName>のURL<url>にボディ<json>でPUTリクエストされた
 API<apiName>のURL<url>にボディ<json>、ヘッダー<header>で、PUTリクエストされた
 
 # API<apiName>のURL<url>にヘッダー<header>で、PUTリクエストされた
-* API<apiName>について
-* メソッド"PUT"でパス<url>に
+* API<apiName>についてメソッド"PUT"でパス<url>に
 * ヘッダー<header>として
 * リクエストが送られた回数が
 * 整数値の"1"である

@@ -6,26 +6,19 @@ import com.uzabase.playtest2.core.K
 import com.uzabase.playtest2.core.config.Configuration
 import com.uzabase.playtest2.wiremock.config.WireMockModuleConfiguration
 import com.uzabase.playtest2.wiremock.config.WireMockModuleKey
+import com.uzabase.playtest2.wiremock.proxy.RequestPatternBuilderUpdaters.Companion.updateBody
+import com.uzabase.playtest2.wiremock.proxy.RequestPatternBuilderUpdaters.Companion.updateHeader
+import com.uzabase.playtest2.wiremock.proxy.RequestPatternBuilderUpdaters.Companion.updateQuery
 import com.uzabase.playtest2.wiremock.proxy.WireMockProxy
-import com.uzabase.playtest2.wiremock.proxy.WireMockRequestParameters.Companion.updateBody
-import com.uzabase.playtest2.wiremock.proxy.WireMockRequestParameters.Companion.updateHeader
-import com.uzabase.playtest2.wiremock.proxy.WireMockRequestParameters.Companion.updateMethodAndName
-import com.uzabase.playtest2.wiremock.proxy.WireMockRequestParameters.Companion.updateQuery
 
 
 class Steps {
     private fun wireMockConfig(apiName: String): WireMockModuleConfiguration =
         Configuration[WireMockModuleKey(apiName)] as WireMockModuleConfiguration
 
-    @Step("API<apiName>について")
-    fun setApi(apiName: String) =
-        WireMockProxy.of(wireMockConfig(apiName).toWireMockClient())
-            .let { ScenarioDataStore.put(K.AssertionTarget, it) }
-
-    @Step("メソッド<method>でパス<path>に")
-    fun initParams(method: String, path: String) =
-        (ScenarioDataStore.get(K.AssertionTarget) as WireMockProxy)
-            .update(updateMethodAndName(method, path))
+    @Step("API<apiName>についてメソッド<method>でパス<path>に")
+    fun setupApi(apiName: String, method: String, path: String) =
+        WireMockProxy.of(wireMockConfig(apiName).toWireMockClient(), method, path)
             .let { ScenarioDataStore.put(K.AssertionTarget, it) }
 
     @Step("クエリ<name>が<value>として")

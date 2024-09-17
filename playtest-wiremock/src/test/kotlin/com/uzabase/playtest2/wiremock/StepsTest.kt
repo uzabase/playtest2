@@ -42,14 +42,12 @@ class StepsTest : FunSpec({
         }
 
         test("Assert GET /hello request should pass") {
-            sut.setApi("MyAPI")
-            sut.initParams("GET", "/hello")
+            sut.setupApi("MyAPI", "GET", "/hello")
             assert.shouldBeLongValue(1)
         }
 
         test("Assert GET /byebye reqeust should failed") {
-            sut.setApi("MyAPI")
-            sut.initParams("GET", "/byebye")
+            sut.setupApi("MyAPI", "GET", "/byebye")
             assert.shouldBeLongValue(0)
         }
     }
@@ -62,8 +60,7 @@ class StepsTest : FunSpec({
             .let { client.newCall(it).execute() }
             .close()
 
-        sut.setApi("MyAPI")
-        sut.initParams("GET", "/path")
+        sut.setupApi("MyAPI", "GET", "/path")
         sut.query("p1", "a")
         sut.query("p1", "b")
         sut.query("p2", "42")
@@ -80,11 +77,9 @@ class StepsTest : FunSpec({
             .let { client.newCall(it).execute() }
             .close()
 
-        sut.setApi("MyAPI")
-        sut.initParams("POST", "/path")
+        sut.setupApi("MyAPI", "POST", "/path")
         sut.jsonBody("{\"b\": 42, \"a\": \"Hello\"}")
         sut.header("great-answer", "42")
         assert.shouldBeLongValue(1)
     }
-
 })
