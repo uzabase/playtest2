@@ -8,6 +8,7 @@ import com.uzabase.playtest2.wiremock.config.WireMockModuleConfiguration
 import com.uzabase.playtest2.wiremock.config.WireMockModuleKey
 import com.uzabase.playtest2.wiremock.proxy.RequestPatternBuilderUpdaters.Companion.updateBody
 import com.uzabase.playtest2.wiremock.proxy.RequestPatternBuilderUpdaters.Companion.updateHeader
+import com.uzabase.playtest2.wiremock.proxy.RequestPatternBuilderUpdaters.Companion.updateJsonPathAndValue
 import com.uzabase.playtest2.wiremock.proxy.RequestPatternBuilderUpdaters.Companion.updateQuery
 import com.uzabase.playtest2.wiremock.proxy.WireMockProxy
 
@@ -46,6 +47,13 @@ class Steps {
     fun jsonBody(json: String) {
         (ScenarioDataStore.get(K.AssertionTarget) as WireMockProxy)
             .update(updateBody(json))
+            .let { ScenarioDataStore.put(K.AssertionTarget, it) }
+    }
+
+    @Step("JSONパス<jsonPath>に文字列表現の<value>を持つ")
+    fun jsonPathAndValue(jsonPath: String, value: String) {
+        (ScenarioDataStore.get(K.AssertionTarget) as WireMockProxy)
+            .update(updateJsonPathAndValue(jsonPath, value))
             .let { ScenarioDataStore.put(K.AssertionTarget, it) }
     }
 
