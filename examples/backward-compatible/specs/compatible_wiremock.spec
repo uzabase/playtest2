@@ -62,8 +62,36 @@
 
 ## API<apiName>のURL<url>にGETリクエストされた
 * URL"/ping"にGETリクエストを送る
+* URL"/ping"にGETリクエストを送る
 * API"ProxiedAPI"のURL"/ping"にGETリクエストされた
 
 ## API<apiName>のURL<url>にGETリクエストされていない
 * URL"/ping"にGETリクエストを送る
 * API"ProxiedAPI"のURL"/pong"にGETリクエストされていない
+
+## API<apiName>のURL<url>にPOSTリクエストされた
+* URL"/doge"にPOSTリクエストを送る
+* URL"/doge"にPOSTリクエストを送る
+* API"ProxiedAPI"のURL"/doge"にPOSTリクエストされた
+
+## API<apiName>のURL<url>にPOSTリクエストされていない
+* URL"/doge"にPOSTリクエストを送る
+* API"ProxiedAPI"のURL"/dog"にPOSTリクエストされていない
+
+## API<apiName>のURL<url>にPUTリクエストされた
+* URL"/doge"にPUTリクエストを送る
+* URL"/doge"にPUTリクエストを送る
+* API"ProxiedAPI"のURL"/doge"にPUTリクエストされた
+
+## API<apiName>のURL<url>にPUTリクエストされていない
+* URL"/doge"にPUTリクエストを送る
+* API"ProxiedAPI"のURL"/dog"にPUTリクエストされていない
+
+## API<apiName>のURL<url>にDELETEリクエストされた
+* URL"/doge"にDELETEリクエストを送る
+* URL"/doge"にDELETEリクエストを送る
+* API"ProxiedAPI"のURL"/doge"にDELETEリクエストされた
+
+## API<apiName>のURL<url>にDELETEリクエストされていない
+* URL"/doge"にDELETEリクエストを送る
+* API"ProxiedAPI"のURL"/dog"にDELETEリクエストされていない
