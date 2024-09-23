@@ -88,8 +88,16 @@
 
 API<apiName>のURL<url>にヘッダー<header>:<value>を含むリクエストをされた
 API<apiName>のURL<url>にパス<jsonPathURL>に文字列<value>を持つJSONをリクエストされた
-API<apiName>のURL<url>にGETリクエストされた
-API<apiName>のURL<url>にGETリクエストされていない
+# API<apiName>のURL<url>にGETリクエストされた
+* API<apiName>についてメソッド"GET"でパス<url>に
+* リクエストが送られた回数が
+* 整数値の"1"以上である
+
+# API<apiName>のURL<url>にGETリクエストされていない
+* API<apiName>についてメソッド"GET"でパス<url>に
+* リクエストが送られた回数が
+* 整数値の"0"である
+
 API<apiName>のURL<url>にPOSTリクエストされた
 API<apiName>のURL<url>にPOSTリクエストされていない
 API<apiName>のURL<url>にPUTリクエストされた

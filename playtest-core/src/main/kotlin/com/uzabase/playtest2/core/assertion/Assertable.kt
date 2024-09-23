@@ -4,6 +4,10 @@ fun interface ShouldBeLong {
     fun shouldBe(expected: Long): Boolean
 }
 
+fun interface ShouldBeGreaterEqualLong {
+    fun shouldBeGreaterEqual(expected: Long): Boolean
+}
+
 fun interface ShouldBeString {
     fun shouldBe(expected: String): Boolean
 }

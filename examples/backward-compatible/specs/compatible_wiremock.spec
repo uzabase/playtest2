@@ -59,3 +59,11 @@
 ## API<apiName>のURL<url>にヘッダー<header>で、DELETEリクエストされた
 * URL"/dogeWithHeader"にヘッダー"name: kabosu"で、DELETEリクエストを送る
 * API"ProxiedAPI"のURL"/dogeWithHeader"にヘッダー"name: kabosu"で、DELETEリクエストされた
+
+## API<apiName>のURL<url>にGETリクエストされた
+* URL"/ping"にGETリクエストを送る
+* API"ProxiedAPI"のURL"/ping"にGETリクエストされた
+
+## API<apiName>のURL<url>にGETリクエストされていない
+* URL"/ping"にGETリクエストを送る
+* API"ProxiedAPI"のURL"/pong"にGETリクエストされていない
