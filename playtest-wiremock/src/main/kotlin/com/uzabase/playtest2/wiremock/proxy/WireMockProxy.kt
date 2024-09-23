@@ -4,6 +4,7 @@ import com.github.tomakehurst.wiremock.client.CountMatchingStrategy
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
+import com.uzabase.playtest2.core.assertion.ShouldBeGreaterEqualLong
 import com.uzabase.playtest2.core.assertion.ShouldBeLong
 
 internal fun interface IRequestPatternBuilderUpdater {
@@ -63,7 +64,7 @@ internal class WireMockProxy private constructor(
     private val mock: WireMock,
     private val builder: RequestPatternBuilder,
     private val updaters: List<IRequestPatternBuilderUpdater>,
-) : ShouldBeLong {
+) : ShouldBeLong, ShouldBeGreaterEqualLong {
     companion object {
         fun of(mock: WireMock, method: String, path: String) =
             WireMockProxy(
@@ -83,6 +84,16 @@ internal class WireMockProxy private constructor(
             true
         } catch (e: AssertionError) {
             // TODO: たぶんキャッチしない方が良い気がしている
+            e.printStackTrace()
+            false
+        }
+
+    override fun shouldBeGreaterEqual(expected: Long): Boolean =
+        try {
+            val count = CountMatchingStrategy(CountMatchingStrategy.GREATER_THAN_OR_EQUAL, expected.toInt())
+            mock.verifyThat(count, updaters.build(builder))
+            true
+        } catch (e: AssertionError) {
             e.printStackTrace()
             false
         }

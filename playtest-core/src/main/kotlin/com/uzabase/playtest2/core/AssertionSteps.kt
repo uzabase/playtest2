@@ -24,6 +24,14 @@ class AssertionSteps {
             }
         }
 
+    @Step("整数値の<value>以上である")
+    fun shouldBeGreaterEqualLongValue(value: Long) =
+        assertable<ShouldBeGreaterEqualLong> {
+            test("should be greater than or equal to $value") {
+                it.shouldBeGreaterEqual(value)
+            }
+        }
+
     @Step("文字列の<value>である")
     fun shouldBeStringValue(value: String) =
         assertable<ShouldBeString> {
