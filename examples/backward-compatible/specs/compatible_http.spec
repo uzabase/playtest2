@@ -24,10 +24,6 @@
 * URL"/dogeWithJson"にボディ"{\"bark\": \"bow-wow\"}"で、PUTリクエストを送る
 * レスポンスステータスコードが"204"である
 
-## レスポンスステータスコードが<statusCode>である
-* URL"/ping"にGETリクエストを送る
-* レスポンスステータスコードが"200"である
-
 ## URL<url>にPOSTリクエストを送る
 * URL"/doge"にPOSTリクエストを送る
 * レスポンスステータスコードが"201"である
@@ -51,3 +47,11 @@
 ## URL<url>にヘッダー<header>で、DELETEリクエストを送る
 * URL"/dogeWithHeader"にヘッダー"name: kabosu"で、DELETEリクエストを送る
 * レスポンスステータスコードが"204"である
+
+## レスポンスステータスコードが<statusCode>である
+* URL"/ping"にGETリクエストを送る
+* レスポンスステータスコードが"200"である
+
+## レスポンスヘッダーに<key>が存在し、その値が<value>である
+* URL"/ping"にGETリクエストを送る
+* レスポンスヘッダーに"content-type"が存在し、その値が"application/json"である

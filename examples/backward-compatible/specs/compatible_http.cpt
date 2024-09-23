@@ -80,9 +80,6 @@
 * メディアタイプ"application/json"で
 * リクエストを送る
 
-# レスポンスステータスコードが<statusCode>である
-* レスポンスのステータスコードが
-* 整数値の<statusCode>である
 
 レスポンスのJSONの<jsonPath>が<pattern>である
 レスポンスのJSONの<jsonPath>がnullである
@@ -109,7 +106,15 @@
 レスポンスのJSONの配列<jsonPath>に、整数値<value>が存在する
 レスポンスのJSONの配列<jsonPath>に、文字列<value>が存在しない
 レスポンスのJSONの配列<jsonPath>に、文字列<value>が存在する
-レスポンスステータスコードが<statusCode>である
-レスポンスヘッダーに<key>が存在し、その値が<value>である
+
+# レスポンスステータスコードが<statusCode>である
+* レスポンスのステータスコードが
+* 整数値の<statusCode>である
+
+# レスポンスヘッダーに<key>が存在し、その値が<value>である
+* レスポンスのヘッダーが
+* キー<key>に対応する値が
+* 文字列の<value>である
+
 レスポンスボディがバイナリ<path>である
 レスポンスボディが文字列<stringValue>である
