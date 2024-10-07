@@ -2,11 +2,15 @@ package com.uzabase.playtest2.http.proxy
 
 import com.jayway.jsonpath.JsonPath
 import com.uzabase.playtest2.core.assertion.Assertable
+import java.nio.file.Path
 
 class JsonPathProxy private constructor(val json: String, val path: String) : Assertable<Any> {
     companion object {
         fun of(json: String, path: String): JsonPathProxy {
             return JsonPathProxy(json, path)
+        }
+        fun of(jsonFilePath: Path, path: String): JsonPathProxy {
+            return JsonPathProxy.of(jsonFilePath.toFile().readText(Charsets.UTF_8), path)
         }
     }
 
