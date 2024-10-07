@@ -10,6 +10,7 @@ import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpRequest.BodyPublishers
 import java.net.http.HttpResponse.BodyHandlers
+import java.nio.file.Files
 
 class RequestSteps {
 
@@ -58,9 +59,13 @@ class RequestSteps {
 
     @Step("リクエストを送る")
     fun sendRequest() =
-        buildRequest()
-            .let { client.send(it, BodyHandlers.ofString()) }
-            .run { ScenarioDataStore.put(K.RESPONSE, this) }
+        Files.createTempFile("playtest2.", ".tmp")
+            .also { it.toFile().deleteOnExit() }
+            .let { temp ->
+                buildRequest()
+                    .let { client.send(it, BodyHandlers.ofFile(temp)) }
+                    .run { ScenarioDataStore.put(K.RESPONSE, this) }
+            }
 
     private fun buildRequest(): HttpRequest {
         @Suppress("UNCHECKED_CAST")
