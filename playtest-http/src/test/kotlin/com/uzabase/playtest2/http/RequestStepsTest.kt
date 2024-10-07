@@ -14,6 +14,7 @@ import io.kotest.data.row
 import io.kotest.matchers.shouldBe
 import java.net.URI
 import java.net.http.HttpResponse
+import java.nio.file.Path
 import com.uzabase.playtest2.http.RequestSteps as Sut
 
 class RequestStepsTest : FunSpec({
@@ -45,7 +46,8 @@ class RequestStepsTest : FunSpec({
         sut.methodIntoRequest(Sut.Method.GET)
         sut.sendRequest()
         val response = ScenarioDataStore.get(K.RESPONSE) as HttpResponse<*>
-        response.body().toString().shouldBe("Hello, world!")
+        val path = response.body() as Path
+        path.toFile().readText(Charsets.UTF_8).shouldBe("Hello, world!")
     }
 
     context("Simple requests") {
