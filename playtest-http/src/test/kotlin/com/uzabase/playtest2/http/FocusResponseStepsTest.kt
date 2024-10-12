@@ -5,6 +5,8 @@ import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.uzabase.playtest2.core.assertion.Assertable
 import com.uzabase.playtest2.core.zoom.Zoomable
 import com.uzabase.playtest2.http.internal.K
+import com.uzabase.playtest2.http.proxy.ResponseBodyProxy
+import com.uzabase.playtest2.http.proxy.ResponseHeadersProxy
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
@@ -13,6 +15,7 @@ import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse.BodyHandlers
+import java.nio.file.Files
 import com.uzabase.playtest2.core.K as coreK
 import com.uzabase.playtest2.http.FocusResponseSteps as Sut
 
@@ -48,10 +51,12 @@ class FocusResponseStepsTest : FunSpec({
 
     context("About response body") {
         test("should be store as assertion target") {
-            client.send(HttpRequest.newBuilder(URI("http://localhost:8080/articles")).build(), BodyHandlers.ofString())
+            val f = Files.createTempFile("playtest2.test","txt")
+            f.toFile().deleteOnExit()
+            client.send(HttpRequest.newBuilder(URI("http://localhost:8080/articles")).build(), BodyHandlers.ofFile(f))
                 .let { ScenarioDataStore.put(K.RESPONSE, it) }
             sut.body()
-            ScenarioDataStore.get(coreK.AssertionTarget).shouldBeInstanceOf<String>()
+            ScenarioDataStore.get(coreK.AssertionTarget).shouldBeInstanceOf<ResponseBodyProxy>()
         }
     }
 
@@ -62,8 +67,7 @@ class FocusResponseStepsTest : FunSpec({
             sut.headers()
 
             ScenarioDataStore.get(coreK.AssertionTarget)
-                .also { it.shouldBeInstanceOf<Zoomable<String>>() }
-                .also { it.shouldBeInstanceOf<Assertable<String>>() }
+                .also { it.shouldBeInstanceOf<ResponseHeadersProxy>() }
         }
     }
 })
