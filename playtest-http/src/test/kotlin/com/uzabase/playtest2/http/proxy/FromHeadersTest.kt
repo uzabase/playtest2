@@ -3,7 +3,6 @@ package com.uzabase.playtest2.http.proxy
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
-import io.kotest.matchers.shouldBe
 import java.net.http.HttpHeaders
 
 class FromHeadersTest : FunSpec({
@@ -32,7 +31,7 @@ class FromHeadersTest : FunSpec({
             ),
         ) { headers, expected ->
             test("FromHeaders should convert Headers to String -- for $headers") {
-                headers.let(HttpHeadersProxy::of).shouldBe(expected)
+                headers.let(ResponseHeadersProxy::of).shouldBe(expected)
             }
         }
     }

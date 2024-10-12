@@ -48,6 +48,37 @@
 * URL"/dogeWithHeader"にヘッダー"name: kabosu"で、DELETEリクエストを送る
 * レスポンスステータスコードが"204"である
 
+レスポンスのJSONの<jsonPath>が<pattern>である
+レスポンスのJSONの<jsonPath>がnullである
+レスポンスのJSONの<jsonPath>が小数の<expected>である
+レスポンスのJSONの<jsonPath>が真偽値の<expected>である
+レスポンスのJSONの<jsonPath>が真偽値のfalseである
+レスポンスのJSONの<jsonPath>が真偽値のtrueである
+
+## レスポンスのJSONの<jsonPath>が整数の<expected>である
+* URL"/bigBallOfMud"にGETリクエストを送る
+* レスポンスのJSONの"$.serialNumber"が整数の"42"である
+
+レスポンスのJSONの<jsonPath>が存在しない
+レスポンスのJSONの<jsonPath>が文字列の<expected>である
+レスポンスのJSONの<jsonPath>の配列に、Key<key>の値が<value>である要素が存在する
+レスポンスのJSONの<jsonPath>の配列の、UniqueKey<uniqueKey>の値が<filterValue>である要素の<key>が、小数値の<expected>である
+レスポンスのJSONの<jsonPath>の配列の、UniqueKey<uniqueKey>の値が<filterValue>である要素の<key>が、真偽値の<expected>である
+レスポンスのJSONの<jsonPath>の配列の、UniqueKey<uniqueKey>の値が<filterValue>である要素の<key>が、整数値の<expected>である
+レスポンスのJSONの<jsonPath>の配列の、UniqueKey<uniqueKey>の値が<filterValue>である要素の<key>が、文字列の<expected>である
+レスポンスのJSONの<jsonPath>の配列の長さが<length>である
+レスポンスのJSONの配列<arrayJsonPath>が、タイムゾーン付きの日付/時間<orderKey>の降順に並んでいる
+レスポンスのJSONの配列<arrayJsonPath>が、タイムゾーン付きの日付/時間<orderKey>の昇順に並んでいる
+レスポンスのJSONの配列<arrayJsonPath>が、数値<orderKey>の降順に並んでいる
+レスポンスのJSONの配列<arrayJsonPath>が、数値<orderKey>の昇順に並んでいる
+レスポンスのJSONの配列<jsonPath>に、小数値<value>が存在しない
+レスポンスのJSONの配列<jsonPath>に、小数値<value>が存在する
+レスポンスのJSONの配列<jsonPath>に、整数値<value>が存在しない
+レスポンスのJSONの配列<jsonPath>に、整数値<value>が存在する
+レスポンスのJSONの配列<jsonPath>に、文字列<value>が存在しない
+レスポンスのJSONの配列<jsonPath>に、文字列<value>が存在する
+
+
 ## レスポンスステータスコードが<statusCode>である
 * URL"/ping"にGETリクエストを送る
 * レスポンスステータスコードが"200"である

@@ -8,7 +8,7 @@
 
 ## Assert response headers
 * レスポンスのヘッダーの
-* キー"Content-Length"に対応する値が
+* キー"content-length"に対応する値が
 * 文字列の"25"である
 
 ## Assert response headers contains some value
