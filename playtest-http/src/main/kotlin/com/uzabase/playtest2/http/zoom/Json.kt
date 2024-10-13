@@ -1,10 +1,7 @@
 package com.uzabase.playtest2.http.zoom
 
 import com.jayway.jsonpath.JsonPath
-import com.uzabase.playtest2.core.assertion.ShouldBeBoolean
-import com.uzabase.playtest2.core.assertion.ShouldBeLong
-import com.uzabase.playtest2.core.assertion.ShouldBeString
-import com.uzabase.playtest2.core.assertion.ShouldContainsString
+import com.uzabase.playtest2.core.assertion.*
 import com.uzabase.playtest2.core.zoom.Zoomable
 
 fun interface JsonSerializable {
@@ -21,14 +18,17 @@ sealed class Json(val json: String) {
         override fun shouldBe(expected: String): Boolean = json == expected
     }
 
-    class JsonPathProxy internal constructor(json: String, val path: String) : Json(json), ShouldBeString,
-        ShouldContainsString, ShouldBeLong, ShouldBeBoolean {
+    class JsonPathProxy internal constructor(
+        json: String,
+        val path: String
+    ) : Json(json), ShouldBeString, ShouldContainsString, ShouldMatchString, ShouldBeLong, ShouldBeBoolean {
         override fun shouldBe(expected: String): Boolean = JsonPath.read<String>(json, path) == expected
+        override fun shouldContain(expected: String): Boolean = JsonPath.read<String>(json, path).contains(expected)
+        override fun shouldMatch(expected: String): Boolean =
+            expected.toRegex().matches(JsonPath.read<String>(json, path))
 
         override fun shouldBe(expected: Long): Boolean = JsonPath.read<Int>(json, path).toLong() == expected
-
         override fun shouldBe(expected: Boolean): Boolean = JsonPath.read<Boolean>(json, path) == expected
 
-        override fun shouldContain(expected: String): Boolean = JsonPath.read<String>(json, path).contains(expected)
     }
 }

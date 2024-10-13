@@ -80,9 +80,13 @@
 * メディアタイプ"application/json"で
 * リクエストを送る
 
-レスポンスのJSONの<jsonPath>が<pattern>である
+# レスポンスのJSONの<jsonPath>が<pattern>である
+* レスポンスのボディが
+* JSONのパス<jsonPath>に対応する値が
+* 正規表現の<pattern>に完全一致している
 レスポンスのJSONの<jsonPath>がnullである
 レスポンスのJSONの<jsonPath>が小数の<expected>である
+
 # レスポンスのJSONの<jsonPath>が真偽値の<expected>である
 * レスポンスのボディが
 * JSONのパス<jsonPath>に対応する値が
