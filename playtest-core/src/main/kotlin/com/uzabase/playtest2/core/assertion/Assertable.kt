@@ -24,5 +24,3 @@ fun interface ShouldBe<T> {
     fun shouldBe(expected: T): Boolean
 }
 
-interface Assertable<T> : ShouldBeLong, ShouldBeString, ShouldContainsString, ShouldBeBoolean, ShouldBe<T>
-

@@ -2,14 +2,12 @@ package com.uzabase.playtest2.http
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
-import com.uzabase.playtest2.core.assertion.Assertable
-import com.uzabase.playtest2.core.zoom.Zoomable
+import com.uzabase.playtest2.core.assertion.ShouldBeLong
 import com.uzabase.playtest2.http.internal.K
 import com.uzabase.playtest2.http.proxy.ResponseBodyProxy
 import com.uzabase.playtest2.http.proxy.ResponseHeadersProxy
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.booleans.shouldBeTrue
-import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import java.net.URI
 import java.net.http.HttpClient
@@ -44,14 +42,14 @@ class FocusResponseStepsTest : FunSpec({
             sut.statusCode()
 
             ScenarioDataStore.get(coreK.AssertionTarget)
-                .let { it as Assertable<*> }
+                .let { it as ShouldBeLong }
                 .shouldBe(200L).shouldBeTrue()
         }
     }
 
     context("About response body") {
         test("should be store as assertion target") {
-            val f = Files.createTempFile("playtest2.test","txt")
+            val f = Files.createTempFile("playtest2.test", "txt")
             f.toFile().deleteOnExit()
             client.send(HttpRequest.newBuilder(URI("http://localhost:8080/articles")).build(), BodyHandlers.ofFile(f))
                 .let { ScenarioDataStore.put(K.RESPONSE, it) }
