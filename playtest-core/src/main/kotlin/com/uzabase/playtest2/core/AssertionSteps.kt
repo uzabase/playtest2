@@ -8,10 +8,10 @@ internal inline fun <reified T> assertable(f: (T) -> Unit) =
     ScenarioDataStore.get(K.AssertionTarget)
         .let { it as? T }
         ?.let(f)
-        ?: playtestException("Assertion target is not found")
+        ?: playtestError("Assertion target is not found")
 
 internal fun test(message: String, assertExp: () -> Boolean) {
-    if (!assertExp()) throw PlaytestException(message)
+    if (!assertExp()) throw PlaytestAssertionError(message)
 }
 
 class AssertionSteps {

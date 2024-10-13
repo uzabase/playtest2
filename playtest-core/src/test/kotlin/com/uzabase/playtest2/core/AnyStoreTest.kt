@@ -3,8 +3,6 @@ package com.uzabase.playtest2.core
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.thoughtworks.gauge.datastore.SpecDataStore
 import com.thoughtworks.gauge.datastore.SuiteDataStore
-import com.uzabase.playtest2.core.assertion.PlaytestException
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
 import io.kotest.data.row

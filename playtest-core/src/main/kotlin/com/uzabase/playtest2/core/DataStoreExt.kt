@@ -3,7 +3,7 @@ package com.uzabase.playtest2.core
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.thoughtworks.gauge.datastore.SpecDataStore
 import com.thoughtworks.gauge.datastore.SuiteDataStore
-import com.uzabase.playtest2.core.assertion.playtestException
+import com.uzabase.playtest2.core.assertion.playtestError
 
 object AnyStore {
     inline fun <reified T> getAs(key: Any): T? =
@@ -16,7 +16,7 @@ object ScenarioDataStoreExt {
             try {
                 v as T
             } catch (e: ClassCastException) {
-                playtestException(
+                playtestError(
                     """
                     |ScenarioDataStore does not contain key `$key` as `${T::class.simpleName}`.
                     |Actual:
@@ -41,7 +41,7 @@ object SpecDataStoreExt {
             try {
                 v as T
             } catch (e: ClassCastException) {
-                playtestException(
+                playtestError(
                     """
                     |SpecDataStore does not contain key `$key` as `${T::class.simpleName}`.
                     |Actual:
@@ -59,7 +59,7 @@ object SuiteDataStoreExt {
             try {
                 v as T
             } catch (e: ClassCastException) {
-                playtestException(
+                playtestError(
                     """
                     |SuiteDataStore does not contain key `$key` as `${T::class.simpleName}`.
                     |Actual:
