@@ -48,7 +48,10 @@
 * URL"/dogeWithHeader"にヘッダー"name: kabosu"で、DELETEリクエストを送る
 * レスポンスステータスコードが"204"である
 
-レスポンスのJSONの<jsonPath>が<pattern>である
+## レスポンスのJSONの<jsonPath>が<pattern>である
+* URL"/bigBallOfMud"にGETリクエストを送る
+* レスポンスのJSONの"$.name"が"B\\w{2} B\\w{3} of M\\w{2}"である
+
 レスポンスのJSONの<jsonPath>がnullである
 レスポンスのJSONの<jsonPath>が小数の<expected>である
 

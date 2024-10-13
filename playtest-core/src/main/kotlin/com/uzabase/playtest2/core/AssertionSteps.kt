@@ -48,6 +48,14 @@ class AssertionSteps {
             }
         }
 
+    @Step("正規表現の<value>に完全一致している")
+    fun shouldBeEntireMatchStringValue(value: String) =
+        assertable<ShouldMatchString> {
+            test("should match $value") {
+                it.shouldMatch(value)
+            }
+        }
+
     @Step("真偽値の<value>である")
     fun shouldBeBooleanValue(value: Boolean) =
         assertable<ShouldBeBoolean> {
