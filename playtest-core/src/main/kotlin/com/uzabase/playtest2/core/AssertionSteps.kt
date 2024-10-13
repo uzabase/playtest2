@@ -48,6 +48,14 @@ class AssertionSteps {
             }
         }
 
+    @Step("真偽値の<value>である")
+    fun shouldBeBooleanValue(value: Boolean) =
+        assertable<ShouldBeBoolean> {
+            test("should be $value") {
+                it.shouldBe(value)
+            }
+        }
+
     @Step("真である")
     fun shouldBeTrue() =
         assertable<ShouldBeBoolean> {

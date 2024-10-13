@@ -10,7 +10,8 @@
     },
     "jsonBody": {
       "name": "Big Ball of Mud",
-      "serialNumber": 42
+      "serialNumber": 42,
+      "primes": [false, true, true, true, false, true]
     }
   }
 }
