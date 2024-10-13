@@ -50,24 +50,24 @@ class AssertionStepsTest : FunSpec({
     context("failed scenarios") {
         context("assertion target not found") {
             test("long value") {
-                shouldThrow<PlaytestException> {
+                shouldThrow<PlaytestAssertionError> {
                     sut.shouldBeLongValue(200L)
                 }.message.shouldBe("Assertion target is not found")
             }
 
             test("string value") {
-                shouldThrow<PlaytestException> {
+                shouldThrow<PlaytestAssertionError> {
                     sut.shouldBeStringValue("Hello, world")
                 }.message.shouldBe("Assertion target is not found")
             }
 
             test("true value") {
-                shouldThrow<PlaytestException> { sut.shouldBeTrue() }
+                shouldThrow<PlaytestAssertionError> { sut.shouldBeTrue() }
                     .message.shouldBe("Assertion target is not found")
             }
 
             test("false value") {
-                shouldThrow<PlaytestException> { sut.shouldBeFalse() }
+                shouldThrow<PlaytestAssertionError> { sut.shouldBeFalse() }
                     .message.shouldBe("Assertion target is not found")
             }
         }
@@ -81,7 +81,7 @@ class AssertionStepsTest : FunSpec({
 
         test("should not contains") {
             ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.ofString("Hello, world"))
-            shouldThrow<PlaytestException> {
+            shouldThrow<PlaytestAssertionError> {
                 sut.shouldBeContainsStringValue("John")
             }.message.shouldBe("should contains John")
         }
@@ -97,13 +97,13 @@ class AssertionStepsTest : FunSpec({
     xcontext("string representation value is not strict boolean value") {
         test("should be true") {
             ScenarioDataStore.put(K.AssertionTarget, "true")
-            shouldThrow<PlaytestException> { sut.shouldBeTrue() }
+            shouldThrow<PlaytestAssertionError> { sut.shouldBeTrue() }
                 .message.shouldBe("should be strict true")
         }
 
         test("should be false") {
             ScenarioDataStore.put(K.AssertionTarget, "false")
-            shouldThrow<PlaytestException> { sut.shouldBeFalse() }
+            shouldThrow<PlaytestAssertionError> { sut.shouldBeFalse() }
                 .message.shouldBe("should be strict false")
         }
     }

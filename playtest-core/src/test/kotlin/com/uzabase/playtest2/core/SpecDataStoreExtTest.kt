@@ -1,7 +1,7 @@
 package com.uzabase.playtest2.core
 
 import com.thoughtworks.gauge.datastore.SpecDataStore
-import com.uzabase.playtest2.core.assertion.PlaytestException
+import com.uzabase.playtest2.core.assertion.PlaytestAssertionError
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -24,7 +24,7 @@ class SpecDataStoreExtTest : FunSpec({
 
         test("should throw PlaytestException if the value is not the expected type") {
             SpecDataStore.put("doge", Doge("space doge"))
-            shouldThrow<PlaytestException> {
+            shouldThrow<PlaytestAssertionError> {
                 SpecDataStoreExt.getAs<List<Doge>>("doge")
             }.message.shouldStartWith("SpecDataStore does not contain key `doge` as `List`.")
         }
