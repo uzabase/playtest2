@@ -51,16 +51,30 @@
 レスポンスのJSONの<jsonPath>が<pattern>である
 レスポンスのJSONの<jsonPath>がnullである
 レスポンスのJSONの<jsonPath>が小数の<expected>である
-レスポンスのJSONの<jsonPath>が真偽値の<expected>である
-レスポンスのJSONの<jsonPath>が真偽値のfalseである
-レスポンスのJSONの<jsonPath>が真偽値のtrueである
+
+## レスポンスのJSONの<jsonPath>が真偽値の<expected>である
+* URL"/bigBallOfMud"にGETリクエストを送る
+* レスポンスのJSONの"$.primes[0]"が真偽値の"false"である
+* レスポンスのJSONの"$.primes[1]"が真偽値の"true"である
+
+## レスポンスのJSONの<jsonPath>が真偽値のfalseである
+* URL"/bigBallOfMud"にGETリクエストを送る
+* レスポンスのJSONの"$.primes[0]"が真偽値のfalseである
+
+## レスポンスのJSONの<jsonPath>が真偽値のtrueである
+* URL"/bigBallOfMud"にGETリクエストを送る
+* レスポンスのJSONの"$.primes[1]"が真偽値のtrueである
 
 ## レスポンスのJSONの<jsonPath>が整数の<expected>である
 * URL"/bigBallOfMud"にGETリクエストを送る
 * レスポンスのJSONの"$.serialNumber"が整数の"42"である
 
 レスポンスのJSONの<jsonPath>が存在しない
-レスポンスのJSONの<jsonPath>が文字列の<expected>である
+
+## レスポンスのJSONの<jsonPath>が文字列の<expected>である
+* URL"/bigBallOfMud"にGETリクエストを送る
+* レスポンスのJSONの"$.name"が文字列の"Big Ball of Mud"である
+
 レスポンスのJSONの<jsonPath>の配列に、Key<key>の値が<value>である要素が存在する
 レスポンスのJSONの<jsonPath>の配列の、UniqueKey<uniqueKey>の値が<filterValue>である要素の<key>が、小数値の<expected>である
 レスポンスのJSONの<jsonPath>の配列の、UniqueKey<uniqueKey>の値が<filterValue>である要素の<key>が、真偽値の<expected>である
