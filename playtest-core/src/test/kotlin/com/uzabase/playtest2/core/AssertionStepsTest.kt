@@ -1,8 +1,7 @@
 package com.uzabase.playtest2.core
 
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
-import com.uzabase.playtest2.core.assertion.Assertable
-import com.uzabase.playtest2.core.assertion.PlaytestException
+import com.uzabase.playtest2.core.assertion.*
 import com.uzabase.playtest2.core.proxy.ProxyFactory
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
@@ -11,14 +10,9 @@ import io.kotest.matchers.shouldBe
 data class FullName(val firstName: String, val lastName: String)
 
 private val FromFullName = { fullName: FullName ->
-    object : Assertable<FullName> {
-        override fun shouldBe(expected: Long): Boolean = throw UnsupportedOperationException()
-
+    object : ShouldBeString, ShouldBeBoolean, ShouldBe<FullName> {
         override fun shouldBe(expected: String): Boolean = "${fullName.firstName} ${fullName.lastName} :)" == expected
-        override fun shouldContain(expected: String): Boolean = throw UnsupportedOperationException()
-
         override fun shouldBe(expected: Boolean): Boolean = false
-
         override fun shouldBe(expected: FullName): Boolean = fullName == expected
     }
 }
