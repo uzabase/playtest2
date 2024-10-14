@@ -72,7 +72,9 @@
 * URL"/bigBallOfMud"にGETリクエストを送る
 * レスポンスのJSONの"$.serialNumber"が整数の"42"である
 
-レスポンスのJSONの<jsonPath>が存在しない
+## レスポンスのJSONの<jsonPath>が存在しない
+* URL"/bigBallOfMud"にGETリクエストを送る
+* レスポンスのJSONの"$.__should_not_be_exist__"が存在しない
 
 ## レスポンスのJSONの<jsonPath>が文字列の<expected>である
 * URL"/bigBallOfMud"にGETリクエストを送る

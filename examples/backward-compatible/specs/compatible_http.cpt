@@ -84,6 +84,7 @@
 * レスポンスのボディが
 * JSONのパス<jsonPath>に対応する値が
 * 正規表現の<pattern>に完全一致している
+
 レスポンスのJSONの<jsonPath>がnullである
 レスポンスのJSONの<jsonPath>が小数の<expected>である
 
@@ -107,7 +108,10 @@
 * JSONのパス<jsonPath>に対応する値が
 * 整数値の<expected>である
 
-レスポンスのJSONの<jsonPath>が存在しない
+# レスポンスのJSONの<jsonPath>が存在しない
+* レスポンスのボディが
+* JSONのパス<jsonPath>に対応する値が
+* 存在していない
 
 # レスポンスのJSONの<jsonPath>が文字列の<expected>である
 * レスポンスのボディが

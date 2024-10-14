@@ -107,4 +107,28 @@ class AssertionStepsTest : FunSpec({
                 .message.shouldBe("should be strict false")
         }
     }
+
+    context("existence") {
+        test("should be true if existed") {
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeExist { true })
+            sut.shouldBeExist()
+        }
+
+        test("should be fail") {
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeExist { false })
+            shouldThrow<PlaytestAssertionError> { sut.shouldBeExist() }
+                .message.shouldBe("should be exist")
+        }
+
+        test("should be true if not existed") {
+            ScenarioDataStore.put(K.AssertionTarget, ShouldNotBeExist { true })
+            sut.shouldNotBeExist()
+        }
+
+        test("should be fail if exited") {
+            ScenarioDataStore.put(K.AssertionTarget, ShouldNotBeExist { false })
+            shouldThrow<PlaytestAssertionError> { sut.shouldNotBeExist() }
+                .message.shouldBe("should not be exist")
+        }
+    }
 })
