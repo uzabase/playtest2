@@ -6,6 +6,14 @@ import io.kotest.data.row
 import io.kotest.matchers.shouldBe
 
 class JsonPathProxyTest : FunSpec({
+    context("Number") {
+        context("ShouldBeBigDecimal") {
+            test("should be equal") {
+                JsonPathProxy("""{"price": 0.3}""", "$.price")
+                    .shouldBe("0.3".toBigDecimal()).shouldBe(true)
+            }
+        }
+    }
     context("Existence") {
         val json = """
                 {
