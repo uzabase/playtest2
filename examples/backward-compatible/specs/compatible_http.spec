@@ -93,12 +93,6 @@
 レスポンスのJSONの配列<arrayJsonPath>が、タイムゾーン付きの日付/時間<orderKey>の昇順に並んでいる
 レスポンスのJSONの配列<arrayJsonPath>が、数値<orderKey>の降順に並んでいる
 レスポンスのJSONの配列<arrayJsonPath>が、数値<orderKey>の昇順に並んでいる
-レスポンスのJSONの配列<jsonPath>に、小数値<value>が存在しない
-レスポンスのJSONの配列<jsonPath>に、小数値<value>が存在する
-レスポンスのJSONの配列<jsonPath>に、整数値<value>が存在しない
-レスポンスのJSONの配列<jsonPath>に、整数値<value>が存在する
-レスポンスのJSONの配列<jsonPath>に、文字列<value>が存在しない
-レスポンスのJSONの配列<jsonPath>に、文字列<value>が存在する
 
 
 ## レスポンスステータスコードが<statusCode>である

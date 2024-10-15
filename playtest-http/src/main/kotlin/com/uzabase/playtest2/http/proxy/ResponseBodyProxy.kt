@@ -19,5 +19,5 @@ class ResponseBodyProxy private constructor(val body: Path) : ShouldBeString, Sh
 
     override fun toJsonPathProxy(path: String): JsonPathProxy =
         body.toFile().readText(Charsets.UTF_8)
-            .let { JsonPathProxy(it, path) }
+            .let { JsonPathProxy.of(it, path) }
 }
