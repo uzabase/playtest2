@@ -1,6 +1,7 @@
 package com.uzabase.playtest2.core.proxy
 
 import com.uzabase.playtest2.core.assertion.*
+import java.math.BigDecimal
 
 class ProxyFactory {
     companion object {
@@ -18,6 +19,9 @@ class ProxyFactory {
                 override fun shouldBe(expected: Long): Boolean = l == expected
                 override fun shouldBe(expected: String): Boolean = l.toString() == expected
             }
+
+        fun ofBigDecimal(b: BigDecimal): Any =
+            ShouldBeBigDecimal { expected -> b == expected }
 
         fun ofBoolean(b: Boolean): Any =
             object : ShouldBeString, ShouldBeBoolean {

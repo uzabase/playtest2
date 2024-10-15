@@ -16,6 +16,14 @@ internal fun test(message: String, assertExp: () -> Boolean) {
 
 class AssertionSteps {
 
+    @Step("小数値の<value>である")
+    fun shouldBeBigDecimal(value: Double) =
+        assertable<ShouldBeBigDecimal> {
+            test("should be $value") {
+                it.shouldBe(value.toBigDecimal())
+            }
+        }
+
     @Step("整数値の<value>である")
     fun shouldBeLongValue(value: Long) =
         assertable<ShouldBeLong> {
