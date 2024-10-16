@@ -108,11 +108,11 @@ internal class IndefiniteJsonPathProxy(
             }
         }
 
-    override fun shouldBeExist(): Boolean {
-        TODO("Not yet implemented")
-    }
+    /***
+     * Indefinite なパスの場合、存在しないパスでも必ずリストが返ってくるので、例外の考慮は不要…?
+     ***/
+    override fun shouldBeExist(): Boolean =
+        JsonPath.parse(json).read<List<Any>>(path).isNotEmpty()
 
-    override fun shouldNotBeExist(): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun shouldNotBeExist(): Boolean = !shouldBeExist()
 }

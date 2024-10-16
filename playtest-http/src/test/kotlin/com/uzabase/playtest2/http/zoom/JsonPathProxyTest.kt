@@ -5,8 +5,8 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
+import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
-import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 
 class JsonPathProxyTest : FunSpec({
@@ -141,6 +141,21 @@ class JsonPathProxyTest : FunSpec({
                 JsonPathProxy.of(json, "$.people[?(@.age > 1)].name")
                     .shouldMatch(".*")
             }.message.shouldBe("The path is indefinite and the result is not a single value")
+        }
+
+        test("should be false if empty after filtering - should be exist") {
+            JsonPathProxy.of(json, "$.people[?(@.name == 'xyz')].name")
+                .shouldBeExist().shouldBe(false)
+        }
+
+        test("should be true if not empty after filtering - should be exist") {
+            JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].name")
+                .shouldBeExist().shouldBe(true)
+        }
+
+        test("should be false if path not found - should be exist") {
+            JsonPathProxy.of(json, "$.people[?(@.age > 0)][999]")
+                .shouldBeExist().shouldBeFalse()
         }
     }
 })
