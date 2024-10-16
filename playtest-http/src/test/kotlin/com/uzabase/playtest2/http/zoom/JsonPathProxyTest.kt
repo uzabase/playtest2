@@ -6,6 +6,7 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 
 class JsonPathProxyTest : FunSpec({
@@ -62,29 +63,84 @@ class JsonPathProxyTest : FunSpec({
         }
     }
 
-    context("complicated json-path evaluation") {
+    context("indefinite json path") {
         val json = """
                 {"people": [
-                    {"name": "abc", "age": 21},
-                    {"name": "def", "age": 28}
+                    {"name": "abc", "age": 21, "pocketMoney": 1.2, "worker?": true},
+                    {"name": "def", "age": 28, "pocketMoney": 2.3, "worker?": false}
                 ]}
             """.trimIndent()
 
-        test("simple definite path") {
-            JsonPathProxy.of(json, "$.people[0].name")
+        test("should be true if single string value") {
+            JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].name")
                 .shouldBe("abc").shouldBeTrue()
         }
 
-        test("indefinite path") {
+        test("should be failed if multiple string values") {
+            shouldThrow<PlaytestAssertionError> {
+                JsonPathProxy.of(json, "$.people[?(@.age > 1)].name")
+                    .shouldBe("abc")
+            }.message.shouldBe("The path is indefinite and the result is not a single value")
+        }
+
+        test("should be true if single long value") {
             JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].age")
                 .shouldBe(21).shouldBeTrue()
         }
 
-        test("indefinite path with multiple results") {
+        test("should be failed if multiple long values") {
             shouldThrow<PlaytestAssertionError> {
                 JsonPathProxy.of(json, "$.people[?(@.age > 1)].age")
-                    .shouldBe(21)
-            }
+                    .shouldBe(999)
+            }.message.shouldBe("The path is indefinite and the result is not a single value")
+        }
+
+        test("should be true if single double value") {
+            JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].pocketMoney")
+                .shouldBe(1.2.toBigDecimal()).shouldBeTrue()
+        }
+
+        test("should be failed if multiple double values") {
+            shouldThrow<PlaytestAssertionError> {
+                JsonPathProxy.of(json, "$.people[?(@.age > 1)].pocketMoney")
+                    .shouldBe(9.9.toBigDecimal())
+            }.message.shouldBe("The path is indefinite and the result is not a single value")
+        }
+
+        test("should be true if single boolean value") {
+            JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].worker?")
+                .shouldBe(true).shouldBeTrue()
+        }
+
+        test("should be failed if multiple boolean values") {
+            shouldThrow<PlaytestAssertionError> {
+                JsonPathProxy.of(json, "$.people[?(@.age > 1)].worker?")
+                    .shouldBe(false)
+            }.message.shouldBe("The path is indefinite and the result is not a single value")
+        }
+
+        test("should be true if single string value - contains") {
+            JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].name")
+                .shouldContain("b").shouldBeTrue()
+        }
+
+        test("should be failed if multiple string values - contains") {
+            shouldThrow<PlaytestAssertionError> {
+                JsonPathProxy.of(json, "$.people[?(@.age > 1)].name")
+                    .shouldContain("b")
+            }.message.shouldBe("The path is indefinite and the result is not a single value")
+        }
+
+        test("should be true if single string value - entire match") {
+            JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].name")
+                .shouldMatch("[abc]{3}").shouldBeTrue()
+        }
+
+        test("should be failed if multiple string values - entire match") {
+            shouldThrow<PlaytestAssertionError> {
+                JsonPathProxy.of(json, "$.people[?(@.age > 1)].name")
+                    .shouldMatch(".*")
+            }.message.shouldBe("The path is indefinite and the result is not a single value")
         }
     }
 })
