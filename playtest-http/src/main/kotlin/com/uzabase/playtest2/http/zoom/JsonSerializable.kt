@@ -14,22 +14,19 @@ sealed interface JsonPathProxy : ShouldBeString, ShouldContainsString, ShouldMat
     companion object {
         fun of(json: String, path: String): JsonPathProxy =
             JsonPath.compile(path).let { compiled ->
-                if(compiled.isDefinite) {
-                    DefiniteJsonPathProxy.of(json, compiled)
+                if (compiled.isDefinite) {
+                    DefiniteJsonPathProxy(json, compiled)
                 } else {
-                    TODO()
+                    IndefiniteJsonPathProxy(json, compiled)
                 }
             }
     }
 }
 
-internal class DefiniteJsonPathProxy private constructor(
+internal class DefiniteJsonPathProxy(
     private val json: String,
     private val path: JsonPath
 ) : JsonPathProxy {
-    companion object {
-        fun of(json: String, path: JsonPath): JsonPathProxy = DefiniteJsonPathProxy(json, path)
-    }
 
     override fun shouldBe(expected: String): Boolean = JsonPath.parse(json).read<String>(path) == expected
     override fun shouldContain(expected: String): Boolean = JsonPath.parse(json).read<String>(path).contains(expected)
@@ -50,4 +47,57 @@ internal class DefiniteJsonPathProxy private constructor(
         }
 
     override fun shouldNotBeExist(): Boolean = !shouldBeExist()
+}
+
+internal class IndefiniteJsonPathProxy(
+    private val json: String,
+    private val path: JsonPath
+) : JsonPathProxy {
+
+    override fun shouldBe(expected: String): Boolean =
+        JsonPath.parse(json).read<List<String>>(path).let { list ->
+            if (list.size == 1) {
+                list[0] == expected
+            } else {
+                throw PlaytestAssertionError("The path is indefinite and the result is not a single value")
+            }
+        }
+
+    override fun shouldBe(expected: Long): Boolean =
+        JsonPath.parse(json).read<List<Int>>(path).let { list ->
+            if (list.size == 1) {
+                list[0].toLong() == expected
+            } else {
+                throw PlaytestAssertionError("The path is indefinite and the result is not a single value")
+            }
+        }
+
+    override fun shouldBe(expected: BigDecimal): Boolean =
+        JsonPath.parse(json).read<List<Double>>(path).let { list ->
+            if (list.size == 1) {
+                list[0].toBigDecimal() == expected
+            } else {
+                throw PlaytestAssertionError("The path is indefinite and the result is not a single value")
+            }
+        }
+
+    override fun shouldBe(expected: Boolean): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun shouldContain(expected: String): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun shouldMatch(expected: String): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun shouldBeExist(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun shouldNotBeExist(): Boolean {
+        TODO("Not yet implemented")
+    }
 }

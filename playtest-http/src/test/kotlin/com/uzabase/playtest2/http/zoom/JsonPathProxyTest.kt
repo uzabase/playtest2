@@ -1,5 +1,7 @@
 package com.uzabase.playtest2.http.zoom
 
+import com.uzabase.playtest2.core.assertion.PlaytestAssertionError
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
@@ -76,6 +78,13 @@ class JsonPathProxyTest : FunSpec({
         test("indefinite path") {
             JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].age")
                 .shouldBe(21).shouldBeTrue()
+        }
+
+        test("indefinite path with multiple results") {
+            shouldThrow<PlaytestAssertionError> {
+                JsonPathProxy.of(json, "$.people[?(@.age > 1)].age")
+                    .shouldBe(21)
+            }
         }
     }
 })
