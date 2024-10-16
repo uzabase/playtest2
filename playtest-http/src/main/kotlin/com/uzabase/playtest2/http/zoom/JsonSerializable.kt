@@ -81,17 +81,32 @@ internal class IndefiniteJsonPathProxy(
             }
         }
 
-    override fun shouldBe(expected: Boolean): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun shouldBe(expected: Boolean): Boolean =
+        JsonPath.parse(json).read<List<Boolean>>(path).let { list ->
+            if (list.size == 1) {
+                list[0] == expected
+            } else {
+                throw PlaytestAssertionError("The path is indefinite and the result is not a single value")
+            }
+        }
 
-    override fun shouldContain(expected: String): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun shouldContain(expected: String): Boolean =
+        JsonPath.parse(json).read<List<String>>(path).let { list ->
+            if (list.size == 1) {
+                list[0].contains(expected)
+            } else {
+                throw PlaytestAssertionError("The path is indefinite and the result is not a single value")
+            }
+        }
 
-    override fun shouldMatch(expected: String): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun shouldMatch(expected: String): Boolean =
+        JsonPath.parse(json).read<List<String>>(path).let { list ->
+            if (list.size == 1) {
+                expected.toRegex().matches(list[0])
+            } else {
+                throw PlaytestAssertionError("The path is indefinite and the result is not a single value")
+            }
+        }
 
     override fun shouldBeExist(): Boolean {
         TODO("Not yet implemented")
