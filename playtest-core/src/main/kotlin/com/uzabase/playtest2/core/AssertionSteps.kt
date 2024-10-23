@@ -1,6 +1,7 @@
 package com.uzabase.playtest2.core
 
 import com.thoughtworks.gauge.Step
+import com.thoughtworks.gauge.Table
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.uzabase.playtest2.core.assertion.*
 
@@ -15,7 +16,6 @@ internal fun test(message: String, assertExp: () -> Boolean) {
 }
 
 class AssertionSteps {
-
     @Step("小数値の<value>である")
     fun shouldBeBigDecimal(value: Double) =
         assertable<ShouldBeBigDecimal> {
@@ -103,4 +103,14 @@ class AssertionSteps {
                 it.shouldNotBeExist()
             }
         }
+
+    @Step("テーブル<table>である",
+        "以下のテーブルである <table>")
+    fun shouldBeEqualTable(table: Table) {
+        assertable<ShouldBeEqualTable> {
+            test("should be equal to $table") {
+                it.shouldBeEqual(table)
+            }
+        }
+    }
 }

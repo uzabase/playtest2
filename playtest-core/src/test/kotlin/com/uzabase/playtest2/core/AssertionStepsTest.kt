@@ -1,5 +1,6 @@
 package com.uzabase.playtest2.core
 
+import com.thoughtworks.gauge.Table
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.uzabase.playtest2.core.assertion.*
 import com.uzabase.playtest2.core.proxy.ProxyFactory
@@ -142,6 +143,23 @@ class AssertionStepsTest : FunSpec({
             ScenarioDataStore.put(K.AssertionTarget, ShouldNotBeExist { false })
             shouldThrow<PlaytestAssertionError> { sut.shouldNotBeExist() }
                 .message.shouldBe("should not be exist")
+        }
+    }
+
+    context("table") {
+        test("should be equal") {
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeEqualTable { true })
+            sut.shouldBeEqualTable(
+                Table(listOf("ans")).apply { addRow(listOf("42")) })
+        }
+
+        test("should be fail") {
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeEqualTable { false })
+            shouldThrow<PlaytestAssertionError> {
+                sut.shouldBeEqualTable(
+                    Table(listOf("ans"))
+                )
+            }.message.shouldBe("should be equal to |ans|\n|---|")
         }
     }
 })
