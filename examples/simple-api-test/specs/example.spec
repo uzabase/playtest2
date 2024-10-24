@@ -31,4 +31,6 @@
 * 以下のテーブルである
 | key            | value           |
 |----------------|-----------------|
+| connection     | keep-alive      |
 | content-length | 25              |
+| content-type   | application/json|

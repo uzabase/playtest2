@@ -4,6 +4,8 @@ import com.thoughtworks.gauge.Step
 import com.thoughtworks.gauge.Table
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.uzabase.playtest2.core.assertion.*
+import com.uzabase.playtest2.core.zoom.TableProxy
+import com.uzabase.playtest2.core.zoom.ToTable
 
 internal inline fun <reified T> assertable(f: (T) -> Unit) =
     ScenarioDataStore.get(K.AssertionTarget)
@@ -104,13 +106,19 @@ class AssertionSteps {
             }
         }
 
-    @Step("テーブル<table>である",
-        "以下のテーブルである <table>")
-    fun shouldBeEqualTable(table: Table) {
-        assertable<ShouldBeEqualTable> {
+    @Step(
+        "テーブル<table>である",
+        "以下のテーブルである <table>"
+    )
+    fun shouldBeEqualTable(table: Table) =
+        ScenarioDataStore.get(K.AssertionTarget)?.let { target ->
+            val sut = when (target) {
+                is ToTable -> target.toTable()
+                is ShouldBeEqualTable -> target
+                else -> throw PlaytestAssertionError("AssertionTarget is not assertable type: ${target.javaClass}")
+            }
             test("should be equal to $table") {
-                it.shouldBeEqual(table)
+                sut.shouldBeEqual(table)
             }
         }
-    }
 }
