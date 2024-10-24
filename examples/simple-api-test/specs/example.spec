@@ -25,3 +25,12 @@
 * API"InnerAPI"についてメソッド"GET"でパス"/ping"に
 * リクエストが送られた回数が
 * 整数値の"1"である
+
+## Assert table
+* レスポンスのヘッダーが
+* 以下のテーブルである
+| key            | value           |
+|----------------|-----------------|
+| connection     | keep-alive      |
+| content-length | 25              |
+| content-type   | application/json|

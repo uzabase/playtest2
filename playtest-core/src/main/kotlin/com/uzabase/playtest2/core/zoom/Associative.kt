@@ -17,3 +17,4 @@ class Associative private constructor(
     override fun shouldBe(expected: String): Boolean =
         map[key]?.let { it == expected } ?: false
 }
+

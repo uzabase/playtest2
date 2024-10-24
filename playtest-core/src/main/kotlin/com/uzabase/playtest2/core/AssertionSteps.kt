@@ -1,8 +1,11 @@
 package com.uzabase.playtest2.core
 
 import com.thoughtworks.gauge.Step
+import com.thoughtworks.gauge.Table
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.uzabase.playtest2.core.assertion.*
+import com.uzabase.playtest2.core.zoom.TableProxy
+import com.uzabase.playtest2.core.zoom.ToTable
 
 internal inline fun <reified T> assertable(f: (T) -> Unit) =
     ScenarioDataStore.get(K.AssertionTarget)
@@ -15,7 +18,6 @@ internal fun test(message: String, assertExp: () -> Boolean) {
 }
 
 class AssertionSteps {
-
     @Step("小数値の<value>である")
     fun shouldBeBigDecimal(value: Double) =
         assertable<ShouldBeBigDecimal> {
@@ -101,6 +103,22 @@ class AssertionSteps {
         assertable<ShouldNotBeExist> {
             test("should not be exist") {
                 it.shouldNotBeExist()
+            }
+        }
+
+    @Step(
+        "テーブル<table>である",
+        "以下のテーブルである <table>"
+    )
+    fun shouldBeEqualTable(table: Table) =
+        ScenarioDataStore.get(K.AssertionTarget)?.let { target ->
+            val sut = when (target) {
+                is ToTable -> target.toTable()
+                is ShouldBeEqualTable -> target
+                else -> throw PlaytestAssertionError("AssertionTarget is not assertable type: ${target.javaClass}")
+            }
+            test("should be equal to $table") {
+                sut.shouldBeEqual(table)
             }
         }
 }
