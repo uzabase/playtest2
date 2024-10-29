@@ -1,5 +1,6 @@
 package com.uzabase.playtest2.jdbc.proxy
 
+import com.thoughtworks.gauge.Table
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.equals.shouldBeEqual
 import org.testcontainers.containers.PostgreSQLContainer
@@ -80,6 +81,22 @@ class ResultSetProxyTest : FunSpec({
                         mapOf("bool" to null),
                     )
                 )
+            )
+        }
+    }
+
+    context("ResultsSet to Table") {
+        test("should be converted to table") {
+            ResultSetProxy(
+                listOf(
+                    mapOf("a" to 1, "b" to "Hi"),
+                    mapOf("a" to 2, "b" to "Hello"),
+                )
+            ).toTable().shouldBeEqual(
+                Table(listOf("a", "b")).apply {
+                    addRow(listOf("1", "Hi"))
+                    addRow(listOf("2", "Hello"))
+                }
             )
         }
     }

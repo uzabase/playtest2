@@ -33,6 +33,9 @@ class ResponseHeadersProxy private constructor(
             .toMap()
             .let { Associative.of(it, key) }
 
+    /**
+     * TBD 暗黙的にアルファベットオーダーにソートしているのと、 `date` というキーを除外しているのは適切の検討が必要
+     */
     override fun toTable(): TableProxy =
         headers
             .map()

@@ -1,10 +1,13 @@
 package com.uzabase.playtest2.jdbc.proxy
 
+import com.thoughtworks.gauge.Table
+import com.uzabase.playtest2.core.zoom.TableProxy
+import com.uzabase.playtest2.core.zoom.ToTable
 import java.sql.ResultSet
 
 data class ResultSetProxy internal constructor(
     val results: List<Map<String, Any?>>
-) {
+) : ToTable {
     companion object {
         fun of(rs: ResultSet): ResultSetProxy {
             val results = mutableListOf<Map<String, Any>>()
@@ -28,4 +31,13 @@ data class ResultSetProxy internal constructor(
             return ResultSetProxy(results)
         }
     }
+
+    override fun toTable(): TableProxy =
+        results.first().keys.toList().let { columns ->
+            TableProxy(Table(columns).apply {
+                results.forEach { row ->
+                    addRow(columns.map { row[it].toString() })
+                }
+            })
+        }
 }
