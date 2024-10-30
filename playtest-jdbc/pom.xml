@@ -5,11 +5,11 @@
     <parent>
         <artifactId>playtest2</artifactId>
         <groupId>com.uzabase.playtest2</groupId>
-        <version>0.0.4</version>
+        <version>0.0.5</version>
     </parent>
 
     <artifactId>playtest-jdbc</artifactId>
-    <version>0.0.4</version>
+    <version>0.0.5</version>
 
     <name>Playtest JDBC</name>
 
