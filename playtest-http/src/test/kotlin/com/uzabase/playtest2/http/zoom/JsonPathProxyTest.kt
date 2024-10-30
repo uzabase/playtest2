@@ -158,4 +158,53 @@ class JsonPathProxyTest : FunSpec({
                 .shouldBeExist().shouldBeFalse()
         }
     }
+
+    context("Null") {
+        val json = """
+            {"nullValue": null,
+             "nonNullValue": 42, 
+             "xs": [null, 1, 2, 3],
+             "objects": [{"x": null},
+                         {},
+                         {"x": 1}]}
+        """.trimIndent()
+
+        test("should be true if definite path is null") {
+            forAll(
+                row("$.nullValue"),
+                row("$.xs[0]"),
+                row("$.objects[0].x")
+            ) { path ->
+                JsonPathProxy.of(json, path).shouldBeNull().shouldBeTrue()
+            }
+        }
+
+        test("should be false if definite path is not null") {
+            forAll(
+                row("$.nonNullValue"),
+                row("$.xs[1]"),
+                row("$.objects[2].x")
+            ) { path ->
+                JsonPathProxy.of(json, path).shouldBeNull().shouldBeFalse()
+            }
+        }
+
+        test("should be true if indefinite path is null") {
+            forAll(
+                row("$.xs[?(@ == null)]"),
+                row("$.objects[?(@.x == null)].x")
+            ) { path ->
+                JsonPathProxy.of(json, path).shouldBeNull().shouldBeTrue()
+            }
+        }
+
+        test("should be false if indefinite path is not null") {
+            forAll(
+                row("$.xs[?(@ == 1)]"),
+                row("$.objects[?(@.x == 1)].x")
+            ) { path ->
+                JsonPathProxy.of(json, path).shouldBeNull().shouldBeFalse()
+            }
+        }
+    }
 })
