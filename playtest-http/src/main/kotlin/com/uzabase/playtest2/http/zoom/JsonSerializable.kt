@@ -10,7 +10,7 @@ fun interface JsonSerializable {
 }
 
 sealed interface JsonPathProxy : ShouldBeString, ShouldContainsString, ShouldMatchString, ShouldBeLong,
-    ShouldBeBigDecimal, ShouldBeBoolean, ShouldBeExist, ShouldNotBeExist {
+    ShouldBeBigDecimal, ShouldBeBoolean, ShouldBeExist, ShouldNotBeExist, ShouldBeNull {
     companion object {
         fun of(json: String, path: String): JsonPathProxy =
             JsonPath.compile(path).let { compiled ->
@@ -47,6 +47,8 @@ internal class DefiniteJsonPathProxy(
         }
 
     override fun shouldNotBeExist(): Boolean = !shouldBeExist()
+    override fun shouldBeNull(): Boolean =
+        JsonPath.parse(json).read<Any?>(path) == null
 }
 
 internal class IndefiniteJsonPathProxy(
@@ -115,4 +117,12 @@ internal class IndefiniteJsonPathProxy(
         JsonPath.parse(json).read<List<Any>>(path).isNotEmpty()
 
     override fun shouldNotBeExist(): Boolean = !shouldBeExist()
+    override fun shouldBeNull(): Boolean =
+        JsonPath.parse(json).read<List<Any?>>(path).let { list ->
+            if (list.size == 1) {
+                list[0] == null
+            } else {
+                throw PlaytestAssertionError("The path is indefinite and the result is not a single value")
+            }
+        }
 }
