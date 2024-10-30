@@ -146,6 +146,19 @@ class AssertionStepsTest : FunSpec({
         }
     }
 
+    context("null") {
+        test("should be true if value is null") {
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeNull { true })
+            sut.shouldBeNull()
+        }
+
+        test("should be fail if value is not null") {
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeNull { false })
+            shouldThrow<PlaytestAssertionError> { sut.shouldBeNull() }
+                .message.shouldBe("should be null")
+        }
+    }
+
     context("table") {
         test("should be equal") {
             ScenarioDataStore.put(K.AssertionTarget, ShouldBeEqualTable { true })

@@ -106,6 +106,14 @@ class AssertionSteps {
             }
         }
 
+    @Step("nullである")
+    fun shouldBeNull() =
+        assertable<ShouldBeNull> {
+            test("should be null") {
+                it.shouldBeNull()
+            }
+        }
+
     @Step(
         "テーブル<table>である",
         "以下のテーブルである <table>"

@@ -52,7 +52,9 @@
 * URL"/bigBallOfMud"にGETリクエストを送る
 * レスポンスのJSONの"$.name"が"B\\w{2} B\\w{3} of M\\w{2}"である
 
-レスポンスのJSONの<jsonPath>がnullである
+## レスポンスのJSONの<jsonPath>がnullである
+* URL"/bigBallOfMud"にGETリクエストを送る
+* レスポンスのJSONの"$.nullValue"がnullである
 
 ## レスポンスのJSONの<jsonPath>が小数の<expected>である
 * URL"/bigBallOfMud"にGETリクエストを送る

@@ -12,6 +12,7 @@
       "name": "Big Ball of Mud",
       "serialNumber": 42,
       "version": 1.3,
+      "nullValue": null,
       "primes": [false, true, true, true, false, true]
     }
   }
