@@ -15,7 +15,7 @@ internal class FocusSQLSteps {
 
     @Step("DB<databaseName>にSQL<sql>を実行した結果が")
     fun executeSQL(databaseName: String, sql: String) {
-        DriverManager.getConnection(jdbcConfig(databaseName).jdbcUrl).use { conn ->
+        jdbcConfig(databaseName).connector.connect().use { conn ->
             conn.prepareStatement(sql).executeQuery().use(ResultSetProxy::of)
                 .let { ScenarioDataStore.put(K.AssertionTarget, it) }
         }

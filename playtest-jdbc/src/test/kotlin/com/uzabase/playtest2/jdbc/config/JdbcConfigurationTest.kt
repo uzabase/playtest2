@@ -5,9 +5,30 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.types.shouldBeInstanceOf
 
 class JdbcConfigurationTest : FunSpec({
-
-    test("jdbc configuration") {
-        jdbc("test", "jdbc:h2:mem:test")
+    context("jdbc configuration with jdbc url") {
+        val entry = jdbc("test", "jdbc:h2:mem:test")
             .shouldBeInstanceOf<ConfigurationEntry>()
+
+        test("should be instance of ConfigurationEntry") {
+            entry.shouldBeInstanceOf<ConfigurationEntry>()
+        }
+
+        test("should be instance of Connector") {
+            val conf = entry.config as JdbcModuleConfiguration
+            conf.connector.shouldBeInstanceOf<Connector>()
+        }
+    }
+
+    context("jdbc configuration with username/password") {
+        val entry = jdbc("test", "jdbc:h2:mem:test", "alice", "password")
+
+        test("should be instance of ConfigurationEntry") {
+            entry.shouldBeInstanceOf<ConfigurationEntry>()
+        }
+
+        test("should be instance of Connector") {
+            val conf = entry.config as JdbcModuleConfiguration
+            conf.connector.shouldBeInstanceOf<Connector>()
+        }
     }
 })
