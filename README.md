@@ -13,6 +13,9 @@
 | playtest-core     | [x] | Playtest2の設定やアサーションのためのモジュール          |
 | playtest-http     | [ ] | HTTPリクエストを送信して、レスポンスを検証可能にするモジュール     |
 | playtest-wiremock | [ ] | WireMockを使って外部APIへのリクエストを検証可能にするモジュール |
+| playtest-jdbc     | [ ] | JDBCを使ってデータベースへのリクエストを検証可能にするモジュール    |
+
+```gradle
 
 ## Usage
 
