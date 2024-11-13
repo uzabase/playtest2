@@ -9,12 +9,22 @@ import java.sql.DriverManager
 internal sealed interface Connector {
     fun connect(): Connection
 
-    data class JdbcUrl(val url: String): Connector {
+    companion object {
+        fun of(url: String) = JdbcUrl(url)
+        fun of(url: String, username: String, password: String) = JdbcUrlWithCredentials(url, username, password)
+        fun of(dataSource: javax.sql.DataSource) = DataSource(dataSource)
+    }
+
+    data class JdbcUrl(val url: String) : Connector {
         override fun connect(): Connection = DriverManager.getConnection(url)
     }
 
-    data class JdbcUrlWithCredentials(val url: String, val username: String, val password: String): Connector {
+    data class JdbcUrlWithCredentials(val url: String, val username: String, val password: String) : Connector {
         override fun connect(): Connection = DriverManager.getConnection(url, username, password)
+    }
+
+    data class DataSource(val dataSource: javax.sql.DataSource) : Connector {
+        override fun connect(): Connection = dataSource.connection
     }
 }
 
@@ -24,11 +34,17 @@ internal data class JdbcModuleConfiguration(val connector: Connector) : ModuleCo
 fun jdbc(databaseName: String, jdbcUrl: String): ConfigurationEntry =
     ConfigurationEntry(
         JdbcModuleKey(databaseName),
-        JdbcModuleConfiguration(Connector.JdbcUrl(jdbcUrl))
+        JdbcModuleConfiguration(Connector.of(jdbcUrl))
     )
 
 fun jdbc(databaseName: String, jdbcUrl: String, username: String, password: String): ConfigurationEntry =
     ConfigurationEntry(
         JdbcModuleKey(databaseName),
-        JdbcModuleConfiguration(Connector.JdbcUrlWithCredentials(jdbcUrl, username, password))
+        JdbcModuleConfiguration(Connector.of(jdbcUrl, username, password))
+    )
+
+fun jdbc(databaseName: String, dataSource: javax.sql.DataSource): ConfigurationEntry =
+    ConfigurationEntry(
+        JdbcModuleKey(databaseName),
+        JdbcModuleConfiguration(Connector.of(dataSource))
     )
