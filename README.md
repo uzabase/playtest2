@@ -15,8 +15,6 @@
 | playtest-wiremock | [ ] | WireMockを使って外部APIへのリクエストを検証可能にするモジュール |
 | playtest-jdbc     | [ ] | JDBCを使ってデータベースへのリクエストを検証可能にするモジュール    |
 
-```gradle
-
 ## Usage
 
 Playtest2では設定のためのDSLを提供しています。`playtest2`関数に各モジュールが提供する設定関数(`http`, `wireMock`など)で設定を追加していくことで、Playtest2が提供するステップを利用することができるようになります。
