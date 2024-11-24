@@ -4,7 +4,6 @@ import com.thoughtworks.gauge.Step
 import com.thoughtworks.gauge.Table
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.uzabase.playtest2.core.assertion.*
-import com.uzabase.playtest2.core.zoom.TableProxy
 import com.uzabase.playtest2.core.zoom.ToTable
 
 internal inline fun <reified T> assertable(f: (T) -> Unit) =
