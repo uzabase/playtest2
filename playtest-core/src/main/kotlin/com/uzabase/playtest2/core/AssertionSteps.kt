@@ -6,61 +6,61 @@ import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.uzabase.playtest2.core.assertion.*
 import com.uzabase.playtest2.core.zoom.ToTable
 
-internal inline fun <reified T> assertable(f: (T) -> Unit) =
+internal inline fun <reified T> oldassertable(f: (T) -> Unit) =
     ScenarioDataStore.get(K.AssertionTarget)
         .let { it as? T }
         ?.let(f)
         ?: playtestError("Assertion target is not found")
 
-internal fun test(message: String, assertExp: () -> Boolean) {
+internal fun oldtest(message: String, assertExp: () -> Boolean) {
     if (!assertExp()) throw PlaytestAssertionError(message)
 }
 
 class AssertionSteps {
     @Step("小数値の<value>である")
     fun shouldBeBigDecimal(value: Double) =
-        assertable<ShouldBeBigDecimal> {
-            test("should be $value") {
+        oldassertable<ShouldBeBigDecimal> {
+            oldtest("should be $value") {
                 it.shouldBe(value.toBigDecimal())
             }
         }
 
     @Step("整数値の<value>である")
     fun shouldBeLongValue(value: Long) =
-        assertable<ShouldBeLong> {
-            test("should be $value") {
+        oldassertable<ShouldBeLong> {
+            oldtest("should be $value") {
                 it.shouldBe(value)
             }
         }
 
     @Step("整数値の<value>以上である")
     fun shouldBeGreaterEqualLongValue(value: Long) =
-        assertable<ShouldBeGreaterEqualLong> {
-            test("should be greater than or equal to $value") {
+        oldassertable<ShouldBeGreaterEqualLong> {
+            oldtest("should be greater than or equal to $value") {
                 it.shouldBeGreaterEqual(value)
             }
         }
 
     @Step("文字列の<value>である")
     fun shouldBeStringValue(value: String) =
-        assertable<ShouldBeString> {
-            test("should be $value") {
+        oldassertable<ShouldBeString> {
+            oldtest("should be $value") {
                 it.shouldBe(value)
             }
         }
 
     @Step("文字列の<value>を含んでいる")
     fun shouldBeContainsStringValue(value: String) =
-        assertable<ShouldContainsString> {
-            test("should contains $value") {
+        oldassertable<ShouldContainsString> {
+            oldtest("should contains $value") {
                 it.shouldContain(value)
             }
         }
 
     @Step("正規表現の<value>に完全一致している")
     fun shouldBeEntireMatchStringValue(value: String) =
-        assertable<ShouldMatchString> {
-            test("should match $value") {
+        oldassertable<ShouldMatchString> {
+            oldtest("should match $value") {
                 it.shouldMatch(value)
             }
         }
@@ -68,47 +68,41 @@ class AssertionSteps {
     @Step("真偽値の<value>である")
     fun shouldBeBooleanValue(value: Boolean) =
         assertable<ShouldBeBoolean> {
-            test("should be $value") {
-                it.shouldBe(value)
-            }
+            test { it.shouldBe(value) }
         }
 
     @Step("真である")
     fun shouldBeTrue() =
         assertable<ShouldBeBoolean> {
-            test("should be strict true") {
-                it.shouldBe(true)
-            }
+            test { it.shouldBe(true) }
         }
 
     @Step("偽である")
     fun shouldBeFalse() =
         assertable<ShouldBeBoolean> {
-            test("should be strict false") {
-                it.shouldBe(false)
-            }
+            test { it.shouldBe(false) }
         }
 
     @Step("存在している")
     fun shouldBeExist() =
-        assertable<ShouldBeExist> {
-            test("should be exist") {
+        oldassertable<ShouldBeExist> {
+            oldtest("should be exist") {
                 it.shouldBeExist()
             }
         }
 
     @Step("存在していない")
     fun shouldNotBeExist() =
-        assertable<ShouldNotBeExist> {
-            test("should not be exist") {
+        oldassertable<ShouldNotBeExist> {
+            oldtest("should not be exist") {
                 it.shouldNotBeExist()
             }
         }
 
     @Step("nullである")
     fun shouldBeNull() =
-        assertable<ShouldBeNull> {
-            test("should be null") {
+        oldassertable<ShouldBeNull> {
+            oldtest("should be null") {
                 it.shouldBeNull()
             }
         }
@@ -124,7 +118,7 @@ class AssertionSteps {
                 is ShouldBeEqualTable -> target
                 else -> throw PlaytestAssertionError("AssertionTarget is not assertable type: ${target.javaClass}")
             }
-            test("should be equal to $table") {
+            oldtest("should be equal to $table") {
                 sut.shouldBeEqual(table)
             }
         }
