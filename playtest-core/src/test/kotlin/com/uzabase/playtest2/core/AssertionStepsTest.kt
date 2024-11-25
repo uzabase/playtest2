@@ -13,7 +13,7 @@ data class FullName(val firstName: String, val lastName: String)
 private val FromFullName = { fullName: FullName ->
     object : ShouldBeString, ShouldBeBoolean, ShouldBe<FullName> {
         override fun shouldBe(expected: String): Boolean = "${fullName.firstName} ${fullName.lastName} :)" == expected
-        override fun shouldBe(expected: Boolean): Boolean = false
+        override fun shouldBe(expected: Boolean): TestResult = Failed { "should be strict $expected" }
         override fun shouldBe(expected: FullName): Boolean = fullName == expected
     }
 }
@@ -92,20 +92,6 @@ class AssertionStepsTest : FunSpec({
         test("data class") {
             ScenarioDataStore.put(K.AssertionTarget, FromFullName(FullName("Hibiki", "Yuta")))
             sut.shouldBeStringValue("Hibiki Yuta :)")
-        }
-    }
-
-    xcontext("string representation value is not strict boolean value") {
-        test("should be true") {
-            ScenarioDataStore.put(K.AssertionTarget, "true")
-            shouldThrow<PlaytestAssertionError> { sut.shouldBeTrue() }
-                .message.shouldBe("should be strict true")
-        }
-
-        test("should be false") {
-            ScenarioDataStore.put(K.AssertionTarget, "false")
-            shouldThrow<PlaytestAssertionError> { sut.shouldBeFalse() }
-                .message.shouldBe("should be strict false")
         }
     }
 

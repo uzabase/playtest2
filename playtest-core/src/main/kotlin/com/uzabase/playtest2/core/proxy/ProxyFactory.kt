@@ -10,7 +10,13 @@ class ProxyFactory {
                 override fun shouldBe(expected: Long): Boolean = s.toLong() == expected
                 override fun shouldBe(expected: String): Boolean = s == expected
                 override fun shouldContain(expected: String): Boolean = s.contains(expected)
-                override fun shouldBe(expected: Boolean): Boolean = s.toBoolean() == expected
+                override fun shouldBe(expected: Boolean): TestResult =
+                    if (s.toBoolean() == expected) {
+                        Ok
+                    } else {
+                        Failed { simpleExplain(expected, s) }
+                    }
+
                 override fun shouldMatch(expected: String): Boolean = expected.toRegex().matches(s)
             }
 
@@ -26,7 +32,11 @@ class ProxyFactory {
         fun ofBoolean(b: Boolean): Any =
             object : ShouldBeString, ShouldBeBoolean {
                 override fun shouldBe(expected: String): Boolean = b.toString() == expected
-                override fun shouldBe(expected: Boolean): Boolean = b == expected
+                override fun shouldBe(expected: Boolean): TestResult = if (b == expected) {
+                    Ok
+                } else {
+                    Failed { simpleExplain(expected, b) }
+                }
             }
     }
 }

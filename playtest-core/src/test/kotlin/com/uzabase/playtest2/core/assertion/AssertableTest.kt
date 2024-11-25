@@ -35,4 +35,16 @@ class AssertableTest : FunSpec({
             }.message.shouldBe("expected value is `1` but actual value is `42`")
         }
     }
+
+    context("defaultExplain") {
+        test("should return expected and actual values") {
+            simpleExplain(1, 42).shouldBe("""
+                Expected:
+                  value: 1
+                  class: class kotlin.Int
+                Actual:
+                  value: 42
+                  class: class kotlin.Int""".trimIndent())
+        }
+    }
 })
