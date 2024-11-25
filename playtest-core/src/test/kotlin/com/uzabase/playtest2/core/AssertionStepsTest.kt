@@ -64,12 +64,18 @@ class AssertionStepsTest : FunSpec({
 
             test("true value") {
                 shouldThrow<PlaytestAssertionError> { sut.shouldBeTrue() }
-                    .message.shouldBe("Assertion target is not found")
+                    .message.shouldBe("""
+                        Assertion Target is missing.
+                        Expected: class com.uzabase.playtest2.core.assertion.ShouldBeBoolean
+                    """.trimIndent())
             }
 
             test("false value") {
                 shouldThrow<PlaytestAssertionError> { sut.shouldBeFalse() }
-                    .message.shouldBe("Assertion target is not found")
+                    .message.shouldBe("""
+                        Assertion Target is missing.
+                        Expected: class com.uzabase.playtest2.core.assertion.ShouldBeBoolean
+                    """.trimIndent())
             }
         }
     }
