@@ -37,7 +37,33 @@ internal class DefiniteJsonPathProxy(
     override fun shouldBe(expected: BigDecimal): Boolean =
         JsonPath.parse(json).read<Double>(path).toBigDecimal() == expected
 
-    override fun shouldBe(expected: Boolean): Boolean = JsonPath.parse(json).read<Boolean>(path) == expected
+    override fun shouldBe(expected: Boolean): TestResult = try {
+        JsonPath.parse(json).read<Boolean>(path).let {
+            if (it == expected) {
+                Ok
+            } else {
+                Failed {
+                    """
+                    |${simpleExplain(expected, it)}
+                    |  json: $json
+                """.trimMargin()
+                }
+            }
+        }
+
+    } catch (e: PathNotFoundException) {
+        Failed {
+            """
+            |Expected:
+            |  value: $expected
+            |  class: ${expected::class.qualifiedName}
+            |Actual:
+            |  error: ${e.message}
+            |  json: $json
+            """.trimMargin()
+        }
+    }
+
     override fun shouldBeExist(): Boolean =
         try {
             JsonPath.parse(json).read<Any>(path)
@@ -50,6 +76,7 @@ internal class DefiniteJsonPathProxy(
     override fun shouldBeNull(): Boolean =
         JsonPath.parse(json).read<Any?>(path) == null
 }
+
 
 internal class IndefiniteJsonPathProxy(
     private val json: String,
@@ -83,12 +110,51 @@ internal class IndefiniteJsonPathProxy(
             }
         }
 
-    override fun shouldBe(expected: Boolean): Boolean =
-        JsonPath.parse(json).read<List<Boolean>>(path).let { list ->
-            if (list.size == 1) {
-                list[0] == expected
-            } else {
-                throw PlaytestAssertionError("The path is indefinite and the result is not a single value")
+    override fun shouldBe(expected: Boolean): TestResult =
+        try {
+            JsonPath.parse(json).read<List<Boolean>>(path).let { list ->
+                if (list.size == 1 && list[0] == expected) {
+                    Ok
+                } else {
+                    val expectedExplanation = """
+                    |Expected:
+                    |  value: $expected
+                    |  class: ${expected::class.qualifiedName}
+                    |
+                """.trimMargin()
+
+                    val actualExplanation = if (list.size == 1) {
+                        """
+                    |Actual:
+                    |  value: ${list[0]}
+                    |  class: ${list[0]::class.qualifiedName}
+                    |
+                """.trimMargin()
+                    } else {
+                        """
+                    |Actual:
+                    |  value: $list
+                    |  error: The path is indefinite and the result is not a single value
+                    |
+                """.trimMargin()
+                    }
+
+                    Failed {
+                        expectedExplanation + actualExplanation +
+                                """|  json: $json""".trimMargin()
+                    }
+                }
+            }
+        } catch (e: PathNotFoundException) {
+            Failed {
+                """
+                |Expected:
+                |  value: $expected
+                |  class: ${expected::class.qualifiedName}
+                |Actual:
+                |  error: ${e.message}
+                |  json: $json
+                """.trimMargin()
             }
         }
 

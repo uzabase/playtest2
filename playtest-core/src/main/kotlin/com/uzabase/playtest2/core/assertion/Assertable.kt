@@ -21,10 +21,10 @@ fun simpleExplain(expected: Any, actual: Any): String =
     """
     Expected:
       value: $expected
-      class: ${expected::class}
+      class: ${expected::class.qualifiedName}
     Actual:
       value: $actual
-      class: ${actual::class}
+      class: ${actual::class.qualifiedName}
     """.trimIndent()
 
 fun test(expr: () -> TestResult): Unit =

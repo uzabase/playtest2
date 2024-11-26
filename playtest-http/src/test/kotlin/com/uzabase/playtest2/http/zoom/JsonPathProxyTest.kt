@@ -1,5 +1,7 @@
 package com.uzabase.playtest2.http.zoom
 
+import com.uzabase.playtest2.core.assertion.Failed
+import com.uzabase.playtest2.core.assertion.Ok
 import com.uzabase.playtest2.core.assertion.PlaytestAssertionError
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
@@ -10,6 +12,43 @@ import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
 
 class JsonPathProxyTest : FunSpec({
+    context("Boolean") {
+        val json = """{"t": true, "f": false}"""
+        test("user friendly failed message") {
+            when (val r = JsonPathProxy.of(json, "$.f").shouldBe(true)) {
+                is Failed -> r.explain().shouldBe(
+                    """
+                    Expected:
+                      value: true
+                      class: kotlin.Boolean
+                    Actual:
+                      value: false
+                      class: kotlin.Boolean
+                      json: {"t": true, "f": false}
+                """.trimIndent()
+                )
+
+                else -> throw AssertionError("error")
+            }
+        }
+
+        test("user should known does not exist expected value on path") {
+            when (val r = JsonPathProxy.of(json, "$.i").shouldBe(false)) {
+                is Failed -> r.explain().shouldBe(
+                    """
+                |Expected:
+                |  value: false
+                |  class: kotlin.Boolean
+                |Actual:
+                |  error: No results for path: $['i']
+                |  json: {"t": true, "f": false}
+                """.trimMargin()
+                )
+
+                else -> throw AssertionError("error")
+            }
+        }
+    }
     context("Number") {
         context("ShouldBeBigDecimal") {
             test("should be equal") {
@@ -107,16 +146,73 @@ class JsonPathProxyTest : FunSpec({
             }.message.shouldBe("The path is indefinite and the result is not a single value")
         }
 
-        test("should be true if single boolean value") {
+        test("should return Ok if single boolean value is corrected") {
             JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].worker?")
-                .shouldBe(true).shouldBeTrue()
+                .shouldBe(true).shouldBe(Ok)
         }
 
-        test("should be failed if multiple boolean values") {
-            shouldThrow<PlaytestAssertionError> {
-                JsonPathProxy.of(json, "$.people[?(@.age > 1)].worker?")
-                    .shouldBe(false)
-            }.message.shouldBe("The path is indefinite and the result is not a single value")
+        test("should return Failed if single boolean value is not corrected") {
+            JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].worker?")
+                .shouldBe(false).let {
+                    when (it) {
+                        is Failed -> it.explain().shouldBe(
+                            """
+                            |Expected:
+                            |  value: false
+                            |  class: kotlin.Boolean
+                            |Actual:
+                            |  value: true
+                            |  class: kotlin.Boolean
+                            |  json: $json
+                        """.trimMargin()
+                        )
+
+                        else -> throw AssertionError("error")
+                    }
+                }
+        }
+
+        test("should return Failed if multiple boolean values") {
+            JsonPathProxy.of(json, "$.people[?(@.age > 1)].worker?")
+                .shouldBe(false)
+                .let {
+                    when (it) {
+                        is Failed -> it.explain().shouldBe(
+                            """
+                            |Expected:
+                            |  value: false
+                            |  class: kotlin.Boolean
+                            |Actual:
+                            |  value: [true,false]
+                            |  error: The path is indefinite and the result is not a single value
+                            |  json: $json
+                        """.trimMargin()
+                        )
+
+                        else -> throw AssertionError("error")
+                    }
+                }
+        }
+
+        test("should return Failed if path is not exists") {
+            JsonPathProxy.of(json, "$.__does_not_exists__.[?(@ > 42)].answer")
+                .shouldBe(false)
+                .let {
+                    when (it) {
+                        is Failed -> it.explain().shouldBe(
+                            """
+                            |Expected:
+                            |  value: false
+                            |  class: kotlin.Boolean
+                            |Actual:
+                            |  error: Missing property in path $['__does_not_exists__']
+                            |  json: $json
+                        """.trimMargin()
+                        )
+
+                        else -> throw AssertionError("error")
+                    }
+                }
         }
 
         test("should be true if single string value - contains") {

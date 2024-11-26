@@ -57,10 +57,10 @@ class ProxyFactoryTest : FunSpec({
                         """
                         Expected:
                           value: false
-                          class: class kotlin.Boolean
+                          class: kotlin.Boolean
                         Actual:
                           value: true
-                          class: class kotlin.String
+                          class: kotlin.String
                         """.trimIndent()
                     )
 
@@ -75,10 +75,10 @@ class ProxyFactoryTest : FunSpec({
                         """
                         Expected:
                           value: true
-                          class: class kotlin.Boolean
+                          class: kotlin.Boolean
                         Actual:
                           value: false
-                          class: class kotlin.String
+                          class: kotlin.String
                         """.trimIndent()
                     )
 
@@ -108,10 +108,10 @@ class ProxyFactoryTest : FunSpec({
                     """
                     Expected:
                       value: false
-                      class: class kotlin.Boolean
+                      class: kotlin.Boolean
                     Actual:
                       value: true
-                      class: class kotlin.Boolean
+                      class: kotlin.Boolean
                     """.trimIndent()
                 )
                 else -> throw AssertionError("error")
