@@ -41,10 +41,10 @@ class AssertableTest : FunSpec({
             simpleExplain(1, 42).shouldBe("""
                 Expected:
                   value: 1
-                  class: class kotlin.Int
+                  class: kotlin.Int
                 Actual:
                   value: 42
-                  class: class kotlin.Int""".trimIndent())
+                  class: kotlin.Int""".trimIndent())
         }
     }
 })
