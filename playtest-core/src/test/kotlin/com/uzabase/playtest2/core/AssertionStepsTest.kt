@@ -64,18 +64,22 @@ class AssertionStepsTest : FunSpec({
 
             test("true value") {
                 shouldThrow<PlaytestAssertionError> { sut.shouldBeTrue() }
-                    .message.shouldBe("""
+                    .message.shouldBe(
+                        """
                         Assertion Target is missing.
                         Expected: class com.uzabase.playtest2.core.assertion.ShouldBeBoolean
-                    """.trimIndent())
+                    """.trimIndent()
+                    )
             }
 
             test("false value") {
                 shouldThrow<PlaytestAssertionError> { sut.shouldBeFalse() }
-                    .message.shouldBe("""
+                    .message.shouldBe(
+                        """
                         Assertion Target is missing.
                         Expected: class com.uzabase.playtest2.core.assertion.ShouldBeBoolean
-                    """.trimIndent())
+                    """.trimIndent()
+                    )
             }
         }
     }
@@ -116,23 +120,23 @@ class AssertionStepsTest : FunSpec({
 
     context("existence") {
         test("should be true if existed") {
-            ScenarioDataStore.put(K.AssertionTarget, ShouldBeExist { true })
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeExist { Ok })
             sut.shouldBeExist()
         }
 
         test("should be fail") {
-            ScenarioDataStore.put(K.AssertionTarget, ShouldBeExist { false })
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeExist { Failed { "should be exist" } })
             shouldThrow<PlaytestAssertionError> { sut.shouldBeExist() }
                 .message.shouldBe("should be exist")
         }
 
         test("should be true if not existed") {
-            ScenarioDataStore.put(K.AssertionTarget, ShouldNotBeExist { true })
+            ScenarioDataStore.put(K.AssertionTarget, ShouldNotBeExist { Ok })
             sut.shouldNotBeExist()
         }
 
         test("should be fail if exited") {
-            ScenarioDataStore.put(K.AssertionTarget, ShouldNotBeExist { false })
+            ScenarioDataStore.put(K.AssertionTarget, ShouldNotBeExist { Failed { "should not be exist"} })
             shouldThrow<PlaytestAssertionError> { sut.shouldNotBeExist() }
                 .message.shouldBe("should not be exist")
         }

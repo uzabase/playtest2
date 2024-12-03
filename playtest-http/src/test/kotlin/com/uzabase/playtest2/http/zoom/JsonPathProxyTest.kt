@@ -3,6 +3,7 @@ package com.uzabase.playtest2.http.zoom
 import com.uzabase.playtest2.core.assertion.Failed
 import com.uzabase.playtest2.core.assertion.Ok
 import com.uzabase.playtest2.core.assertion.PlaytestAssertionError
+import com.uzabase.playtest2.core.assertion.TestResult
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
@@ -10,43 +11,17 @@ import io.kotest.data.row
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 
 class JsonPathProxyTest : FunSpec({
     context("Boolean") {
         val json = """{"t": true, "f": false}"""
-        test("user friendly failed message") {
-            when (val r = JsonPathProxy.of(json, "$.f").shouldBe(true)) {
-                is Failed -> r.explain().shouldBe(
-                    """
-                    Expected:
-                      value: true
-                      class: kotlin.Boolean
-                    Actual:
-                      value: false
-                      class: kotlin.Boolean
-                      json: {"t": true, "f": false}
-                """.trimIndent()
-                )
-
-                else -> throw AssertionError("error")
-            }
+        test("should failed when expected value is not equal") {
+            JsonPathProxy.of(json, "$.f").shouldBe(true).shouldBeInstanceOf<Failed>()
         }
 
-        test("user should known does not exist expected value on path") {
-            when (val r = JsonPathProxy.of(json, "$.i").shouldBe(false)) {
-                is Failed -> r.explain().shouldBe(
-                    """
-                |Expected:
-                |  value: false
-                |  class: kotlin.Boolean
-                |Actual:
-                |  error: No results for path: $['i']
-                |  json: {"t": true, "f": false}
-                """.trimMargin()
-                )
-
-                else -> throw AssertionError("error")
-            }
+        test("should failed when jsonpath value is not exists") {
+            JsonPathProxy.of(json, "$.i").shouldBe(false).shouldBeInstanceOf<Failed>()
         }
     }
     context("Number") {
@@ -68,24 +43,25 @@ class JsonPathProxyTest : FunSpec({
         context("shouldBeExist") {
             test("should be exist") {
                 JsonPathProxy.of(json, "$.name")
-                    .shouldBeExist().shouldBe(true)
+                    .shouldBeExist().shouldBe(Ok)
             }
 
             test("should not be exist") {
                 JsonPathProxy.of(json, "$.gender")
-                    .shouldBeExist().shouldBe(false)
+                    .shouldBeExist()
+                    .shouldBeInstanceOf<Failed>()
             }
         }
 
         context("shouldNotBeExist") {
             test("should be exist") {
                 JsonPathProxy.of(json, "$.name")
-                    .shouldNotBeExist().shouldBe(false)
+                    .shouldNotBeExist().shouldBeInstanceOf<Failed>()
             }
 
             test("should not be exist") {
                 JsonPathProxy.of(json, "$.gender")
-                    .shouldNotBeExist().shouldBe(true)
+                    .shouldNotBeExist().shouldBe(Ok)
             }
         }
 
@@ -97,7 +73,7 @@ class JsonPathProxyTest : FunSpec({
                 row("$.age")
             ) { path ->
                 val proxy = JsonPathProxy.of(json, path)
-                proxy.shouldBeExist().shouldBe(!proxy.shouldNotBeExist())
+                (proxy.shouldBeExist() is Ok).shouldBe(proxy.shouldNotBeExist() is Failed)
             }
         }
     }
@@ -239,19 +215,21 @@ class JsonPathProxyTest : FunSpec({
             }.message.shouldBe("The path is indefinite and the result is not a single value")
         }
 
-        test("should be false if empty after filtering - should be exist") {
+        test("should return Failed if empty after filtering - should be exist") {
             JsonPathProxy.of(json, "$.people[?(@.name == 'xyz')].name")
-                .shouldBeExist().shouldBe(false)
+                .shouldBeExist()
+                .shouldBeInstanceOf<Failed>()
         }
 
         test("should be true if not empty after filtering - should be exist") {
             JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].name")
-                .shouldBeExist().shouldBe(true)
+                .shouldBeExist().shouldBe(Ok)
         }
 
-        test("should be false if path not found - should be exist") {
+        test("should return Failed if path not found - should be exist") {
             JsonPathProxy.of(json, "$.people[?(@.age > 0)][999]")
-                .shouldBeExist().shouldBeFalse()
+                .shouldBeExist()
+                .shouldBeInstanceOf<Failed>()
         }
     }
 
@@ -300,6 +278,47 @@ class JsonPathProxyTest : FunSpec({
                 row("$.objects[?(@.x == 1)].x")
             ) { path ->
                 JsonPathProxy.of(json, path).shouldBeNull().shouldBeFalse()
+            }
+        }
+    }
+
+    context("Definite Path") {
+        val json = """
+            |{"stringValue": "abc",
+            | "trueValue": true}
+        """.trimMargin()
+
+        context("Failed messages are") {
+            forAll(
+                row(
+                    "$.trueValue", { pxy: JsonPathProxy -> pxy.shouldBe(false) },
+                    """
+                    |Expected:
+                    |  value: false
+                    |  class: kotlin.Boolean
+                    |Actual:
+                    |  value: true
+                    |  class: kotlin.Boolean
+                    |  json: $json
+                    """.trimMargin()
+                ),
+                row(
+                    "$.__missing__", { pxy: JsonPathProxy -> pxy.shouldBeExist() },
+                    """
+                    |Expected:
+                    |  exists: true
+                    |Actual:
+                    |  exists: false
+                    |  json: $json
+                    """.trimMargin()
+                )
+            ) { path, expr, expected ->
+                JsonPathProxy.of(json, path).let(expr).let { result: TestResult ->
+                    when (result) {
+                        is Failed -> result.explain().shouldBe(expected)
+                        else -> throw AssertionError("error")
+                    }
+                }
             }
         }
     }

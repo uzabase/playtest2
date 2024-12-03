@@ -1,9 +1,9 @@
 package com.uzabase.playtest2.core.assertion
 
 fun interface ShouldBeExist {
-    fun shouldBeExist(): Boolean
+    fun shouldBeExist(): TestResult
 }
 
 fun interface ShouldNotBeExist {
-    fun shouldNotBeExist(): Boolean
+    fun shouldNotBeExist(): TestResult
 }
