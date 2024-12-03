@@ -85,16 +85,16 @@ class AssertionSteps {
 
     @Step("存在している")
     fun shouldBeExist() =
-        oldassertable<ShouldBeExist> {
-            oldtest("should be exist") {
+        assertable<ShouldBeExist> {
+            test {
                 it.shouldBeExist()
             }
         }
 
     @Step("存在していない")
     fun shouldNotBeExist() =
-        oldassertable<ShouldNotBeExist> {
-            oldtest("should not be exist") {
+        assertable<ShouldNotBeExist> {
+            test {
                 it.shouldNotBeExist()
             }
         }

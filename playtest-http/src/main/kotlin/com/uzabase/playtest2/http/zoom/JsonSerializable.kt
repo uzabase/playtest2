@@ -28,6 +28,22 @@ internal class DefiniteJsonPathProxy(
     private val path: JsonPath
 ) : JsonPathProxy {
 
+    private fun wrapPathNotFound(expected: Any, block: () -> TestResult): TestResult =
+        try {
+            block()
+        } catch (e: PathNotFoundException) {
+            Failed {
+                """
+                |Expected:
+                |   value: $expected
+                |   class: ${expected::class.qualifiedName}
+                |Actual:
+                |  error: ${e.message}
+                |  json: $json
+                """.trimMargin()
+            }
+        }
+
     override fun shouldBe(expected: String): Boolean = JsonPath.parse(json).read<String>(path) == expected
     override fun shouldContain(expected: String): Boolean = JsonPath.parse(json).read<String>(path).contains(expected)
     override fun shouldMatch(expected: String): Boolean =
@@ -37,42 +53,54 @@ internal class DefiniteJsonPathProxy(
     override fun shouldBe(expected: BigDecimal): Boolean =
         JsonPath.parse(json).read<Double>(path).toBigDecimal() == expected
 
-    override fun shouldBe(expected: Boolean): TestResult = try {
-        JsonPath.parse(json).read<Boolean>(path).let {
-            if (it == expected) {
-                Ok
-            } else {
-                Failed {
-                    """
-                    |${simpleExplain(expected, it)}
-                    |  json: $json
-                """.trimMargin()
+    override fun shouldBe(expected: Boolean): TestResult =
+        wrapPathNotFound(expected) {
+            JsonPath.parse(json).read<Boolean>(path).let {
+                if (it == expected) {
+                    Ok
+                } else {
+                    Failed {
+                        """
+                        |${simpleExplain(expected, it)}
+                        |  json: $json
+                        """.trimMargin()
+                    }
                 }
             }
         }
 
-    } catch (e: PathNotFoundException) {
-        Failed {
-            """
-            |Expected:
-            |  value: $expected
-            |  class: ${expected::class.qualifiedName}
-            |Actual:
-            |  error: ${e.message}
-            |  json: $json
-            """.trimMargin()
-        }
-    }
-
-    override fun shouldBeExist(): Boolean =
+    override fun shouldBeExist(): TestResult =
         try {
             JsonPath.parse(json).read<Any>(path)
-            true
+            Ok
         } catch (e: PathNotFoundException) {
-            false
+            Failed {
+                """
+                |Expected:
+                |  exists: true
+                |Actual:
+                |  exists: false
+                |  json: $json
+                """.trimMargin()
+            }
         }
 
-    override fun shouldNotBeExist(): Boolean = !shouldBeExist()
+    override fun shouldNotBeExist(): TestResult =
+        try {
+            JsonPath.parse(json).read<Any>(path)
+            Failed {
+                """
+                |Expected:
+                |  exists: false
+                |Actual:
+                |  exists: true
+                |  json: $json
+                """.trimMargin()
+            }
+        } catch (e: PathNotFoundException) {
+            Ok
+        }
+
     override fun shouldBeNull(): Boolean =
         JsonPath.parse(json).read<Any?>(path) == null
 }
@@ -177,12 +205,38 @@ internal class IndefiniteJsonPathProxy(
         }
 
     /***
-     * Indefinite なパスの場合、存在しないパスでも必ずリストが返ってくるので、例外の考慮は不要…?
+     * FIXME: Indefinite なパスの場合でも例外を返すケースがある( `filter` 操作の手前で存在しないパスを指すと Indefinite だけど例外)
      ***/
-    override fun shouldBeExist(): Boolean =
-        JsonPath.parse(json).read<List<Any>>(path).isNotEmpty()
+    override fun shouldBeExist(): TestResult =
+        if (JsonPath.parse(json).read<List<Any>>(path).isNotEmpty()) {
+            Ok
+        } else {
+            Failed {
+                """
+                |Expected:
+                |  exists: true
+                |Actual:
+                |  exists: false
+                |  json: $json
+                """.trimMargin()
+            }
+        }
 
-    override fun shouldNotBeExist(): Boolean = !shouldBeExist()
+    override fun shouldNotBeExist(): TestResult =
+        if (JsonPath.parse(json).read<List<Any>>(path).isEmpty()) {
+            Ok
+        } else {
+            Failed {
+                """
+                |Expected:
+                |  exists: false
+                |Actual:
+                |  exists: true
+                |  json: $json
+                """.trimMargin()
+            }
+        }
+
     override fun shouldBeNull(): Boolean =
         JsonPath.parse(json).read<List<Any?>>(path).let { list ->
             if (list.size == 1) {
