@@ -101,8 +101,8 @@ class AssertionSteps {
 
     @Step("nullである")
     fun shouldBeNull() =
-        oldassertable<ShouldBeNull> {
-            oldtest("should be null") {
+        assertable<ShouldBeNull> {
+            test {
                 it.shouldBeNull()
             }
         }
