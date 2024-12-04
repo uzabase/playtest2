@@ -136,7 +136,7 @@ class AssertionStepsTest : FunSpec({
         }
 
         test("should be fail if exited") {
-            ScenarioDataStore.put(K.AssertionTarget, ShouldNotBeExist { Failed { "should not be exist"} })
+            ScenarioDataStore.put(K.AssertionTarget, ShouldNotBeExist { Failed { "should not be exist" } })
             shouldThrow<PlaytestAssertionError> { sut.shouldNotBeExist() }
                 .message.shouldBe("should not be exist")
         }
@@ -144,12 +144,12 @@ class AssertionStepsTest : FunSpec({
 
     context("null") {
         test("should be true if value is null") {
-            ScenarioDataStore.put(K.AssertionTarget, ShouldBeNull { true })
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeNull { Ok })
             sut.shouldBeNull()
         }
 
         test("should be fail if value is not null") {
-            ScenarioDataStore.put(K.AssertionTarget, ShouldBeNull { false })
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeNull { Failed { "should be null" } })
             shouldThrow<PlaytestAssertionError> { sut.shouldBeNull() }
                 .message.shouldBe("should be null")
         }

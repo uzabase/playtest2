@@ -28,7 +28,7 @@ internal class DefiniteJsonPathProxy(
     private val path: JsonPath
 ) : JsonPathProxy {
 
-    private fun wrapPathNotFound(expected: Any, block: () -> TestResult): TestResult =
+    private fun wrapPathNotFound(expected: Any?, block: () -> TestResult): TestResult =
         try {
             block()
         } catch (e: PathNotFoundException) {
@@ -36,7 +36,13 @@ internal class DefiniteJsonPathProxy(
                 """
                 |Expected:
                 |   value: $expected
-                |   class: ${expected::class.qualifiedName}
+                |   class: ${
+                    if (expected == null) {
+                        "null"
+                    } else {
+                        expected::class.qualifiedName
+                    }
+                }
                 |Actual:
                 |  error: ${e.message}
                 |  json: $json
@@ -69,6 +75,23 @@ internal class DefiniteJsonPathProxy(
             }
         }
 
+    override fun shouldBeNull(): TestResult =
+        wrapPathNotFound(null) {
+            JsonPath.parse(json).read<Any?>(path).let {
+                if (it == null) {
+                    Ok
+                } else {
+                    Failed {
+                        """
+                        |${simpleExplain(null, it)}
+                        |  json: $json
+                        """.trimMargin()
+                    }
+                }
+            }
+        }
+
+
     override fun shouldBeExist(): TestResult =
         try {
             JsonPath.parse(json).read<Any>(path)
@@ -100,9 +123,6 @@ internal class DefiniteJsonPathProxy(
         } catch (e: PathNotFoundException) {
             Ok
         }
-
-    override fun shouldBeNull(): Boolean =
-        JsonPath.parse(json).read<Any?>(path) == null
 }
 
 
@@ -110,6 +130,73 @@ internal class IndefiniteJsonPathProxy(
     private val json: String,
     private val path: JsonPath
 ) : JsonPathProxy {
+
+    private fun wrapPathNotFound(expected: Any?, block: () -> TestResult): TestResult =
+        try {
+            block()
+        } catch (e: PathNotFoundException) {
+            Failed {
+                """
+                |Expected:
+                |  value: $expected
+                |  class: ${
+                    if (expected == null) {
+                        "null"
+                    } else {
+                        expected::class.qualifiedName
+                    }
+                }
+                |Actual:
+                |  error: ${e.message}
+                |  json: $json
+                """.trimMargin()
+            }
+        }
+
+    private fun listExplain(
+        expected: Any?,
+        list: List<Any?>
+    ): String {
+        val expectedExplanation =
+            """
+            |Expected:
+            |  value: $expected
+            |  class: ${
+                if (expected == null) {
+                    "null"
+                } else {
+                    expected::class.qualifiedName
+                }
+            }
+            """.trimMargin()
+
+        val actualExplanation = if (list.size == 1) {
+            """
+            |Actual:
+            |  value: ${list[0]}
+            |  class: ${
+                if (list[0] == null) {
+                    "null"
+                } else {
+                    list[0]!!::class.qualifiedName
+                }
+            }
+            """.trimMargin()
+        } else {
+            """
+            |Actual:
+            |  value: $list
+            |  error: The path is indefinite and the result is not a single value
+            """.trimMargin()
+        }
+
+        return """
+               |$expectedExplanation
+               |$actualExplanation
+               |  json: $json
+               """.trimMargin()
+
+    }
 
     override fun shouldBe(expected: String): Boolean =
         JsonPath.parse(json).read<List<String>>(path).let { list ->
@@ -139,52 +226,17 @@ internal class IndefiniteJsonPathProxy(
         }
 
     override fun shouldBe(expected: Boolean): TestResult =
-        try {
+        wrapPathNotFound(expected) {
             JsonPath.parse(json).read<List<Boolean>>(path).let { list ->
                 if (list.size == 1 && list[0] == expected) {
                     Ok
                 } else {
-                    val expectedExplanation = """
-                    |Expected:
-                    |  value: $expected
-                    |  class: ${expected::class.qualifiedName}
-                    |
-                """.trimMargin()
-
-                    val actualExplanation = if (list.size == 1) {
-                        """
-                    |Actual:
-                    |  value: ${list[0]}
-                    |  class: ${list[0]::class.qualifiedName}
-                    |
-                """.trimMargin()
-                    } else {
-                        """
-                    |Actual:
-                    |  value: $list
-                    |  error: The path is indefinite and the result is not a single value
-                    |
-                """.trimMargin()
-                    }
-
-                    Failed {
-                        expectedExplanation + actualExplanation +
-                                """|  json: $json""".trimMargin()
-                    }
+                    Failed { listExplain(expected, list) }
                 }
             }
-        } catch (e: PathNotFoundException) {
-            Failed {
-                """
-                |Expected:
-                |  value: $expected
-                |  class: ${expected::class.qualifiedName}
-                |Actual:
-                |  error: ${e.message}
-                |  json: $json
-                """.trimMargin()
-            }
+
         }
+
 
     override fun shouldContain(expected: String): Boolean =
         JsonPath.parse(json).read<List<String>>(path).let { list ->
@@ -237,12 +289,14 @@ internal class IndefiniteJsonPathProxy(
             }
         }
 
-    override fun shouldBeNull(): Boolean =
-        JsonPath.parse(json).read<List<Any?>>(path).let { list ->
-            if (list.size == 1) {
-                list[0] == null
-            } else {
-                throw PlaytestAssertionError("The path is indefinite and the result is not a single value")
+    override fun shouldBeNull(): TestResult =
+        wrapPathNotFound(null) {
+            JsonPath.parse(json).read<List<Any?>>(path).let { list ->
+                if (list.size == 1 && list[0] == null) {
+                    Ok
+                } else {
+                    Failed { listExplain(null, list) }
+                }
             }
         }
 }

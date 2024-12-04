@@ -17,14 +17,26 @@ fun interface Failed : TestResult {
     fun explain(): String
 }
 
-fun simpleExplain(expected: Any, actual: Any): String =
+fun simpleExplain(expected: Any?, actual: Any?): String =
     """
     Expected:
       value: $expected
-      class: ${expected::class.qualifiedName}
+      class: ${
+        if (expected == null) {
+            "null"
+        } else {
+            expected::class.qualifiedName
+        }
+    }
     Actual:
       value: $actual
-      class: ${actual::class.qualifiedName}
+      class: ${
+        if (actual == null) {
+            "null"
+        } else {
+            actual::class.qualifiedName
+        }
+    }
     """.trimIndent()
 
 fun test(expr: () -> TestResult): Unit =

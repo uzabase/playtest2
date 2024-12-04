@@ -8,7 +8,6 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
-import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -78,161 +77,6 @@ class JsonPathProxyTest : FunSpec({
         }
     }
 
-    context("indefinite json path") {
-        val json = """
-                {"people": [
-                    {"name": "abc", "age": 21, "pocketMoney": 1.2, "worker?": true},
-                    {"name": "def", "age": 28, "pocketMoney": 2.3, "worker?": false}
-                ]}
-            """.trimIndent()
-
-        test("should be true if single string value") {
-            JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].name")
-                .shouldBe("abc").shouldBeTrue()
-        }
-
-        test("should be failed if multiple string values") {
-            shouldThrow<PlaytestAssertionError> {
-                JsonPathProxy.of(json, "$.people[?(@.age > 1)].name")
-                    .shouldBe("abc")
-            }.message.shouldBe("The path is indefinite and the result is not a single value")
-        }
-
-        test("should be true if single long value") {
-            JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].age")
-                .shouldBe(21).shouldBeTrue()
-        }
-
-        test("should be failed if multiple long values") {
-            shouldThrow<PlaytestAssertionError> {
-                JsonPathProxy.of(json, "$.people[?(@.age > 1)].age")
-                    .shouldBe(999)
-            }.message.shouldBe("The path is indefinite and the result is not a single value")
-        }
-
-        test("should be true if single double value") {
-            JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].pocketMoney")
-                .shouldBe(1.2.toBigDecimal()).shouldBeTrue()
-        }
-
-        test("should be failed if multiple double values") {
-            shouldThrow<PlaytestAssertionError> {
-                JsonPathProxy.of(json, "$.people[?(@.age > 1)].pocketMoney")
-                    .shouldBe(9.9.toBigDecimal())
-            }.message.shouldBe("The path is indefinite and the result is not a single value")
-        }
-
-        test("should return Ok if single boolean value is corrected") {
-            JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].worker?")
-                .shouldBe(true).shouldBe(Ok)
-        }
-
-        test("should return Failed if single boolean value is not corrected") {
-            JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].worker?")
-                .shouldBe(false).let {
-                    when (it) {
-                        is Failed -> it.explain().shouldBe(
-                            """
-                            |Expected:
-                            |  value: false
-                            |  class: kotlin.Boolean
-                            |Actual:
-                            |  value: true
-                            |  class: kotlin.Boolean
-                            |  json: $json
-                        """.trimMargin()
-                        )
-
-                        else -> throw AssertionError("error")
-                    }
-                }
-        }
-
-        test("should return Failed if multiple boolean values") {
-            JsonPathProxy.of(json, "$.people[?(@.age > 1)].worker?")
-                .shouldBe(false)
-                .let {
-                    when (it) {
-                        is Failed -> it.explain().shouldBe(
-                            """
-                            |Expected:
-                            |  value: false
-                            |  class: kotlin.Boolean
-                            |Actual:
-                            |  value: [true,false]
-                            |  error: The path is indefinite and the result is not a single value
-                            |  json: $json
-                        """.trimMargin()
-                        )
-
-                        else -> throw AssertionError("error")
-                    }
-                }
-        }
-
-        test("should return Failed if path is not exists") {
-            JsonPathProxy.of(json, "$.__does_not_exists__.[?(@ > 42)].answer")
-                .shouldBe(false)
-                .let {
-                    when (it) {
-                        is Failed -> it.explain().shouldBe(
-                            """
-                            |Expected:
-                            |  value: false
-                            |  class: kotlin.Boolean
-                            |Actual:
-                            |  error: Missing property in path $['__does_not_exists__']
-                            |  json: $json
-                        """.trimMargin()
-                        )
-
-                        else -> throw AssertionError("error")
-                    }
-                }
-        }
-
-        test("should be true if single string value - contains") {
-            JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].name")
-                .shouldContain("b").shouldBeTrue()
-        }
-
-        test("should be failed if multiple string values - contains") {
-            shouldThrow<PlaytestAssertionError> {
-                JsonPathProxy.of(json, "$.people[?(@.age > 1)].name")
-                    .shouldContain("b")
-            }.message.shouldBe("The path is indefinite and the result is not a single value")
-        }
-
-        test("should be true if single string value - entire match") {
-            JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].name")
-                .shouldMatch("[abc]{3}").shouldBeTrue()
-        }
-
-        test("should be failed if multiple string values - entire match") {
-            shouldThrow<PlaytestAssertionError> {
-                JsonPathProxy.of(json, "$.people[?(@.age > 1)].name")
-                    .shouldMatch(".*")
-            }.message.shouldBe("The path is indefinite and the result is not a single value")
-        }
-
-        test("should return Failed if empty after filtering - should be exist") {
-            JsonPathProxy.of(json, "$.people[?(@.name == 'xyz')].name")
-                .shouldBeExist()
-                .shouldBeInstanceOf<Failed>()
-        }
-
-        test("should be true if not empty after filtering - should be exist") {
-            JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].name")
-                .shouldBeExist().shouldBe(Ok)
-        }
-
-        test("should return Failed if path not found - should be exist") {
-            JsonPathProxy.of(json, "$.people[?(@.age > 0)][999]")
-                .shouldBeExist()
-                .shouldBeInstanceOf<Failed>()
-        }
-    }
-
     context("Null") {
         val json = """
             {"nullValue": null,
@@ -249,7 +93,7 @@ class JsonPathProxyTest : FunSpec({
                 row("$.xs[0]"),
                 row("$.objects[0].x")
             ) { path ->
-                JsonPathProxy.of(json, path).shouldBeNull().shouldBeTrue()
+                JsonPathProxy.of(json, path).shouldBeNull().shouldBe(Ok)
             }
         }
 
@@ -259,7 +103,7 @@ class JsonPathProxyTest : FunSpec({
                 row("$.xs[1]"),
                 row("$.objects[2].x")
             ) { path ->
-                JsonPathProxy.of(json, path).shouldBeNull().shouldBeFalse()
+                JsonPathProxy.of(json, path).shouldBeNull().shouldBeInstanceOf<Failed>()
             }
         }
 
@@ -268,7 +112,7 @@ class JsonPathProxyTest : FunSpec({
                 row("$.xs[?(@ == null)]"),
                 row("$.objects[?(@.x == null)].x")
             ) { path ->
-                JsonPathProxy.of(json, path).shouldBeNull().shouldBeTrue()
+                JsonPathProxy.of(json, path).shouldBeNull().shouldBe(Ok)
             }
         }
 
@@ -277,7 +121,7 @@ class JsonPathProxyTest : FunSpec({
                 row("$.xs[?(@ == 1)]"),
                 row("$.objects[?(@.x == 1)].x")
             ) { path ->
-                JsonPathProxy.of(json, path).shouldBeNull().shouldBeFalse()
+                JsonPathProxy.of(json, path).shouldBeNull().shouldBeInstanceOf<Failed>()
             }
         }
     }
@@ -285,7 +129,8 @@ class JsonPathProxyTest : FunSpec({
     context("Definite Path") {
         val json = """
             |{"stringValue": "abc",
-            | "trueValue": true}
+            | "trueValue": true,
+            | "nullValue": null}
         """.trimMargin()
 
         context("Failed messages are") {
@@ -311,12 +156,214 @@ class JsonPathProxyTest : FunSpec({
                     |  exists: false
                     |  json: $json
                     """.trimMargin()
+                ),
+                row(
+                    "$.trueValue", { pxy: JsonPathProxy -> pxy.shouldNotBeExist() },
+                    """
+                    |Expected:
+                    |  exists: false
+                    |Actual:
+                    |  exists: true
+                    |  json: $json
+                    """.trimMargin()
+                ),
+                row(
+                    "$.trueValue", { pxy: JsonPathProxy -> pxy.shouldBeNull() },
+                    """
+                    |Expected:
+                    |  value: null
+                    |  class: null
+                    |Actual:
+                    |  value: true
+                    |  class: kotlin.Boolean
+                    |  json: $json
+                    """.trimMargin()
                 )
             ) { path, expr, expected ->
-                JsonPathProxy.of(json, path).let(expr).let { result: TestResult ->
-                    when (result) {
-                        is Failed -> result.explain().shouldBe(expected)
-                        else -> throw AssertionError("error")
+                test("$path for $json") {
+                    JsonPathProxy.of(json, path).let(expr).let { result: TestResult ->
+                        when (result) {
+                            is Failed -> result.explain().shouldBe(expected)
+                            else -> throw AssertionError("error")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    context("Indefinite Path") {
+        val json = """
+                {"people": [
+                    {"name": "abc", "age": 21, "pocketMoney": 1.2, "worker?": true},
+                    {"name": "def", "age": 28, "pocketMoney": 2.3, "worker?": false}
+                ]}
+            """.trimIndent()
+
+        context("ok or failed") {
+            test("should be true if single string value") {
+                JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].name")
+                    .shouldBe("abc").shouldBeTrue()
+            }
+
+            test("should be failed if multiple string values") {
+                shouldThrow<PlaytestAssertionError> {
+                    JsonPathProxy.of(json, "$.people[?(@.age > 1)].name")
+                        .shouldBe("abc")
+                }.message.shouldBe("The path is indefinite and the result is not a single value")
+            }
+
+            test("should be true if single long value") {
+                JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].age")
+                    .shouldBe(21).shouldBeTrue()
+            }
+
+            test("should be failed if multiple long values") {
+                shouldThrow<PlaytestAssertionError> {
+                    JsonPathProxy.of(json, "$.people[?(@.age > 1)].age")
+                        .shouldBe(999)
+                }.message.shouldBe("The path is indefinite and the result is not a single value")
+            }
+
+            test("should be true if single double value") {
+                JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].pocketMoney")
+                    .shouldBe(1.2.toBigDecimal()).shouldBeTrue()
+            }
+
+            test("should be failed if multiple double values") {
+                shouldThrow<PlaytestAssertionError> {
+                    JsonPathProxy.of(json, "$.people[?(@.age > 1)].pocketMoney")
+                        .shouldBe(9.9.toBigDecimal())
+                }.message.shouldBe("The path is indefinite and the result is not a single value")
+            }
+
+            test("should return Ok if single boolean value is corrected") {
+                JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].worker?")
+                    .shouldBe(true).shouldBe(Ok)
+            }
+
+            test("should return Failed if single boolean value is not corrected") {
+                JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].worker?")
+                    .shouldBe(false)
+                    .shouldBeInstanceOf<Failed>()
+            }
+
+            test("should return Failed if multiple boolean values") {
+                JsonPathProxy.of(json, "$.people[?(@.age > 1)].worker?")
+                    .shouldBe(false)
+                    .shouldBeInstanceOf<Failed>()
+            }
+
+            test("should return Failed if path is not exists") {
+                JsonPathProxy.of(json, "$.__does_not_exists__.[?(@ > 42)].answer")
+                    .shouldBe(false)
+                    .shouldBeInstanceOf<Failed>()
+            }
+
+            test("should be true if single string value - contains") {
+                JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].name")
+                    .shouldContain("b").shouldBeTrue()
+            }
+
+            test("should be failed if multiple string values - contains") {
+                shouldThrow<PlaytestAssertionError> {
+                    JsonPathProxy.of(json, "$.people[?(@.age > 1)].name")
+                        .shouldContain("b")
+                }.message.shouldBe("The path is indefinite and the result is not a single value")
+            }
+
+            test("should be true if single string value - entire match") {
+                JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].name")
+                    .shouldMatch("[abc]{3}").shouldBeTrue()
+            }
+
+            test("should be failed if multiple string values - entire match") {
+                shouldThrow<PlaytestAssertionError> {
+                    JsonPathProxy.of(json, "$.people[?(@.age > 1)].name")
+                        .shouldMatch(".*")
+                }.message.shouldBe("The path is indefinite and the result is not a single value")
+            }
+
+            test("should return Failed if empty after filtering - should be exist") {
+                JsonPathProxy.of(json, "$.people[?(@.name == 'xyz')].name")
+                    .shouldBeExist()
+                    .shouldBeInstanceOf<Failed>()
+            }
+
+            test("should be true if not empty after filtering - should be exist") {
+                JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].name")
+                    .shouldBeExist().shouldBe(Ok)
+            }
+
+            test("should return Failed if path not found - should be exist") {
+                JsonPathProxy.of(json, "$.people[?(@.age > 0)][999]")
+                    .shouldBeExist()
+                    .shouldBeInstanceOf<Failed>()
+            }
+        }
+
+        context("failed messages are") {
+            forAll(
+                row("$.__does_not_exists__.[?(@ > 42)].answer", { pxy: JsonPathProxy -> pxy.shouldBe(false) },
+                    """
+                    |Expected:
+                    |  value: false
+                    |  class: kotlin.Boolean
+                    |Actual:
+                    |  error: Missing property in path $['__does_not_exists__']
+                    |  json: $json
+                    """.trimMargin()
+                ),
+                row(
+                    "$.people[?(@.age > 1)].worker?", { pxy: JsonPathProxy -> pxy.shouldBe(false) },
+                    """
+                    |Expected:
+                    |  value: false
+                    |  class: kotlin.Boolean
+                    |Actual:
+                    |  value: [true,false]
+                    |  error: The path is indefinite and the result is not a single value
+                    |  json: $json
+                    """.trimMargin()
+                ),
+                row(
+                    "$.people[?(@.name == 'abc')].worker?", { pxy: JsonPathProxy -> pxy.shouldBe(false) },
+                    """
+                    |Expected:
+                    |  value: false
+                    |  class: kotlin.Boolean
+                    |Actual:
+                    |  value: true
+                    |  class: kotlin.Boolean
+                    |  json: {"people": [
+                    |    {"name": "abc", "age": 21, "pocketMoney": 1.2, "worker?": true},
+                    |    {"name": "def", "age": 28, "pocketMoney": 2.3, "worker?": false}
+                    |]}
+                    """.trimMargin()
+                ),
+                row(
+                    "$.people[?(@.name == 'abc')].worker?", { pxy: JsonPathProxy -> pxy.shouldBeNull() },
+                    """
+                    |Expected:
+                    |  value: null
+                    |  class: null
+                    |Actual:
+                    |  value: true
+                    |  class: kotlin.Boolean
+                    |  json: {"people": [
+                    |    {"name": "abc", "age": 21, "pocketMoney": 1.2, "worker?": true},
+                    |    {"name": "def", "age": 28, "pocketMoney": 2.3, "worker?": false}
+                    |]}
+                    """.trimMargin()
+                )
+            ) { jsonPath, f, expected ->
+                test("$jsonPath for $json") {
+                    JsonPathProxy.of(json, jsonPath).let(f).let {
+                        when (it) {
+                            is Failed -> it.explain().shouldBe(expected)
+
+                            else -> throw AssertionError("error")
+                        }
                     }
                 }
             }
