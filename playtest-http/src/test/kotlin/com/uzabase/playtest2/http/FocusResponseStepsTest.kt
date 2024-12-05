@@ -2,12 +2,14 @@ package com.uzabase.playtest2.http
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
+import com.uzabase.playtest2.core.assertion.Ok
 import com.uzabase.playtest2.core.assertion.ShouldBeLong
 import com.uzabase.playtest2.http.internal.K
 import com.uzabase.playtest2.http.proxy.ResponseBodyProxy
 import com.uzabase.playtest2.http.proxy.ResponseHeadersProxy
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import java.net.URI
 import java.net.http.HttpClient
@@ -43,7 +45,7 @@ class FocusResponseStepsTest : FunSpec({
 
             ScenarioDataStore.get(coreK.AssertionTarget)
                 .let { it as ShouldBeLong }
-                .shouldBe(200L).shouldBeTrue()
+                .shouldBe(200L).shouldBe(Ok)
         }
     }
 

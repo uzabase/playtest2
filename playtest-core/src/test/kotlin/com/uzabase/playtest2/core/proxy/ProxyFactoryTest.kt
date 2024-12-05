@@ -6,7 +6,9 @@ import io.kotest.data.forAll
 import io.kotest.data.row
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.equals.shouldBeEqual
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 
 class ProxyFactoryTest : FunSpec({
     context("Strings") {
@@ -43,21 +45,47 @@ class ProxyFactoryTest : FunSpec({
 
         test("ShouldLong") {
             val proxy = ProxyFactory.ofString("123") as ShouldBeLong
-            proxy.shouldBe(123).shouldBeTrue()
-            proxy.shouldBe(234).shouldBeFalse()
+            proxy.shouldBe(123).shouldBe(Ok)
+            proxy.shouldBe(234).shouldBeInstanceOf<Failed>()
         }
 
         context("ShouldBoolean") {
             test("true is true") {
                 val proxy = ProxyFactory.ofString("true") as ShouldBeBoolean
-                proxy.shouldBe(true).shouldBeTrue()
-                proxy.shouldBe(false).shouldBeFalse()
+                proxy.shouldBe(true).shouldBe(Ok)
+                when (val actual = proxy.shouldBe(false)) {
+                    is Failed -> actual.explain().shouldBeEqual(
+                        """
+                        Expected:
+                          value: false
+                          class: kotlin.Boolean
+                        Actual:
+                          value: true
+                          class: kotlin.String
+                        """.trimIndent()
+                    )
+
+                    else -> throw AssertionError("error")
+                }
             }
 
             test("false is false") {
                 val proxy = ProxyFactory.ofString("false") as ShouldBeBoolean
-                proxy.shouldBe(true).shouldBeFalse()
-                proxy.shouldBe(false).shouldBeTrue()
+                when (val actual = proxy.shouldBe(true)) {
+                    is Failed -> actual.explain().shouldBeEqual(
+                        """
+                        Expected:
+                          value: true
+                          class: kotlin.Boolean
+                        Actual:
+                          value: false
+                          class: kotlin.String
+                        """.trimIndent()
+                    )
+
+                    else -> throw AssertionError("error")
+                }
+                proxy.shouldBe(false).shouldBe(Ok)
             }
 
             forAll(
@@ -67,7 +95,27 @@ class ProxyFactoryTest : FunSpec({
                 row("", false)
             ) { from, expected ->
                 val proxy = ProxyFactory.ofString(from) as ShouldBeBoolean
-                proxy.shouldBe(expected).shouldBeTrue()
+                proxy.shouldBe(expected).shouldBe(Ok)
+            }
+        }
+    }
+
+    context("Boolean") {
+        test("should pass only when true") {
+            val proxy = ProxyFactory.ofBoolean(true) as ShouldBeBoolean
+            proxy.shouldBe(true).shouldBe(Ok)
+            when (val actual = proxy.shouldBe(false)) {
+                is Failed -> actual.explain().shouldBeEqual(
+                    """
+                    Expected:
+                      value: false
+                      class: kotlin.Boolean
+                    Actual:
+                      value: true
+                      class: kotlin.Boolean
+                    """.trimIndent()
+                )
+                else -> throw AssertionError("error")
             }
         }
     }

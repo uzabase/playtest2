@@ -13,7 +13,7 @@ data class FullName(val firstName: String, val lastName: String)
 private val FromFullName = { fullName: FullName ->
     object : ShouldBeString, ShouldBeBoolean, ShouldBe<FullName> {
         override fun shouldBe(expected: String): Boolean = "${fullName.firstName} ${fullName.lastName} :)" == expected
-        override fun shouldBe(expected: Boolean): Boolean = false
+        override fun shouldBe(expected: Boolean): TestResult = Failed { "should be strict $expected" }
         override fun shouldBe(expected: FullName): Boolean = fullName == expected
     }
 }
@@ -53,7 +53,12 @@ class AssertionStepsTest : FunSpec({
             test("long value") {
                 shouldThrow<PlaytestAssertionError> {
                     sut.shouldBeLongValue(200L)
-                }.message.shouldBe("Assertion target is not found")
+                }.message.shouldBe(
+                    """
+                    Assertion Target is missing.
+                    Expected: class com.uzabase.playtest2.core.assertion.ShouldBeLong
+                    """.trimIndent()
+                )
             }
 
             test("string value") {
@@ -64,12 +69,22 @@ class AssertionStepsTest : FunSpec({
 
             test("true value") {
                 shouldThrow<PlaytestAssertionError> { sut.shouldBeTrue() }
-                    .message.shouldBe("Assertion target is not found")
+                    .message.shouldBe(
+                        """
+                        Assertion Target is missing.
+                        Expected: class com.uzabase.playtest2.core.assertion.ShouldBeBoolean
+                    """.trimIndent()
+                    )
             }
 
             test("false value") {
                 shouldThrow<PlaytestAssertionError> { sut.shouldBeFalse() }
-                    .message.shouldBe("Assertion target is not found")
+                    .message.shouldBe(
+                        """
+                        Assertion Target is missing.
+                        Expected: class com.uzabase.playtest2.core.assertion.ShouldBeBoolean
+                    """.trimIndent()
+                    )
             }
         }
     }
@@ -95,20 +110,6 @@ class AssertionStepsTest : FunSpec({
         }
     }
 
-    xcontext("string representation value is not strict boolean value") {
-        test("should be true") {
-            ScenarioDataStore.put(K.AssertionTarget, "true")
-            shouldThrow<PlaytestAssertionError> { sut.shouldBeTrue() }
-                .message.shouldBe("should be strict true")
-        }
-
-        test("should be false") {
-            ScenarioDataStore.put(K.AssertionTarget, "false")
-            shouldThrow<PlaytestAssertionError> { sut.shouldBeFalse() }
-                .message.shouldBe("should be strict false")
-        }
-    }
-
     context("numbers") {
         test("should be true if equal value of BigDecimal") {
             ScenarioDataStore.put(K.AssertionTarget, ShouldBeBigDecimal { expected -> 0.3.toBigDecimal() == expected })
@@ -124,23 +125,23 @@ class AssertionStepsTest : FunSpec({
 
     context("existence") {
         test("should be true if existed") {
-            ScenarioDataStore.put(K.AssertionTarget, ShouldBeExist { true })
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeExist { Ok })
             sut.shouldBeExist()
         }
 
         test("should be fail") {
-            ScenarioDataStore.put(K.AssertionTarget, ShouldBeExist { false })
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeExist { Failed { "should be exist" } })
             shouldThrow<PlaytestAssertionError> { sut.shouldBeExist() }
                 .message.shouldBe("should be exist")
         }
 
         test("should be true if not existed") {
-            ScenarioDataStore.put(K.AssertionTarget, ShouldNotBeExist { true })
+            ScenarioDataStore.put(K.AssertionTarget, ShouldNotBeExist { Ok })
             sut.shouldNotBeExist()
         }
 
         test("should be fail if exited") {
-            ScenarioDataStore.put(K.AssertionTarget, ShouldNotBeExist { false })
+            ScenarioDataStore.put(K.AssertionTarget, ShouldNotBeExist { Failed { "should not be exist" } })
             shouldThrow<PlaytestAssertionError> { sut.shouldNotBeExist() }
                 .message.shouldBe("should not be exist")
         }
@@ -148,12 +149,12 @@ class AssertionStepsTest : FunSpec({
 
     context("null") {
         test("should be true if value is null") {
-            ScenarioDataStore.put(K.AssertionTarget, ShouldBeNull { true })
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeNull { Ok })
             sut.shouldBeNull()
         }
 
         test("should be fail if value is not null") {
-            ScenarioDataStore.put(K.AssertionTarget, ShouldBeNull { false })
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeNull { Failed { "should be null" } })
             shouldThrow<PlaytestAssertionError> { sut.shouldBeNull() }
                 .message.shouldBe("should be null")
         }
