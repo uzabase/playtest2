@@ -53,7 +53,12 @@ class AssertionStepsTest : FunSpec({
             test("long value") {
                 shouldThrow<PlaytestAssertionError> {
                     sut.shouldBeLongValue(200L)
-                }.message.shouldBe("Assertion target is not found")
+                }.message.shouldBe(
+                    """
+                    Assertion Target is missing.
+                    Expected: class com.uzabase.playtest2.core.assertion.ShouldBeLong
+                    """.trimIndent()
+                )
             }
 
             test("string value") {

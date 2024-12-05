@@ -8,6 +8,7 @@ import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.equals.shouldBeEqual
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 
 class ProxyFactoryTest : FunSpec({
     context("Strings") {
@@ -44,8 +45,8 @@ class ProxyFactoryTest : FunSpec({
 
         test("ShouldLong") {
             val proxy = ProxyFactory.ofString("123") as ShouldBeLong
-            proxy.shouldBe(123).shouldBeTrue()
-            proxy.shouldBe(234).shouldBeFalse()
+            proxy.shouldBe(123).shouldBe(Ok)
+            proxy.shouldBe(234).shouldBeInstanceOf<Failed>()
         }
 
         context("ShouldBoolean") {

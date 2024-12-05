@@ -13,7 +13,7 @@ class AssertableTest : FunSpec({
         afterEach { ScenarioDataStore.remove(K.AssertionTarget) }
 
         test("assertable takes lambda that is take an argument as T") {
-            ScenarioDataStore.put(K.AssertionTarget, ShouldBeLong { true })
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeLong { Ok })
             assertable<ShouldBeLong> { it.shouldBeInstanceOf<ShouldBeLong>() }
         }
 

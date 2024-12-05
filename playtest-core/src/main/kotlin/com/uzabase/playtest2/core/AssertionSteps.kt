@@ -27,8 +27,8 @@ class AssertionSteps {
 
     @Step("整数値の<value>である")
     fun shouldBeLongValue(value: Long) =
-        oldassertable<ShouldBeLong> {
-            oldtest("should be $value") {
+        assertable<ShouldBeLong> {
+            test {
                 it.shouldBe(value)
             }
         }
