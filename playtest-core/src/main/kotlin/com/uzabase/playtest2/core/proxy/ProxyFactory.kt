@@ -7,7 +7,12 @@ class ProxyFactory {
     companion object {
         fun ofString(s: String): Any =
             object : ShouldBeString, ShouldContainsString, ShouldBeLong, ShouldBeBoolean, ShouldMatchString {
-                override fun shouldBe(expected: Long): Boolean = s.toLong() == expected
+                override fun shouldBe(expected: Long): TestResult = if (s.toLong() == expected) {
+                    Ok
+                } else {
+                    Failed { simpleExplain(expected, s) }
+                }
+
                 override fun shouldBe(expected: String): Boolean = s == expected
                 override fun shouldContain(expected: String): Boolean = s.contains(expected)
                 override fun shouldBe(expected: Boolean): TestResult =
@@ -22,7 +27,12 @@ class ProxyFactory {
 
         fun ofLong(l: Long): Any =
             object : ShouldBeString, ShouldBeLong {
-                override fun shouldBe(expected: Long): Boolean = l == expected
+                override fun shouldBe(expected: Long): TestResult = if (l == expected) {
+                    Ok
+                } else {
+                    Failed { simpleExplain(expected, l) }
+                }
+
                 override fun shouldBe(expected: String): Boolean = l.toString() == expected
             }
 

@@ -55,7 +55,30 @@ internal class DefiniteJsonPathProxy(
     override fun shouldMatch(expected: String): Boolean =
         expected.toRegex().matches(JsonPath.parse(json).read<String>(path))
 
-    override fun shouldBe(expected: Long): Boolean = JsonPath.parse(json).read<Int>(path).toLong() == expected
+    override fun shouldBe(expected: Long): TestResult =
+        wrapPathNotFound(expected) {
+            JsonPath.parse(json).read<Int>(path).let {
+                if (it != null && it.toLong() == expected) {
+                    Ok
+                } else {
+                    Failed {
+                        """
+                        |${
+                            simpleExplain(
+                                expected, if (it == null) {
+                                    it
+                                } else {
+                                    it.toLong()
+                                }
+                            )
+                        }
+                        |  json: $json
+                        """.trimMargin()
+                    }
+                }
+            }
+        }
+
     override fun shouldBe(expected: BigDecimal): Boolean =
         JsonPath.parse(json).read<Double>(path).toBigDecimal() == expected
 
@@ -207,13 +230,16 @@ internal class IndefiniteJsonPathProxy(
             }
         }
 
-    override fun shouldBe(expected: Long): Boolean =
-        JsonPath.parse(json).read<List<Int>>(path).let { list ->
-            if (list.size == 1) {
-                list[0].toLong() == expected
-            } else {
-                throw PlaytestAssertionError("The path is indefinite and the result is not a single value")
+    override fun shouldBe(expected: Long): TestResult =
+        wrapPathNotFound(expected) {
+            JsonPath.parse(json).read<List<Int>>(path).let { list ->
+                if (list.size == 1 && list[0].toLong() == expected) {
+                    Ok
+                } else {
+                    Failed { listExplain(expected, list) }
+                }
             }
+
         }
 
     override fun shouldBe(expected: BigDecimal): Boolean =

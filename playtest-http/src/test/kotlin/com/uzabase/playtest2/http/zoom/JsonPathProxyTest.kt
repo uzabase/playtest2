@@ -130,7 +130,8 @@ class JsonPathProxyTest : FunSpec({
         val json = """
             |{"stringValue": "abc",
             | "trueValue": true,
-            | "nullValue": null}
+            | "nullValue": null,
+            | "intValue": 42}
         """.trimMargin()
 
         context("Failed messages are") {
@@ -178,6 +179,30 @@ class JsonPathProxyTest : FunSpec({
                     |  class: kotlin.Boolean
                     |  json: $json
                     """.trimMargin()
+                ),
+                row(
+                    "$.intValue", { pxy: JsonPathProxy -> pxy.shouldBe(43) },
+                    """
+                    |Expected:
+                    |  value: 43
+                    |  class: kotlin.Long
+                    |Actual:
+                    |  value: 42
+                    |  class: kotlin.Long
+                    |  json: $json
+                    """.trimMargin()
+                ),
+                row(
+                    "$.nullValue", { pxy: JsonPathProxy -> pxy.shouldBe(43) },
+                    """
+                    |Expected:
+                    |  value: 43
+                    |  class: kotlin.Long
+                    |Actual:
+                    |  value: null
+                    |  class: null
+                    |  json: $json
+                    """.trimMargin()
                 )
             ) { path, expr, expected ->
                 test("$path for $json") {
@@ -215,14 +240,13 @@ class JsonPathProxyTest : FunSpec({
 
             test("should be true if single long value") {
                 JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].age")
-                    .shouldBe(21).shouldBeTrue()
+                    .shouldBe(21).shouldBe(Ok)
             }
 
             test("should be failed if multiple long values") {
-                shouldThrow<PlaytestAssertionError> {
-                    JsonPathProxy.of(json, "$.people[?(@.age > 1)].age")
-                        .shouldBe(999)
-                }.message.shouldBe("The path is indefinite and the result is not a single value")
+                JsonPathProxy.of(json, "$.people[?(@.age > 1)].age")
+                    .shouldBe(999)
+                    .shouldBeInstanceOf<Failed>()
             }
 
             test("should be true if single double value") {
@@ -304,7 +328,8 @@ class JsonPathProxyTest : FunSpec({
 
         context("failed messages are") {
             forAll(
-                row("$.__does_not_exists__.[?(@ > 42)].answer", { pxy: JsonPathProxy -> pxy.shouldBe(false) },
+                row(
+                    "$.__does_not_exists__.[?(@ > 42)].answer", { pxy: JsonPathProxy -> pxy.shouldBe(false) },
                     """
                     |Expected:
                     |  value: false
