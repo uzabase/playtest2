@@ -7,9 +7,9 @@ fun interface ShouldBeLong {
 }
 
 fun interface ShouldBeGreaterEqualLong {
-    fun shouldBeGreaterEqual(expected: Long): Boolean
+    fun shouldBeGreaterEqual(expected: Long): TestResult
 }
 
 fun interface ShouldBeBigDecimal {
-    fun shouldBe(expected: BigDecimal): Boolean
+    fun shouldBe(expected: BigDecimal): TestResult
 }

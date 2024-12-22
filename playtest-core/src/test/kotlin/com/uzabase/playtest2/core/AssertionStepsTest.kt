@@ -112,12 +112,12 @@ class AssertionStepsTest : FunSpec({
 
     context("numbers") {
         test("should be true if equal value of BigDecimal") {
-            ScenarioDataStore.put(K.AssertionTarget, ShouldBeBigDecimal { expected -> 0.3.toBigDecimal() == expected })
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeBigDecimal { Ok })
             sut.shouldBeBigDecimal(0.3)
         }
 
         test("should be fail if not equal value of BigDecimal") {
-            ScenarioDataStore.put(K.AssertionTarget, ShouldBeBigDecimal { expected -> 0.3.toBigDecimal() == expected })
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeBigDecimal { Failed { "should be 0.4" } })
             shouldThrow<PlaytestAssertionError> { sut.shouldBeBigDecimal(0.4) }
                 .message.shouldBe("should be 0.4")
         }

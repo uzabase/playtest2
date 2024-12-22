@@ -27,7 +27,7 @@ class JsonPathProxyTest : FunSpec({
         context("ShouldBeBigDecimal") {
             test("should be equal") {
                 JsonPathProxy.of("""{"price": 0.3}""", "$.price")
-                    .shouldBe("0.3".toBigDecimal()).shouldBe(true)
+                    .shouldBe("0.3".toBigDecimal()).shouldBe(Ok)
             }
         }
     }
@@ -251,14 +251,12 @@ class JsonPathProxyTest : FunSpec({
 
             test("should be true if single double value") {
                 JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].pocketMoney")
-                    .shouldBe(1.2.toBigDecimal()).shouldBeTrue()
+                    .shouldBe(1.2.toBigDecimal()).shouldBe(Ok)
             }
 
             test("should be failed if multiple double values") {
-                shouldThrow<PlaytestAssertionError> {
-                    JsonPathProxy.of(json, "$.people[?(@.age > 1)].pocketMoney")
-                        .shouldBe(9.9.toBigDecimal())
-                }.message.shouldBe("The path is indefinite and the result is not a single value")
+                JsonPathProxy.of(json, "$.people[?(@.age > 1)].pocketMoney")
+                    .shouldBe(9.9.toBigDecimal()).shouldBeInstanceOf<Failed>()
             }
 
             test("should return Ok if single boolean value is corrected") {

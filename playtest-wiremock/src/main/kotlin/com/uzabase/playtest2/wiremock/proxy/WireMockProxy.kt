@@ -85,13 +85,12 @@ internal class WireMockProxy private constructor(
             Failed { e.message ?: e.stackTraceToString() }
         }
 
-    override fun shouldBeGreaterEqual(expected: Long): Boolean =
+    override fun shouldBeGreaterEqual(expected: Long): TestResult =
         try {
             val count = CountMatchingStrategy(CountMatchingStrategy.GREATER_THAN_OR_EQUAL, expected.toInt())
             mock.verifyThat(count, updaters.build(builder))
-            true
+            Ok
         } catch (e: AssertionError) {
-            e.printStackTrace()
-            false
+            Failed { e.message ?: e.stackTraceToString() }
         }
 }
