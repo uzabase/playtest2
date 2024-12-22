@@ -58,20 +58,12 @@ internal class DefiniteJsonPathProxy(
     override fun shouldBe(expected: Long): TestResult =
         wrapPathNotFound(expected) {
             JsonPath.parse(json).read<Int>(path).let {
-                if (it != null && it.toLong() == expected) {
+                if (it?.toLong() == expected) {
                     Ok
                 } else {
                     Failed {
                         """
-                        |${
-                            simpleExplain(
-                                expected, if (it == null) {
-                                    it
-                                } else {
-                                    it.toLong()
-                                }
-                            )
-                        }
+                        |${simpleExplain(expected, it?.toLong())}
                         |  json: $json
                         """.trimMargin()
                     }
@@ -79,8 +71,22 @@ internal class DefiniteJsonPathProxy(
             }
         }
 
-    override fun shouldBe(expected: BigDecimal): Boolean =
-        JsonPath.parse(json).read<Double>(path).toBigDecimal() == expected
+    override fun shouldBe(expected: BigDecimal): TestResult =
+        wrapPathNotFound(expected) {
+            JsonPath.parse(json).read<Double>(path).let {
+                if (it?.toBigDecimal() == expected) {
+                    Ok
+                } else {
+                    Failed {
+                        """
+                        |${simpleExplain(expected, it?.toBigDecimal())}
+                        |  json: $json
+                        """.trimMargin()
+                    }
+                }
+            }
+
+        }
 
     override fun shouldBe(expected: Boolean): TestResult =
         wrapPathNotFound(expected) {
@@ -242,12 +248,14 @@ internal class IndefiniteJsonPathProxy(
 
         }
 
-    override fun shouldBe(expected: BigDecimal): Boolean =
-        JsonPath.parse(json).read<List<Double>>(path).let { list ->
-            if (list.size == 1) {
-                list[0].toBigDecimal() == expected
-            } else {
-                throw PlaytestAssertionError("The path is indefinite and the result is not a single value")
+    override fun shouldBe(expected: BigDecimal): TestResult =
+        wrapPathNotFound(expected) {
+            JsonPath.parse(json).read<List<Double>>(path).let { list ->
+                if (list.size == 1 && list[0]?.toBigDecimal() == expected) {
+                    Ok
+                } else {
+                    Failed { listExplain(expected, list) }
+                }
             }
         }
 

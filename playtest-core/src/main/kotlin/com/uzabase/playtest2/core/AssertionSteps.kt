@@ -19,8 +19,8 @@ internal fun oldtest(message: String, assertExp: () -> Boolean) {
 class AssertionSteps {
     @Step("小数値の<value>である")
     fun shouldBeBigDecimal(value: Double) =
-        oldassertable<ShouldBeBigDecimal> {
-            oldtest("should be $value") {
+        assertable<ShouldBeBigDecimal> {
+            test {
                 it.shouldBe(value.toBigDecimal())
             }
         }
@@ -35,8 +35,8 @@ class AssertionSteps {
 
     @Step("整数値の<value>以上である")
     fun shouldBeGreaterEqualLongValue(value: Long) =
-        oldassertable<ShouldBeGreaterEqualLong> {
-            oldtest("should be greater than or equal to $value") {
+        assertable<ShouldBeGreaterEqualLong> {
+            test {
                 it.shouldBeGreaterEqual(value)
             }
         }

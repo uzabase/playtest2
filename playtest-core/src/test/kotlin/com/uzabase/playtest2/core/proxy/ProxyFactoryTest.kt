@@ -123,8 +123,8 @@ class ProxyFactoryTest : FunSpec({
     context("BigDecimal") {
         test("ShouldBeBigDecimal") {
             val proxy = ProxyFactory.ofBigDecimal(123.45.toBigDecimal()) as ShouldBeBigDecimal
-            proxy.shouldBe(123.45.toBigDecimal()).shouldBeTrue()
-            proxy.shouldBe(999.99.toBigDecimal()).shouldBeFalse()
+            proxy.shouldBe(123.45.toBigDecimal()).shouldBe(Ok)
+            proxy.shouldBe(999.99.toBigDecimal()).shouldBeInstanceOf<Failed>()
         }
     }
 })

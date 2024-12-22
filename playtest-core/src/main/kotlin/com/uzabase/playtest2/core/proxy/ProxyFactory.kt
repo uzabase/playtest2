@@ -37,7 +37,13 @@ class ProxyFactory {
             }
 
         fun ofBigDecimal(b: BigDecimal): Any =
-            ShouldBeBigDecimal { expected -> b == expected }
+            ShouldBeBigDecimal { expected ->
+                if (b == expected) {
+                    Ok
+                } else {
+                    Failed { simpleExplain(expected, b) }
+                }
+            }
 
         fun ofBoolean(b: Boolean): Any =
             object : ShouldBeString, ShouldBeBoolean {
