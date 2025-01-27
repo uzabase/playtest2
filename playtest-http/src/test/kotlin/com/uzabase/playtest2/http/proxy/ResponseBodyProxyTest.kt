@@ -7,6 +7,7 @@ import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.equals.shouldBeEqual
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldMatch
 import io.kotest.matchers.types.shouldBeInstanceOf
 import java.net.URL
 import java.nio.file.Paths
@@ -31,13 +32,13 @@ class ResponseBodyProxyTest : FunSpec({
                 .shouldBe("Hello, world!!")
 
             testResult.shouldBeInstanceOf<Failed>()
-            testResult.explain().shouldBe(
+            testResult.explain().shouldMatch(
                 """
                 |Expected:
                 |  value: Hello, world!!
                 |  class: kotlin.String
                 |Actual:
-                |  value: /home/ayato-p/workspace/github.com/uzabase/playtest2/playtest-http/target/test-classes/com/uzabase/playtest2/http/proxy/response-body.txt
+                |  value: [^\s]+/com/uzabase/playtest2/http/proxy/response-body.txt
                 |  class: sun.nio.fs.UnixPath
                 """.trimMargin()
             )
