@@ -14,8 +14,8 @@ class ProxyFactoryTest : FunSpec({
     context("Strings") {
         test("ShouldBeString") {
             val proxy = ProxyFactory.ofString("Hello") as ShouldBeString
-            proxy.shouldBe("Hello").shouldBeTrue()
-            proxy.shouldBe("World").shouldBeFalse()
+            proxy.shouldBe("Hello").shouldBe(Ok)
+            proxy.shouldBe("World").shouldBeInstanceOf<Failed>()
         }
 
         test("ShouldContainsString") {

@@ -1,7 +1,6 @@
 package com.uzabase.playtest2.http.proxy
 
-import com.uzabase.playtest2.core.assertion.ShouldBeString
-import com.uzabase.playtest2.core.assertion.ShouldContainsString
+import com.uzabase.playtest2.core.assertion.*
 import com.uzabase.playtest2.http.zoom.JsonPathProxy
 import com.uzabase.playtest2.http.zoom.JsonSerializable
 import java.nio.file.Path
@@ -11,8 +10,13 @@ class ResponseBodyProxy private constructor(val body: Path) : ShouldBeString, Sh
         fun of(body: Path) = ResponseBodyProxy(body)
     }
 
-    override fun shouldBe(expected: String): Boolean =
-        body.toFile().readText(Charsets.UTF_8) == expected
+    // FIXME need more explained
+    override fun shouldBe(expected: String): TestResult =
+        if (body.toFile().readText(Charsets.UTF_8) == expected) {
+            Ok
+        } else {
+            Failed { simpleExplain(expected, body) }
+        }
 
     override fun shouldContain(expected: String): Boolean =
         body.toFile().readText(Charsets.UTF_8).contains(expected)

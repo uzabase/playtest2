@@ -60,7 +60,7 @@ class RequestSteps {
     @Step("リクエストを送る")
     fun sendRequest() =
         Files.createTempFile("playtest2.", ".tmp")
-            .also { it.toFile().deleteOnExit() }
+//            .also { it.toFile().deleteOnExit() }
             .let { temp ->
                 buildRequest()
                     .let { client.send(it, BodyHandlers.ofFile(temp)) }

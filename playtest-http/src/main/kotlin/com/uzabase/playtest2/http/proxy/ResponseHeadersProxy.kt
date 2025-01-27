@@ -1,8 +1,7 @@
 package com.uzabase.playtest2.http.proxy
 
 import com.thoughtworks.gauge.Table
-import com.uzabase.playtest2.core.assertion.ShouldBeString
-import com.uzabase.playtest2.core.assertion.ShouldContainsString
+import com.uzabase.playtest2.core.assertion.*
 import com.uzabase.playtest2.core.zoom.AsAssociative
 import com.uzabase.playtest2.core.zoom.Associative
 import com.uzabase.playtest2.core.zoom.TableProxy
@@ -22,7 +21,12 @@ class ResponseHeadersProxy private constructor(
     override fun toString(): String = headers.map().entries.sortedBy { (k, _) -> k }
         .joinToString(System.lineSeparator()) { (k, v) -> "$k: ${v.joinToString(",")}" }
 
-    override fun shouldBe(expected: String): Boolean = this.toString() == expected
+    override fun shouldBe(expected: String): TestResult =
+        if (this.toString() == expected) {
+            Ok
+        } else {
+            Failed { simpleExplain(expected, this.toString()) }
+        }
 
     override fun shouldContain(expected: String): Boolean = this.toString().contains(expected)
 

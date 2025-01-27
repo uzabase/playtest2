@@ -12,7 +12,12 @@ data class FullName(val firstName: String, val lastName: String)
 
 private val FromFullName = { fullName: FullName ->
     object : ShouldBeString, ShouldBeBoolean, ShouldBe<FullName> {
-        override fun shouldBe(expected: String): Boolean = "${fullName.firstName} ${fullName.lastName} :)" == expected
+        override fun shouldBe(expected: String): TestResult = if (("${fullName.firstName} ${fullName.lastName} :)" == expected)) {
+            Ok
+        } else {
+            Failed { "should be equal to `${fullName.firstName} ${fullName.lastName} :)`"}
+        }
+
         override fun shouldBe(expected: Boolean): TestResult = Failed { "should be strict $expected" }
         override fun shouldBe(expected: FullName): Boolean = fullName == expected
     }
@@ -55,16 +60,21 @@ class AssertionStepsTest : FunSpec({
                     sut.shouldBeLongValue(200L)
                 }.message.shouldBe(
                     """
-                    Assertion Target is missing.
-                    Expected: class com.uzabase.playtest2.core.assertion.ShouldBeLong
-                    """.trimIndent()
+                    |Assertion Target is missing.
+                    |Expected: class com.uzabase.playtest2.core.assertion.ShouldBeLong
+                    """.trimMargin()
                 )
             }
 
             test("string value") {
                 shouldThrow<PlaytestAssertionError> {
                     sut.shouldBeStringValue("Hello, world")
-                }.message.shouldBe("Assertion target is not found")
+                }.message.shouldBe(
+                    """
+                    |Assertion Target is missing.
+                    |Expected: class com.uzabase.playtest2.core.assertion.ShouldBeString
+                    """.trimMargin()
+                )
             }
 
             test("true value") {

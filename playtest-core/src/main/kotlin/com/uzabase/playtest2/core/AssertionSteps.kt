@@ -43,8 +43,8 @@ class AssertionSteps {
 
     @Step("文字列の<value>である")
     fun shouldBeStringValue(value: String) =
-        oldassertable<ShouldBeString> {
-            oldtest("should be $value") {
+        assertable<ShouldBeString> {
+            test {
                 it.shouldBe(value)
             }
         }
