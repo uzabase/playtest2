@@ -13,7 +13,12 @@ class ProxyFactory {
                     Failed { simpleExplain(expected, s) }
                 }
 
-                override fun shouldBe(expected: String): Boolean = s == expected
+                override fun shouldBe(expected: String): TestResult = if (s == expected) {
+                    Ok
+                } else {
+                    Failed { simpleExplain(expected, s) }
+                }
+
                 override fun shouldContain(expected: String): Boolean = s.contains(expected)
                 override fun shouldBe(expected: Boolean): TestResult =
                     if (s.toBoolean() == expected) {
@@ -33,7 +38,11 @@ class ProxyFactory {
                     Failed { simpleExplain(expected, l) }
                 }
 
-                override fun shouldBe(expected: String): Boolean = l.toString() == expected
+                override fun shouldBe(expected: String): TestResult = if (l.toString() == expected) {
+                    Ok
+                } else {
+                    Failed { simpleExplain(expected, l) }
+                }
             }
 
         fun ofBigDecimal(b: BigDecimal): Any =
@@ -47,7 +56,12 @@ class ProxyFactory {
 
         fun ofBoolean(b: Boolean): Any =
             object : ShouldBeString, ShouldBeBoolean {
-                override fun shouldBe(expected: String): Boolean = b.toString() == expected
+                override fun shouldBe(expected: String): TestResult = if (b.toString() == expected) {
+                    Ok
+                } else {
+                    Failed { simpleExplain(expected, b) }
+                }
+
                 override fun shouldBe(expected: Boolean): TestResult = if (b == expected) {
                     Ok
                 } else {

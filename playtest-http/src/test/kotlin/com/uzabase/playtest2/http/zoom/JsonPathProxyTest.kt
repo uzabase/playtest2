@@ -228,14 +228,13 @@ class JsonPathProxyTest : FunSpec({
         context("ok or failed") {
             test("should be true if single string value") {
                 JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].name")
-                    .shouldBe("abc").shouldBeTrue()
+                    .shouldBe("abc").shouldBe(Ok)
             }
 
             test("should be failed if multiple string values") {
-                shouldThrow<PlaytestAssertionError> {
-                    JsonPathProxy.of(json, "$.people[?(@.age > 1)].name")
-                        .shouldBe("abc")
-                }.message.shouldBe("The path is indefinite and the result is not a single value")
+                JsonPathProxy.of(json, "$.people[?(@.age > 1)].name")
+                    .shouldBe("abc")
+                    .shouldBeInstanceOf<Failed>()
             }
 
             test("should be true if single long value") {
@@ -334,6 +333,30 @@ class JsonPathProxyTest : FunSpec({
                     |  class: kotlin.Boolean
                     |Actual:
                     |  error: Missing property in path $['__does_not_exists__']
+                    |  json: $json
+                    """.trimMargin()
+                ),
+                row(
+                    "$.people[?(@.name == 'abc')].name", { pxy: JsonPathProxy -> pxy.shouldBe("abcd") },
+                    """
+                    |Expected:
+                    |  value: abcd
+                    |  class: kotlin.String
+                    |Actual:
+                    |  value: abc
+                    |  class: kotlin.String
+                    |  json: $json
+                    """.trimMargin()
+                ),
+                row(
+                    "$.people[?(@.age > 1)].name", { pxy: JsonPathProxy -> pxy.shouldBe("abc") },
+                    """
+                    |Expected:
+                    |  value: abc
+                    |  class: kotlin.String
+                    |Actual:
+                    |  value: ["abc","def"]
+                    |  error: The path is indefinite and the result is not a single value
                     |  json: $json
                     """.trimMargin()
                 ),

@@ -1,7 +1,7 @@
 package com.uzabase.playtest2.core.assertion
 
 fun interface ShouldBeString {
-    fun shouldBe(expected: String): Boolean
+    fun shouldBe(expected: String): TestResult
 }
 
 fun interface ShouldContainsString {

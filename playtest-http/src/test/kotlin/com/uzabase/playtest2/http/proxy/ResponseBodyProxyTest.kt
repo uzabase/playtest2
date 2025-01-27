@@ -1,9 +1,12 @@
 package com.uzabase.playtest2.http.proxy
 
-import com.uzabase.playtest2.core.zoom.Zoomable
+import com.uzabase.playtest2.core.assertion.Failed
+import com.uzabase.playtest2.core.assertion.Ok
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.equals.shouldBeEqual
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import java.net.URL
 import java.nio.file.Paths
@@ -20,13 +23,24 @@ class ResponseBodyProxyTest : FunSpec({
         test("should be equal as string") {
             fromClasspathToResponseBodyProxy("com/uzabase/playtest2/http/proxy/response-body.txt")
                 .shouldBe("Hello, world")
-                .shouldBeTrue()
+                .shouldBe(Ok)
         }
 
         test("should not be equal as string") {
-            fromClasspathToResponseBodyProxy("com/uzabase/playtest2/http/proxy/response-body.txt")
+            val testResult = fromClasspathToResponseBodyProxy("com/uzabase/playtest2/http/proxy/response-body.txt")
                 .shouldBe("Hello, world!!")
-                .shouldBeFalse()
+
+            testResult.shouldBeInstanceOf<Failed>()
+            testResult.explain().shouldBe(
+                """
+                |Expected:
+                |  value: Hello, world!!
+                |  class: kotlin.String
+                |Actual:
+                |  value: /home/ayato-p/workspace/github.com/uzabase/playtest2/playtest-http/target/test-classes/com/uzabase/playtest2/http/proxy/response-body.txt
+                |  class: sun.nio.fs.UnixPath
+                """.trimMargin()
+            )
         }
 
         test("should contain") {

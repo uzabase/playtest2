@@ -1,6 +1,6 @@
 package com.uzabase.playtest2.core.zoom
 
-import com.uzabase.playtest2.core.assertion.ShouldBeString
+import com.uzabase.playtest2.core.assertion.*
 
 fun interface AsAssociative {
     fun asAssociative(key: String): Associative
@@ -14,7 +14,13 @@ class Associative private constructor(
         fun of(map: Map<String, String>, key: String) = Associative(map, key)
     }
 
-    override fun shouldBe(expected: String): Boolean =
-        map[key]?.let { it == expected } ?: false
+    override fun shouldBe(expected: String): TestResult =
+        map[key]?.let {
+            if (it == expected) {
+                Ok
+            } else {
+                Failed { simpleExplain(expected, it) }
+            }
+        } ?: Failed { "Key `${key}` not found." }
 }
 
