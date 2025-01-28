@@ -82,8 +82,21 @@ internal class DefiniteJsonPathProxy(
             }
         }
 
-    override fun shouldMatch(expected: String): Boolean =
-        expected.toRegex().matches(JsonPath.parse(json).read<String>(path))
+    override fun shouldMatch(expected: String): TestResult =
+        wrapPathNotFound(expected) {
+            JsonPath.parse(json).read<String>(path).let {
+                if (expected.toRegex().matches(it)) {
+                    Ok
+                } else {
+                    Failed {
+                        """
+                        |${simpleExplain(expected, it)}
+                        |  json: $json
+                        """.trimMargin()
+                    }
+                }
+            }
+        }
 
     override fun shouldBe(expected: Long): TestResult =
         wrapPathNotFound(expected) {
@@ -314,12 +327,12 @@ internal class IndefiniteJsonPathProxy(
             }
         }
 
-    override fun shouldMatch(expected: String): Boolean =
+    override fun shouldMatch(expected: String): TestResult =
         JsonPath.parse(json).read<List<String>>(path).let { list ->
-            if (list.size == 1) {
-                expected.toRegex().matches(list[0])
+            if (list.size == 1 && expected.toRegex().matches(list[0])) {
+                Ok
             } else {
-                throw PlaytestAssertionError("The path is indefinite and the result is not a single value")
+                Failed { listExplain(expected, list) }
             }
         }
 
