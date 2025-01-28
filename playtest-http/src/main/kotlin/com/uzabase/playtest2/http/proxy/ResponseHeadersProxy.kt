@@ -28,7 +28,12 @@ class ResponseHeadersProxy private constructor(
             Failed { simpleExplain(expected, this.toString()) }
         }
 
-    override fun shouldContain(expected: String): Boolean = this.toString().contains(expected)
+    override fun shouldContain(expected: String): TestResult =
+        if (this.toString().contains(expected)) {
+            Ok
+        } else {
+            Failed { simpleExplain(expected, this.toString()) }
+        }
 
     override fun asAssociative(key: String): Associative =
         headers

@@ -19,7 +19,12 @@ class ProxyFactory {
                     Failed { simpleExplain(expected, s) }
                 }
 
-                override fun shouldContain(expected: String): Boolean = s.contains(expected)
+                override fun shouldContain(expected: String): TestResult = if (s.contains(expected)) {
+                    Ok
+                } else {
+                    Failed { simpleExplain(expected, s) }
+                }
+
                 override fun shouldBe(expected: Boolean): TestResult =
                     if (s.toBoolean() == expected) {
                         Ok

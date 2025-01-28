@@ -5,7 +5,7 @@ fun interface ShouldBeString {
 }
 
 fun interface ShouldContainsString {
-    fun shouldContain(expected: String): Boolean
+    fun shouldContain(expected: String): TestResult
 }
 
 fun interface ShouldMatchString {

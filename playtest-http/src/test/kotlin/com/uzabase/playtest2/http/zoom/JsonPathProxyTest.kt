@@ -283,14 +283,12 @@ class JsonPathProxyTest : FunSpec({
 
             test("should be true if single string value - contains") {
                 JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].name")
-                    .shouldContain("b").shouldBeTrue()
+                    .shouldContain("b").shouldBe(Ok)
             }
 
             test("should be failed if multiple string values - contains") {
-                shouldThrow<PlaytestAssertionError> {
-                    JsonPathProxy.of(json, "$.people[?(@.age > 1)].name")
-                        .shouldContain("b")
-                }.message.shouldBe("The path is indefinite and the result is not a single value")
+                JsonPathProxy.of(json, "$.people[?(@.age > 1)].name")
+                    .shouldContain("b").shouldBeInstanceOf<Failed>()
             }
 
             test("should be true if single string value - entire match") {

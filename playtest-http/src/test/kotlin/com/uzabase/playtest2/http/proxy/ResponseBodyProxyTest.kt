@@ -5,7 +5,6 @@ import com.uzabase.playtest2.core.assertion.Ok
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
-import io.kotest.matchers.equals.shouldBeEqual
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldMatch
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -47,13 +46,13 @@ class ResponseBodyProxyTest : FunSpec({
         test("should contain") {
             fromClasspathToResponseBodyProxy("com/uzabase/playtest2/http/proxy/response-body.txt")
                 .shouldContain("world")
-                .shouldBeTrue()
+                .shouldBe(Ok)
         }
 
         test("should not contain") {
             fromClasspathToResponseBodyProxy("com/uzabase/playtest2/http/proxy/response-body.txt")
                 .shouldContain("world!!")
-                .shouldBeFalse()
+                .shouldBeInstanceOf<Failed>()
         }
     }
 

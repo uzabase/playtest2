@@ -109,7 +109,16 @@ class AssertionStepsTest : FunSpec({
             ScenarioDataStore.put(K.AssertionTarget, ProxyFactory.ofString("Hello, world"))
             shouldThrow<PlaytestAssertionError> {
                 sut.shouldBeContainsStringValue("John")
-            }.message.shouldBe("should contains John")
+            }.message.shouldBe(
+                """
+                |Expected:
+                |  value: John
+                |  class: kotlin.String
+                |Actual:
+                |  value: Hello, world
+                |  class: kotlin.String
+                """.trimMargin()
+            )
         }
     }
 
