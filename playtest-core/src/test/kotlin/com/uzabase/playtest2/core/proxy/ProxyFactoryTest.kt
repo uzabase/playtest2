@@ -20,8 +20,8 @@ class ProxyFactoryTest : FunSpec({
 
         test("ShouldContainsString") {
             val proxy = ProxyFactory.ofString("Hello") as ShouldContainsString
-            proxy.shouldContain("ell").shouldBeTrue()
-            proxy.shouldContain("abc").shouldBeFalse()
+            proxy.shouldContain("ell").shouldBe(Ok)
+            proxy.shouldContain("abc").shouldBeInstanceOf<Failed>()
         }
 
         context("ShouldMatch") {
@@ -115,6 +115,7 @@ class ProxyFactoryTest : FunSpec({
                       class: kotlin.Boolean
                     """.trimIndent()
                 )
+
                 else -> throw AssertionError("error")
             }
         }

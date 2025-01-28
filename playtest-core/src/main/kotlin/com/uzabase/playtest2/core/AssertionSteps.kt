@@ -51,8 +51,8 @@ class AssertionSteps {
 
     @Step("文字列の<value>を含んでいる")
     fun shouldBeContainsStringValue(value: String) =
-        oldassertable<ShouldContainsString> {
-            oldtest("should contains $value") {
+        assertable<ShouldContainsString> {
+            test {
                 it.shouldContain(value)
             }
         }

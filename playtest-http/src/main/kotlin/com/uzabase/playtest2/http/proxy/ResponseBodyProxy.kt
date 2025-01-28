@@ -18,8 +18,12 @@ class ResponseBodyProxy private constructor(val body: Path) : ShouldBeString, Sh
             Failed { simpleExplain(expected, body) }
         }
 
-    override fun shouldContain(expected: String): Boolean =
-        body.toFile().readText(Charsets.UTF_8).contains(expected)
+    override fun shouldContain(expected: String): TestResult =
+        if (body.toFile().readText(Charsets.UTF_8).contains(expected)) {
+            Ok
+        } else {
+            Failed { simpleExplain(expected, body) }
+        }
 
     override fun toJsonPathProxy(path: String): JsonPathProxy =
         body.toFile().readText(Charsets.UTF_8)
