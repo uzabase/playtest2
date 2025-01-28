@@ -9,5 +9,5 @@ fun interface ShouldContainsString {
 }
 
 fun interface ShouldMatchString {
-    fun shouldMatch(expected: String): Boolean
+    fun shouldMatch(expected: String): TestResult
 }

@@ -32,7 +32,12 @@ class ProxyFactory {
                         Failed { simpleExplain(expected, s) }
                     }
 
-                override fun shouldMatch(expected: String): Boolean = expected.toRegex().matches(s)
+                override fun shouldMatch(expected: String): TestResult =
+                    if (expected.toRegex().matches(s)) {
+                        Ok
+                    } else {
+                        Failed { simpleExplain(expected, s) }
+                    }
             }
 
         fun ofLong(l: Long): Any =

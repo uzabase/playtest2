@@ -27,19 +27,29 @@ class ProxyFactoryTest : FunSpec({
         context("ShouldMatch") {
             test("Hello") {
                 val proxy = ProxyFactory.ofString("Hello") as ShouldMatchString
-                proxy.shouldMatch("H[\\w]{4}").shouldBeTrue()
-                proxy.shouldMatch("H[\\d]{4}").shouldBeFalse()
+                proxy.shouldMatch("H[\\w]{4}").shouldBe(Ok)
+                proxy.shouldMatch("H[\\d]{4}").shouldBeInstanceOf<Failed>()
             }
 
             forAll(
-                row("Hello", "H[\\w]{4}", true),
-                row("Hello", "H[\\d]{4}", false),
-                row("Hello, world", "H.{10}d", true),
-                row("Hello, world", "H.{10}w", false),
-                row("|X20|Y20|", "\\|X\\d{2}\\|Y\\d{2}\\|", true)
-            ) { from, matcher, expected ->
-                val proxy = ProxyFactory.ofString(from) as ShouldMatchString
-                proxy.shouldMatch(matcher).shouldBe(expected)
+                row("Hello", "H[\\w]{4}"),
+                row("Hello, world", "H.{10}d"),
+                row("|X20|Y20|", "\\|X\\d{2}\\|Y\\d{2}\\|")
+            ) { from, matcher ->
+                test("should return Ok: $from $matcher") {
+                    val proxy = ProxyFactory.ofString(from) as ShouldMatchString
+                    proxy.shouldMatch(matcher).shouldBe(Ok)
+                }
+            }
+
+            forAll(
+                row("Hello", "H[\\d]{4}"),
+                row("Hello, world", "H.{10}w"),
+            ) { from, matcher ->
+                test("should return Failed: $from $matcher") {
+                    val proxy = ProxyFactory.ofString(from) as ShouldMatchString
+                    proxy.shouldMatch(matcher).shouldBeInstanceOf<Failed>()
+                }
             }
         }
 

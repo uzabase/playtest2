@@ -8,7 +8,6 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
-import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
@@ -293,14 +292,13 @@ class JsonPathProxyTest : FunSpec({
 
             test("should be true if single string value - entire match") {
                 JsonPathProxy.of(json, "$.people[?(@.name == 'abc')].name")
-                    .shouldMatch("[abc]{3}").shouldBeTrue()
+                    .shouldMatch("[abc]{3}").shouldBe(Ok)
             }
 
             test("should be failed if multiple string values - entire match") {
-                shouldThrow<PlaytestAssertionError> {
                     JsonPathProxy.of(json, "$.people[?(@.age > 1)].name")
                         .shouldMatch(".*")
-                }.message.shouldBe("The path is indefinite and the result is not a single value")
+                        .shouldBeInstanceOf<Failed>()
             }
 
             test("should return Failed if empty after filtering - should be exist") {
