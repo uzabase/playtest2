@@ -6,12 +6,6 @@ import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.uzabase.playtest2.core.assertion.*
 import com.uzabase.playtest2.core.zoom.ToTable
 
-internal inline fun <reified T> oldassertable(f: (T) -> Unit) =
-    ScenarioDataStore.get(K.AssertionTarget)
-        .let { it as? T }
-        ?.let(f)
-        ?: playtestError("Assertion target is not found")
-
 internal fun oldtest(message: String, assertExp: () -> Boolean) {
     if (!assertExp()) throw PlaytestAssertionError(message)
 }
