@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.uzabase.playtest2</groupId>
   <artifactId>playtest2</artifactId>
-  <version>0.0.8</version>
+  <version>0.0.9</version>
   <name>Playtest2</name>
   <description>Next generation of Playtest</description>
   <url>https://github.com/uzabase/playtest2</url>
