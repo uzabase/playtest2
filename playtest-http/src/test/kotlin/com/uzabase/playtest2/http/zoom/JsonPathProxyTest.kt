@@ -2,9 +2,7 @@ package com.uzabase.playtest2.http.zoom
 
 import com.uzabase.playtest2.core.assertion.Failed
 import com.uzabase.playtest2.core.assertion.Ok
-import com.uzabase.playtest2.core.assertion.PlaytestAssertionError
 import com.uzabase.playtest2.core.assertion.TestResult
-import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
@@ -27,6 +25,19 @@ class JsonPathProxyTest : FunSpec({
             test("should be equal") {
                 JsonPathProxy.of("""{"price": 0.3}""", "$.price")
                     .shouldBe("0.3".toBigDecimal()).shouldBe(Ok)
+            }
+        }
+
+        context("ShouldBeLong") {
+            test("should be equal") {
+                """
+                |{"longValue": 9223372036854775807,
+                | "intValue": 2147483647}
+                """.trimMargin()
+                    .let { json ->
+                        JsonPathProxy.of(json, "$.longValue").shouldBe(Long.MAX_VALUE).shouldBe(Ok)
+                        JsonPathProxy.of(json, "$.intValue").shouldBe(Int.MAX_VALUE.toLong()).shouldBe(Ok)
+                    }
             }
         }
     }
@@ -296,9 +307,9 @@ class JsonPathProxyTest : FunSpec({
             }
 
             test("should be failed if multiple string values - entire match") {
-                    JsonPathProxy.of(json, "$.people[?(@.age > 1)].name")
-                        .shouldMatch(".*")
-                        .shouldBeInstanceOf<Failed>()
+                JsonPathProxy.of(json, "$.people[?(@.age > 1)].name")
+                    .shouldMatch(".*")
+                    .shouldBeInstanceOf<Failed>()
             }
 
             test("should return Failed if empty after filtering - should be exist") {

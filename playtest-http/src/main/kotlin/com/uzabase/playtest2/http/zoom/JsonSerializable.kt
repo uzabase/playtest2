@@ -100,7 +100,7 @@ internal class DefiniteJsonPathProxy(
 
     override fun shouldBe(expected: Long): TestResult =
         wrapPathNotFound(expected) {
-            JsonPath.parse(json).read<Int>(path).let {
+            JsonPath.parse(json).read<Number>(path).let {
                 if (it?.toLong() == expected) {
                     Ok
                 } else {
