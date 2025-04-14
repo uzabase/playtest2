@@ -60,11 +60,15 @@ class RequestSteps {
     @Step("リクエストを送る")
     fun sendRequest() =
         Files.createTempFile("playtest2.", ".tmp")
-//            .also { it.toFile().deleteOnExit() }
             .let { temp ->
                 buildRequest()
                     .let { client.send(it, BodyHandlers.ofFile(temp)) }
                     .run { ScenarioDataStore.put(K.RESPONSE, this) }
+            }.also {
+                // FIXME WireMockと同じようにリクエスト情報を組み立てるようにしたら、この気持ち悪い後処理しなくて良い気がする
+                K.entries
+                    .filter { K.RESPONSE != it }
+                    .forEach { ScenarioDataStore.remove(it) }
             }
 
     private fun buildRequest(): HttpRequest {
