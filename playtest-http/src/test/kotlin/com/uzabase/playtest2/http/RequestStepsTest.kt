@@ -5,12 +5,15 @@ import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.uzabase.playtest2.core.config.Configuration.Companion.playtest2
+import com.uzabase.playtest2.http.RequestSteps
 import com.uzabase.playtest2.http.config.http
 import com.uzabase.playtest2.http.internal.K
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.data.forAll
 import io.kotest.data.row
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import java.net.URI
 import java.net.http.HttpResponse
@@ -144,5 +147,16 @@ class RequestStepsTest : FunSpec({
                 exception.message.shouldBe("You should specify the `$expected`")
             }
         }
+    }
+
+    context("Should clear state of request after send") {
+        sut.pathIntoRequest("/articles")
+        sut.methodIntoRequest(RequestSteps.Method.GET)
+        sut.headerIntoRequest("foo: bar")
+        sut.sendRequest()
+        ScenarioDataStore.get(K.HEADER).shouldBeNull()
+        ScenarioDataStore.get(K.REQUEST_PATH).shouldBeNull()
+        ScenarioDataStore.get(K.METHOD).shouldBeNull()
+        ScenarioDataStore.get(K.RESPONSE).shouldNotBeNull()
     }
 })
