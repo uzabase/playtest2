@@ -21,7 +21,7 @@
 title: Playtest2 Docs
 description: >- # this means to ignore newlines until "baseurl:"
   Document for Playtest2
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/playtest2" # the subpath of your site, e.g. /blog
 url: "https://uzabase.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 github_username: uzabase
 
