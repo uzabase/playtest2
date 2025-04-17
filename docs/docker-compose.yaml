@@ -1,8 +1,0 @@
-services:
-  jekyll:
-    image: jekyll/jekyll:3.8
-    command: jekyll serve --incremental
-    volumes:
-      - .:/srv/jekyll:Z
-    ports:
-      - "4000:4000"

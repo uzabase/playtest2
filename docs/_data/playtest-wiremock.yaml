@@ -1,0 +1,8 @@
+steps:
+  - API<apiName>についてメソッド<method>でパス<path>に
+  - クエリ<name>が<value>として
+  - ヘッダー<header>として
+  - ヘッダー<name>が<value>として
+  - JSONボディ<json>として
+  - JSONパス<jsonPath>に文字列表現の<value>を持つ
+  - リクエストが送られた回数が
