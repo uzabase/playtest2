@@ -181,13 +181,13 @@ class AssertionStepsTest : FunSpec({
 
     context("table") {
         test("should be equal") {
-            ScenarioDataStore.put(K.AssertionTarget, ShouldBeEqualTable { true })
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeEqualTable { Ok })
             sut.shouldBeEqualTable(
                 Table(listOf("ans")).apply { addRow(listOf("42")) })
         }
 
         test("should be fail") {
-            ScenarioDataStore.put(K.AssertionTarget, ShouldBeEqualTable { false })
+            ScenarioDataStore.put(K.AssertionTarget, ShouldBeEqualTable { Failed { "should be equal to $it" } })
             shouldThrow<PlaytestAssertionError> {
                 sut.shouldBeEqualTable(
                     Table(listOf("ans"))

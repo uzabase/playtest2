@@ -6,9 +6,6 @@ import com.thoughtworks.gauge.datastore.ScenarioDataStore
 import com.uzabase.playtest2.core.assertion.*
 import com.uzabase.playtest2.core.zoom.ToTable
 
-internal fun oldtest(message: String, assertExp: () -> Boolean) {
-    if (!assertExp()) throw PlaytestAssertionError(message)
-}
 
 class AssertionSteps {
     @Step("小数値の<value>である")
@@ -112,7 +109,7 @@ class AssertionSteps {
                 is ShouldBeEqualTable -> target
                 else -> throw PlaytestAssertionError("AssertionTarget is not assertable type: ${target.javaClass}")
             }
-            oldtest("should be equal to $table") {
+            test {
                 sut.shouldBeEqual(table)
             }
         }
