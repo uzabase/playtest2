@@ -71,6 +71,13 @@ internal class WireMockProxy private constructor(
                 requestedFor(method, urlPathEqualTo(path)),
                 emptyList()
             )
+
+        fun of(mock: WireMock, method: String, pathRegex: Regex) =
+            WireMockProxy(
+                mock,
+                requestedFor(method, urlMatching(pathRegex.pattern)),
+                emptyList()
+            )
     }
 
     fun update(updater: IRequestPatternBuilderUpdater): WireMockProxy =

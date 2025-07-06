@@ -82,4 +82,30 @@ class StepsTest : FunSpec({
         sut.header("great-answer", "42")
         assert.shouldBeLongValue(1)
     }
+
+    context("Regex Path Request") {
+        beforeEach {
+            Request.Builder()
+                .url("http://localhost:3000/sessions/6680a85e-0919-4472-a65f-020ed96d9717")
+                .post("".toRequestBody("application/json".toMediaType()))
+                .build()
+                .let { client.newCall(it).execute() }
+                .close()
+        }
+
+        test("Assert POST with regex path should pass") {
+            sut.setupApiWithRegexPath("MyAPI", "POST", "/sessions/.+")
+            assert.shouldBeLongValue(1)
+        }
+
+        test("Assert POST with different regex pattern should fail") {
+            sut.setupApiWithRegexPath("MyAPI", "POST", "/_/sessions/.+")
+            assert.shouldBeLongValue(0)
+        }
+
+        test("Assert GET with same regex path should fail for different method") {
+            sut.setupApiWithRegexPath("MyAPI", "GET", "/sessions/.+")
+            assert.shouldBeLongValue(0)
+        }
+    }
 })

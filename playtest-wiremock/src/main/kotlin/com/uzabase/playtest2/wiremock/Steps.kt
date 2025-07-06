@@ -22,6 +22,11 @@ class Steps {
         WireMockProxy.of(wireMockConfig(apiName).toWireMockClient(), method, path)
             .let { ScenarioDataStore.put(K.AssertionTarget, it) }
 
+    @Step("API<apiName>についてメソッド<method>でマッチするパス<regexPath>に")
+    fun setupApiWithRegexPath(apiName: String, method: String, regexPath: String) =
+        WireMockProxy.of(wireMockConfig(apiName).toWireMockClient(), method, regexPath.toRegex())
+            .let { ScenarioDataStore.put(K.AssertionTarget, it) }
+
     @Step("クエリ<name>が<value>として")
     fun query(name: String, value: String) {
         (ScenarioDataStore.get(K.AssertionTarget) as WireMockProxy)
