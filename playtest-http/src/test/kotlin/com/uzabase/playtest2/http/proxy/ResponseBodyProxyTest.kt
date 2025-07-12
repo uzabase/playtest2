@@ -37,8 +37,8 @@ class ResponseBodyProxyTest : FunSpec({
                 |  value: Hello, world!!
                 |  class: kotlin.String
                 |Actual:
-                |  value: [^\s]+/com/uzabase/playtest2/http/proxy/response-body.txt
-                |  class: sun.nio.fs.UnixPath
+                |  value: Hello, world
+                |  class: kotlin.String
                 """.trimMargin()
             )
         }
@@ -50,9 +50,19 @@ class ResponseBodyProxyTest : FunSpec({
         }
 
         test("should not contain") {
-            fromClasspathToResponseBodyProxy("com/uzabase/playtest2/http/proxy/response-body.txt")
+            val result = fromClasspathToResponseBodyProxy("com/uzabase/playtest2/http/proxy/response-body.txt")
                 .shouldContain("world!!")
-                .shouldBeInstanceOf<Failed>()
+            result.shouldBeInstanceOf<Failed>()
+            result.explain().shouldMatch(
+                """
+                |Expected:
+                |  value: world!!
+                |  class: kotlin.String
+                |Actual:
+                |  value: Hello, world
+                |  class: kotlin.String
+                """.trimMargin()
+            )
         }
     }
 
