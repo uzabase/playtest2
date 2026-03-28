@@ -17,7 +17,7 @@
         <gauge.java.version>0.10.3</gauge.java.version>
         <gauge.maven.version>1.6.1</gauge.maven.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <undertow.version>2.3.10.Final</undertow.version>
+        <undertow.version>2.3.24.Final</undertow.version>
     </properties>
 
     <repositories>
