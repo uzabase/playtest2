@@ -16,7 +16,7 @@ jobs:
         id: sdkman
       - name: Run tests
         run: |
-          export JAVA_HOME=$(sdk home java 21.0.1-tem)
+          export JAVA_HOME=$(sdk home java 25.0.2-tem)
           mvn clean test
 
   example-test:
@@ -37,7 +37,7 @@ jobs:
           curl -SsL https://downloads.gauge.org/stable | sh
       - name: Run tests
         run: |
-          export JAVA_HOME=$(sdk home java 21.0.1-tem)
+          export JAVA_HOME=$(sdk home java 25.0.2-tem)
           mvn clean install -Dgpg.skip --no-transfer-progress
           cd examples/${{ matrix.environment }}
           mvn test --no-transfer-progress

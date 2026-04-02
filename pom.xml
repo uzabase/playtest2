@@ -37,11 +37,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Language versions -->
-        <java.version>21</java.version>
-        <kotlin.version>2.0.20</kotlin.version>
+        <java.version>25</java.version>
+        <kotlin.version>2.3.20</kotlin.version>
         <!-- Library versions -->
-        <gauge.version>[0.10.0,)</gauge.version>
-        <kotest.version>[5.8.0,5.9.1]</kotest.version>
+        <gauge.version>[1.0.1,)</gauge.version>
+        <kotest.version>[5.9.1]</kotest.version>
         <okhttp.version>[4.12.0]</okhttp.version>
         <wiremock.version>[3.4,3.13]</wiremock.version>
     </properties>
@@ -156,7 +156,7 @@
                 <plugin>
                     <groupId>org.jetbrains.dokka</groupId>
                     <artifactId>dokka-maven-plugin</artifactId>
-                    <version>1.9.10</version>
+                    <version>2.2.0</version>
                     <executions>
                         <execution>
                             <id>attach-javadocs</id>
@@ -173,7 +173,7 @@
                             <plugin>
                                 <groupId>org.jetbrains.dokka</groupId>
                                 <artifactId>kotlin-as-java-plugin</artifactId>
-                                <version>1.9.10</version>
+                                <version>2.2.0</version>
                             </plugin>
                         </dokkaPlugins>
                     </configuration>
@@ -242,7 +242,7 @@
                 <configuration>
                     <jvmTarget>${java.version}</jvmTarget>
                     <args>
-                        <arg>-Xcontext-receivers</arg>
+                        <arg>-Xcontext-parameters</arg>
                     </args>
                 </configuration>
                 <executions>
