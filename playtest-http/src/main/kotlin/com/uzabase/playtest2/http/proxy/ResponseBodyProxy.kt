@@ -11,19 +11,23 @@ class ResponseBodyProxy private constructor(val body: Path) : ShouldBeString, Sh
     }
 
     // FIXME need more explained
-    override fun shouldBe(expected: String): TestResult =
-        if (body.toFile().readText(Charsets.UTF_8) == expected) {
+    override fun shouldBe(expected: String): TestResult {
+        val actual = body.toFile().readText(Charsets.UTF_8)
+        return if (actual == expected) {
             Ok
         } else {
-            Failed { simpleExplain(expected, body) }
+            Failed { simpleExplain(expected, actual) }
         }
+    }
 
-    override fun shouldContain(expected: String): TestResult =
-        if (body.toFile().readText(Charsets.UTF_8).contains(expected)) {
+    override fun shouldContain(expected: String): TestResult {
+        val actual = body.toFile().readText(Charsets.UTF_8)
+        return if (actual.contains(expected)) {
             Ok
         } else {
-            Failed { simpleExplain(expected, body) }
+            Failed { simpleExplain(expected, actual) }
         }
+    }
 
     override fun toJsonPathProxy(path: String): JsonPathProxy =
         body.toFile().readText(Charsets.UTF_8)
